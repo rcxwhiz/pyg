@@ -7,7 +7,7 @@ from Config import cfg
 def run(display_title=True):
     if display_title:
         print(IP.title.title_string)
-    choice = IP.tools.input_num_range([1, 3])
+    choice = IP.tools.input_num_range(1, 3)
     if choice == 1:
         grade()
     if choice == 2:
