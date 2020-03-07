@@ -1,0 +1,3 @@
+import InstructorProgram
+
+InstructorProgram.run()
