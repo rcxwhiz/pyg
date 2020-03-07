@@ -1,7 +1,7 @@
 In order to make this autograder useful & simple, students will need to have a line on every file to load some data
 This data will be the commands or data which the students will use to output the files
 
-To make it easy on the student, the grader will just run the studen't file in a directory with just the specific file
+To make it easy on the student, the grader will just run the student's file in a directory with just the specific file
 
 There will need to be headers and footers added to the students files to make the code die if it runs too long and
 put it in the right working directory
@@ -20,13 +20,21 @@ Maybe there should be a student version that is just a GUI program they download
 They would get some saved output and input files
 The program should just have an option to generate input and output stuff but then run off of saved inputs and outputs
 You just choose which cases you want to send the students and it will make a zip that they can run to test their code
+Note - if they have anaconda they should have pyqt, don't want to make an exe because mac kids
 
 The student version will have a small GUI that simply says "please put your file here {file path + name}" and has
 a single run button, then it either has some popup or something showing what points were achieved and lost with
 comparisons between the student outfiles and the given key outfiles
+The thing the student downloads should make it easy to tell which inputs go to which outputs
 
 There could also be criteria for certain function definitions to be included too?
 
 In the end when you run the instructor program, it will give you some sort of csv or table with what all the students
 did and didn't get with a lot of homework stats and such
 A classlist could be imported/exported to keep track of people who didn't turn in the HW?
+
+There needs to be a way to reweight everything to 100
+
+If the students are beginners, they should probably be given the code that loads the input
+
+Maybe there could be an option to have no input or to hide the output
