@@ -13,6 +13,7 @@ def run(display_title=True):
     if choice == 2:
         make_dir()
     if choice == 3:
+        print('\nExiting...')
         sys.exit()
 
 
