@@ -1,6 +1,7 @@
 import sys
 
 import InstructorProgram as IP
+from Config import cfg
 
 
 def run(display_title=True):
@@ -21,5 +22,9 @@ def grade():
 
 
 def make_dir():
-    print('making dir')
+    print('\nCreate a new assignment directory in your base directory (this can be changed in config.ini)')
+    print('Enter a blank directory to stop')
+    new_dir = '0'
+    while new_dir != '':
+        new_dir = input(f'{cfg.base_directory}\\')
     run()
