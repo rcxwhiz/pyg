@@ -21,12 +21,19 @@ def run(display_title=True):
 
 
 def grade():
-    print('grading')
+    if len(dirs.assignment_dirs) == 0:
+        print('\nNo assignment directories created.')
+        run()
+    print('Select assignment to grade:')
+    dirs.print_dirs()
+    print('')
+    assignment_num = IP.tools.input_num_range(1, len(dirs.assignment_dirs)) - 1
+
     run()
 
 
 def make_dir():
-    print('Current directories:')
+    print('\nCurrent directories:')
     dirs.print_dirs()
     print('\nCreate a new assignment directory in your base directory (can be changed in config.ini)')
     print('Enter a blank directory to stop\n')

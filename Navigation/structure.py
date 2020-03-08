@@ -30,11 +30,14 @@ class Dirs(metaclass=DirsMeta):
 
     def create_new(self, assignment_name):
         if assignment_name not in os.listdir(self.base):
-            os.mkdir(join(self.base, assignment_name))
-            f = open(join(self.base, assignment_name, 'sag-info.txt'), 'w')
-            f.write('test')
-            f.close()
-            self.update()
+            try:
+                os.mkdir(join(self.base, assignment_name))
+                f = open(join(self.base, assignment_name, 'sag-info.txt'), 'w')
+                f.write('test')
+                f.close()
+                self.update()
+            except FileNotFoundError:
+                print('Do not create subdirectories')
         else:
             print(f'{assignment_name} already exists')
 
