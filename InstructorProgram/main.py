@@ -2,6 +2,9 @@ import sys
 
 import InstructorProgram as IP
 from Config import cfg
+from Navigation.structure import Dirs
+
+dirs = Dirs()
 
 
 def run(display_title=True):
@@ -23,9 +26,14 @@ def grade():
 
 
 def make_dir():
-    print('\nCreate a new assignment directory in your base directory (this can be changed in config.ini)')
-    print('Enter a blank directory to stop')
-    new_dir = '0'
-    while new_dir != '':
+    print('Current directories:')
+    dirs.print_dirs()
+    print('\nCreate a new assignment directory in your base directory (can be changed in config.ini)')
+    print('Enter a blank directory to stop\n')
+    while True:
         new_dir = input(f'{cfg.base_directory}\\')
+        if new_dir == '':
+            break
+        else:
+            dirs.create_new(new_dir)
     run()
