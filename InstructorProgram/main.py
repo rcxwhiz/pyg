@@ -29,6 +29,13 @@ def grade():
     print('')
     assignment_num = IP.tools.input_num_range(1, len(dirs.assignment_dirs)) - 1
 
+    errors = dirs.check_full(assignment_num)
+    if len(errors) > 0:
+        print('\n'.join(errors))
+        run()
+
+    # if it got here it is time to grade I guess
+
     run()
 
 

@@ -20,6 +20,11 @@ class Dirs(metaclass=DirsMeta):
     def __init__(self):
         self.base = cfg.base_directory
         self.assignment_dirs = []
+        self.required_dirs = ['key-source',
+                              'key-output',
+                              'student-source',
+                              'results',
+                              'test-cases']
         self.update()
 
     def update(self):
@@ -35,6 +40,10 @@ class Dirs(metaclass=DirsMeta):
                 f = open(join(self.base, assignment_name, 'sag-info.txt'), 'w')
                 f.write('test')
                 f.close()
+
+                for file in self.required_dirs:
+                    os.mkdir(join(self.base, assignment_name, file))
+
                 self.update()
             except FileNotFoundError:
                 print('Do not create subdirectories')
@@ -47,3 +56,23 @@ class Dirs(metaclass=DirsMeta):
         else:
             for i, folder in enumerate(self.assignment_dirs):
                 print(f'[{i + 1}] - {folder}')
+
+    def check_full(self, assignment_num):
+        issues = []
+        assignment_dir = self.assignment_dirs[assignment_num]
+        files = os.listdir(join(self.base, assignment_dir))
+
+        for file in self.required_dirs:
+            if file not in files:
+                issues.append(f'{file} not found in {join(self.base, assignment_dir)}')
+
+        need_to_not_be_empty = ['key-source',
+                                'student-source',
+                                'test-cases']
+
+        for directory in need_to_not_be_empty:
+            try:
+                # TODO this needs to be better
+                if not os.listdir(join(self.base, assignment_dir))
+
+        return issues
