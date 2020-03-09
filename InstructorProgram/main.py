@@ -26,8 +26,12 @@ def grade():
         run()
     print('Select assignment to grade:')
     dirs.print_dirs()
+    print('[0] - Cancel')
     print('')
-    assignment_num = IP.tools.input_num_range(1, len(dirs.assignment_dirs)) - 1
+    assignment_num = IP.tools.input_num_range(0, len(dirs.assignment_dirs) + 1) - 1
+
+    if assignment_num == -1:
+        run()
 
     errors = dirs.check_full(assignment_num)
     if len(errors) > 0:

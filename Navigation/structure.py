@@ -65,14 +65,15 @@ class Dirs(metaclass=DirsMeta):
         for file in self.required_dirs:
             if file not in files:
                 issues.append(f'{file} not found in {join(self.base, assignment_dir)}')
+        if len(issues) > 0:
+            return issues
 
         need_to_not_be_empty = ['key-source',
                                 'student-source',
                                 'test-cases']
 
         for directory in need_to_not_be_empty:
-            try:
-                # TODO this needs to be better
-                if not os.listdir(join(self.base, assignment_dir))
+            if not os.listdir(join(self.base, assignment_dir, directory)):
+                issues.append(f'Dir {directory} is empty')
 
         return issues
