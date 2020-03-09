@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import os
+import sys
 from os.path import join
 from typing import Optional
 
@@ -25,6 +26,16 @@ class Dirs(metaclass=DirsMeta):
                               'student-source',
                               'results',
                               'test-cases']
+        try:
+            os.listdir(self.base)
+        except FileNotFoundError:
+            create_new_base = input(f'Create {self.base}? (y/n) ').lower()
+            if create_new_base == 'y':
+                os.makedirs(self.base)
+            else:
+                print('Please change base directory in config.ini')
+                sys.exit()
+
         self.update()
 
     def update(self):

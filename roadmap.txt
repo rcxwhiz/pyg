@@ -13,9 +13,6 @@ Graphs will be compared as images
 
 This will be a terminal program, but it would be nice if it had an interface
 
-The program should make a directory for you, and have some way of knowing if a selected directory is already a grader
-directory?
-
 Maybe there should be a student version that is just a GUI program they download that's ready to go?
 They would get some saved output and input files
 The program should just have an option to generate input and output stuff but then run off of saved inputs and outputs
@@ -27,7 +24,9 @@ a single run button, then it either has some popup or something showing what poi
 comparisons between the student outfiles and the given key outfiles
 The thing the student downloads should make it easy to tell which inputs go to which outputs
 
-There could also be criteria for certain function definitions to be included too?
+There could also be criteria for certain function definitions to be included too? This could also be used to say there
+will be custom headers / footers for fun things like a timed program or seeing if you can succeed with executing a
+given function.
 
 In the end when you run the instructor program, it will give you some sort of csv or table with what all the students
 did and didn't get with a lot of homework stats and such
