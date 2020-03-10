@@ -58,14 +58,18 @@ def run_key(assignment_dir):
     ran = 0
     base_threads = threading.active_count()
     my_threads = []
+    print(f'\n[Running {num_to_run} files on {cfg.max_threads} threads]')
     while ran < num_to_run:
         if threading.active_count() - base_threads < cfg.max_threads:
             new_thread = threading.Thread(target=run_file, args=(run_pairs[ran][0], run_pairs[ran][1]))
             new_thread.start()
             my_threads.append(new_thread)
             ran += 1
+            if ran % 5 == 0 and ran != num_to_run:
+                print(f'[{ran}/{num_to_run}]')
     for thread in my_threads:
         thread.join()
+    print(f'[{ran}/{num_to_run}] Complete!')
 
     # move the generated stuff into the appropiate out folders
     for test in test_cases:
@@ -78,7 +82,7 @@ def run_key(assignment_dir):
                                 join(assignment_dir, 'key-output', test, file))
 
     # remember to delete the whole TEMP directory when done
-    shutil.rmtree(join(assignment_dir, 'TEMP'))
+    shutil.rmtree(join(assignment_dir, 'TEMP'), ignore_errors=True)
 
 
 def run_students(assignment_dir, download_dir):

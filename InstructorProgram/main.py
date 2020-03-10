@@ -58,7 +58,7 @@ def grade():
             print('[0] - Don\'t overwrite current key files')
             overwrite = IP.tools.input_num_range(0, 1)
             if overwrite == 1:
-                shutil.rmtree(join(dirs.base, dirs.assignment_dirs[assignment_num], 'key-output'))
+                shutil.rmtree(join(dirs.base, dirs.assignment_dirs[assignment_num], 'key-output'), ignore_errors=True)
                 os.mkdir(join(dirs.base, dirs.assignment_dirs[assignment_num], 'key-output'))
             else:
                 print('Returning to menu...')

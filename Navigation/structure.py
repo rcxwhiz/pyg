@@ -79,7 +79,7 @@ class Dirs(metaclass=DirsMeta):
         files = os.listdir(join(self.base, assignment_dir))
 
         if 'TEMP' in files:
-            shutil.rmtree(join(self.base, assignment_dir, 'TEMP'))
+            shutil.rmtree(join(self.base, assignment_dir, 'TEMP'), ignore_errors=True)
 
         for file in self.required_dirs:
             if file not in files:
