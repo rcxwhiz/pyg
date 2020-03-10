@@ -2,11 +2,10 @@ In order to make this autograder useful & simple, students will need to have a l
 This data will be the commands or data which the students will use to output the files
 
 To make it easy on the student, the grader will just run the student's file in a directory with just the specific file
+Could include a batch and sh file for students to run or they could run it in spyder or something
 
 There will need to be headers and footers added to the students files to make the code die if it runs too long and
 put it in the right working directory
-
-The key files can either be saved as .py files or output.txt and graph.png files
 
 The points will be awarded base on output matching or beginning with certain things
 Graphs will be compared as images
@@ -41,3 +40,8 @@ Maybe there could be an option to have no input or to hide the output
 Run student result stuff will go in a zip
 
 Could transplant my GUI for grading from before that would be sick
+
+Could make the points awarded progressive on number of cases passed or number of lines matched
+Could be set to some default linear scale of lines or test cases matched
+How would there be custom criteria for having certain things in the code?
+I will need to write out a few rubrics to figure it out

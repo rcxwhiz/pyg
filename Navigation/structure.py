@@ -25,7 +25,8 @@ class Dirs(metaclass=DirsMeta):
                               'key-output',
                               'student-source',
                               'results',
-                              'test-cases']
+                              'test-cases',
+                              'custom criteria']
         try:
             os.listdir(self.base)
         except FileNotFoundError:
