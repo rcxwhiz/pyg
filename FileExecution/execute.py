@@ -1,6 +1,10 @@
 import os
+from os.path import join
 from Config import cfg
 from FileExecution import scripting
+import shutil
+import threading
+
 
 error_msgs = {'unicode': '\n[GRADER] - Unicode decode error',
               'input': '\n[GRADER] - File terminated for using input',
@@ -10,7 +14,31 @@ error_msgs = {'unicode': '\n[GRADER] - Unicode decode error',
 
 
 def run_key(assignment_dir):
-    print('')
+    # get all test case dirctories
+    test_cases = []
+    for file in os.listdir(join(assignment_dir, 'test-cases')):
+        if os.path.isdir(file):
+            test_cases.append(file)
+
+    run_pairs = []
+    # copy all test case files into temporary running directories
+    for test in test_cases:
+        # make the temporary directory to test the key
+        os.makedirs(join(assignment_dir, 'TEMP', f'key-{test}'))
+        # copy data from test case directory
+        for file in os.listdir(join(assignment_dir, 'test-cases', test)):
+            shutil.copyfile(join(assignment_dir, 'test-cases', test, file), join(assignment_dir, 'TEMP', f'key-{test}', file))
+        run_pairs.append([])
+
+    # start threading crap here
+    num_to_run = len(test_cases)
+    ran = 0
+    base_threads = threading.active_count()
+    while ran < num_to_run:
+        if threading.active_count() - base_threads < cfg.max_threads:
+            run_file()
+
+    # remember to delete the whole TEMP directory when done
 
 
 def run_students(assignment_dir, download_dir):

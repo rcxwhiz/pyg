@@ -19,3 +19,6 @@ max_program_time = reader.getint('Runtime', 'max_program_time')
 max_threads = min(max_threads, 500)
 if max_threads == 0:
     max_threads = 500
+if max_threads < 1:
+    print('Max threads in config.ini < 1, exiting...')
+    sys.exit()
