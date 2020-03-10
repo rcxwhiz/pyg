@@ -10,4 +10,12 @@ reader.read('config.ini')
 
 base_directory = reader.get('File Structure', 'base_directory')
 
-# TODO there should be a variable check here to make sure config options are in range (esp. threads)
+reweight = reader.getint('Grading', 'reweight')
+
+max_threads = reader.getint('Runtime', 'max_threads')
+max_out_lines = reader.getint('Runtime', 'max_out_lines')
+max_program_time = reader.getint('Runtime', 'max_program_time')
+
+max_threads = min(max_threads, 500)
+if max_threads == 0:
+    max_threads = 500

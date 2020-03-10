@@ -26,7 +26,7 @@ def run_file(py_file, out_file):
         return None
 
     full_script = (scripting.prepend + student_source_code + scripting.append)
-    full_script = full_script.replace('TIME BEFORE KILL HERE', str(cfg.max_prog_time))
+    full_script = full_script.replace('TIME BEFORE KILL HERE', str(cfg.max_program_time))
     open(temp_script_name, 'w', encoding='utf-8').write(full_script)
 
     os.system(f'python "{temp_script_name}" > "{out_file}" 2>&1')
