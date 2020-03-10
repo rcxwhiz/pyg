@@ -52,8 +52,10 @@ def grade():
         # check to see if there are already key files
         current_keys = os.listdir(join(dirs.base, dirs.assignment_dirs[assignment_num], 'key-output'))
         if len(current_keys) > 0:
-            overwrite = input('Overwrite current key files? (y/n) ').lower()
-            if overwrite == 'y':
+            print('[1] - Overwrite current key files')
+            print('[0] - Don\'t overwrite current key files')
+            overwrite = IP.tools.input_num_range(0, 1)
+            if overwrite == 1:
                 for file in current_keys:
                     os.remove(file)
             else:

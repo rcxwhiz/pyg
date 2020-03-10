@@ -6,6 +6,7 @@ from os.path import join
 from typing import Optional
 
 from Config import cfg
+import InstructorProgram as IP
 
 
 class DirsMeta(type):
@@ -30,8 +31,10 @@ class Dirs(metaclass=DirsMeta):
         try:
             os.listdir(self.base)
         except FileNotFoundError:
-            create_new_base = input(f'Create {self.base}? (y/n) ').lower()
-            if create_new_base == 'y':
+            print(f'[1] - Create {self.base}')
+            print(f'[0] - Do not create {self.base}')
+            create_new_base = IP.tools.input_num_range(0, 1)
+            if create_new_base == 1:
                 os.makedirs(self.base)
             else:
                 print('Please change base directory in config.ini')
