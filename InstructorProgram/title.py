@@ -2,6 +2,7 @@ version = 0.0
 
 title_string = f"""
 The Squad Automatic Grader
+-----------------------------------------
 
 Version - {version}
 

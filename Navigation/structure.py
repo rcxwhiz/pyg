@@ -85,6 +85,6 @@ class Dirs(metaclass=DirsMeta):
 
         for directory in need_to_not_be_empty:
             if not os.listdir(join(self.base, assignment_dir, directory)):
-                issues.append(f'Dir {directory} is empty')
+                issues.append(f'Directory {directory} is empty')
 
         return issues

@@ -36,6 +36,7 @@ def grade():
     errors = dirs.check_full(assignment_num)
     if len(errors) > 0:
         print('\n'.join(errors))
+        print('Returning to menu...')
         run()
 
     # if it got here it is time to grade I guess
@@ -49,7 +50,7 @@ def make_dir():
     print('\nCreate a new assignment directory in your base directory (can be changed in config.ini)')
     print('Enter a blank directory to stop\n')
     while True:
-        new_dir = input(f'{cfg.base_directory}\\')
+        new_dir = input(f'{cfg.base_directory}/')
         if new_dir == '':
             break
         else:
