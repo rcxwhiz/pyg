@@ -39,3 +39,5 @@ If the students are beginners, they should probably be given the code that loads
 Maybe there could be an option to have no input or to hide the output
 
 Run student result stuff will go in a zip
+
+Could transplant my GUI for grading from before that would be sick

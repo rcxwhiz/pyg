@@ -1,8 +1,10 @@
 import sys
-
+import os
+from os.path import join
 import InstructorProgram as IP
 from Config import cfg
 from Navigation.structure import Dirs
+from FileExecution import execute
 
 dirs = Dirs()
 
@@ -26,8 +28,7 @@ def grade():
         run()
     print('Select assignment to grade:')
     dirs.print_dirs()
-    print('[0] - Cancel')
-    print('')
+    print('[0] - Cancel\n')
     assignment_num = IP.tools.input_num_range(0, len(dirs.assignment_dirs) + 1) - 1
 
     if assignment_num == -1:
@@ -39,7 +40,44 @@ def grade():
         print('Returning to menu...')
         run()
 
-    # if it got here it is time to grade I guess
+    print('Options:')
+    print('[1] - Generate key files')
+    print('[2] - Export student testing program')
+    print('[3] - Grade student code')
+    print('[4] - View grading report')
+    print('[0] - Cancel\n')
+    assignment_option = IP.tools.input_num_range(0, 4)
+
+    if assignment_option == 1:
+        # check to see if there are already key files
+        current_keys = os.listdir(join(dirs.base, dirs.assignment_dirs[assignment_num], 'key-output'))
+        if len(current_keys) > 0:
+            overwrite = input('Overwrite current key files? (y/n) ').lower()
+            if overwrite == 'y':
+                for file in current_keys:
+                    os.remove(file)
+            else:
+                print('Returning to menu...')
+                run()
+
+        execute.run_key(dirs.assignment_dirs[assignment_num])
+
+    if assignment_option == 2:
+        print('')
+    if assignment_option == 3:
+        print('')
+    if assignment_option == 4:
+        print('')
+    if assignment_option == 0:
+        run()
+
+    # enter a menu with the following options
+    # [1] generate key files
+    # There needs to be some option to only have 1 test case I guess for problems where data will not be loaded
+    # [2] export student's grading program
+    # [3] run student code
+    # [4] visually look at the code student's submitted (like my old program)
+    # When running code on threads it might be the best idea to just clear the screen with a bunch of new lines?
 
     run()
 

@@ -80,7 +80,6 @@ class Dirs(metaclass=DirsMeta):
             return issues
 
         need_to_not_be_empty = ['key-source',
-                                'student-source',
                                 'test-cases']
 
         for directory in need_to_not_be_empty:
