@@ -54,22 +54,7 @@ def run_key(assignment_dir):
                           join(assignment_dir, 'TEMP', f'key-{test}', 'output.txt')])
 
     # start threading crap here
-    num_to_run = len(run_pairs)
-    ran = 0
-    base_threads = threading.active_count()
-    my_threads = []
-    print(f'\n[Running {num_to_run} files on {cfg.max_threads} threads]')
-    while ran < num_to_run:
-        if threading.active_count() - base_threads < cfg.max_threads:
-            new_thread = threading.Thread(target=run_file, args=(run_pairs[ran][0], run_pairs[ran][1]))
-            new_thread.start()
-            my_threads.append(new_thread)
-            ran += 1
-            if ran % 5 == 0 and ran != num_to_run:
-                print(f'[{ran}/{num_to_run}]')
-    for thread in my_threads:
-        thread.join()
-    print(f'[{ran}/{num_to_run}] Complete!')
+    run_file_group(run_pairs)
 
     # move the generated stuff into the appropiate out folders
     for test in test_cases:
@@ -87,6 +72,25 @@ def run_key(assignment_dir):
 
 def run_students(assignment_dir, download_dir):
     print('')
+
+
+def run_file_group(run_pairs):
+    num_to_run = len(run_pairs)
+    ran = 0
+    base_threads = threading.active_count()
+    my_threads = []
+    print(f'\n[Running {num_to_run} files on {cfg.max_threads} threads]')
+    while ran < num_to_run:
+        if threading.active_count() - base_threads < cfg.max_threads:
+            new_thread = threading.Thread(target=run_file, args=(run_pairs[ran][0], run_pairs[ran][1]))
+            new_thread.start()
+            my_threads.append(new_thread)
+            ran += 1
+            if ran % 5 == 0 and ran != num_to_run:
+                print(f'[{ran}/{num_to_run}]')
+    for thread in my_threads:
+        thread.join()
+    print(f'[{ran}/{num_to_run}] Complete!')
 
 
 def run_file(py_file, out_file):
