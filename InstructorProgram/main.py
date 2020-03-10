@@ -1,10 +1,12 @@
-import sys
 import os
+import shutil
+import sys
 from os.path import join
+
 import InstructorProgram as IP
 from Config import cfg
-from Navigation.structure import Dirs
 from FileExecution import execute
+from Navigation.structure import Dirs
 
 dirs = Dirs()
 
@@ -56,13 +58,13 @@ def grade():
             print('[0] - Don\'t overwrite current key files')
             overwrite = IP.tools.input_num_range(0, 1)
             if overwrite == 1:
-                for file in current_keys:
-                    os.remove(file)
+                shutil.rmtree(join(dirs.base, dirs.assignment_dirs[assignment_num], 'key-output'))
+                os.mkdir(join(dirs.base, dirs.assignment_dirs[assignment_num], 'key-output'))
             else:
                 print('Returning to menu...')
                 run()
 
-        execute.run_key(dirs.assignment_dirs[assignment_num])
+        execute.run_key(join(dirs.base, dirs.assignment_dirs[assignment_num]))
 
     if assignment_option == 2:
         print('')

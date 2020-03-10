@@ -1,12 +1,13 @@
 from __future__ import annotations
 
 import os
+import shutil
 import sys
 from os.path import join
 from typing import Optional
 
-from Config import cfg
 import InstructorProgram as IP
+from Config import cfg
 
 
 class DirsMeta(type):
@@ -76,6 +77,9 @@ class Dirs(metaclass=DirsMeta):
         issues = []
         assignment_dir = self.assignment_dirs[assignment_num]
         files = os.listdir(join(self.base, assignment_dir))
+
+        if 'TEMP' in files:
+            shutil.rmtree(join(self.base, assignment_dir, 'TEMP'))
 
         for file in self.required_dirs:
             if file not in files:
