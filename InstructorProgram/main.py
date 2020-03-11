@@ -30,7 +30,7 @@ def grade():
         run()
     print('Select assignment to grade:')
     dirs.print_dirs()
-    print('[0] - Cancel\n')
+    print('[0] Cancel\n')
     assignment_num = IP.tools.input_num_range(0, len(dirs.assignment_dirs) + 1) - 1
 
     if assignment_num == -1:
@@ -42,19 +42,19 @@ def grade():
         print('Returning to menu...')
         run()
 
-    print('Options:')
-    print('[1] - Generate key files')
-    print('[2] - Export student testing program')
-    print('[3] - Grade student code')
-    print('[4] - View grading report')
-    print('[0] - Cancel\n')
+    print('\nOptions:')
+    print('[1] Generate key files')
+    print('[2] Export student testing program')
+    print('[3] Grade student code')
+    print('[4] View grading report')
+    print('[0] Cancel\n')
     assignment_option = IP.tools.input_num_range(0, 4)
 
     if assignment_option == 1:
         # check to see if there are already key files
         if len(os.listdir(join(dirs.base, dirs.assignment_dirs[assignment_num], 'key-output'))) > 0:
-            print('[1] - Overwrite current key files')
-            print('[0] - Don\'t overwrite current key files')
+            print('[1] Overwrite current key files')
+            print('[0] Don\'t overwrite current key files')
             overwrite = IP.tools.input_num_range(0, 1)
             if overwrite == 1:
                 shutil.rmtree(join(dirs.base, dirs.assignment_dirs[assignment_num], 'key-output'), ignore_errors=True)

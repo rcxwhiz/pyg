@@ -32,8 +32,8 @@ class Dirs(metaclass=DirsMeta):
         try:
             os.listdir(self.base)
         except FileNotFoundError:
-            print(f'[1] - Create {self.base}')
-            print(f'[0] - Do not create {self.base}')
+            print(f'[1] Create {self.base}')
+            print(f'[0] Do not create {self.base}')
             create_new_base = IP.tools.input_num_range(0, 1)
             if create_new_base == 1:
                 os.makedirs(self.base)
@@ -71,7 +71,7 @@ class Dirs(metaclass=DirsMeta):
             print('None')
         else:
             for i, folder in enumerate(self.assignment_dirs):
-                print(f'[{i + 1}] - {folder}')
+                print(f'[{i + 1}] {folder}')
 
     def check_full(self, assignment_num):
         issues = []

@@ -6,7 +6,7 @@ import time
 import threading
 def kill_prog():
     time.sleep(TIME BEFORE KILL HERE)
-    print('\n[GRADER] - Program killed after being unresponsive')
+    print('\n[GRADER] Program killed after being unresponsive')
     os._exit(2)
 kill_thread = threading.Thread(target=kill_prog)
 kill_thread.start()
