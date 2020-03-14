@@ -58,6 +58,7 @@ def run_key(assignment_dir):
     run_file_group(run_pairs)
 
     # move the generated stuff into the appropiate out folders
+    out_file_list = []
     for test in test_cases:
         for file in os.listdir(join(assignment_dir, 'TEMP', f'key-{test}')):
             if file not in os.listdir(join(assignment_dir, 'test-cases', test)) and file not in os.listdir(
@@ -66,11 +67,12 @@ def run_key(assignment_dir):
                     os.mkdir(join(assignment_dir, 'key-output', test))
                 shutil.copyfile(join(assignment_dir, 'TEMP', f'key-{test}', file),
                                 join(assignment_dir, 'key-output', test, file))
+                out_file_list.append(join(assignment_dir, 'key-output', test, file))
 
     # remember to delete the whole TEMP directory when done
     shutil.rmtree(join(assignment_dir, 'TEMP'), ignore_errors=True)
-    # TODO somehow this is getting called twice and failing the second time
-    Grading.Text.criteria.find_parts(run_pairs[:][1])
+
+    Grading.Text.criteria.find_parts(out_file_list)
 
 
 def run_students(assignment_dir, download_dir):

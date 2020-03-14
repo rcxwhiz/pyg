@@ -1,6 +1,8 @@
 import configparser
 import os
 import sys
+from pathlib import Path
+from os.path import join
 
 reader = configparser.ConfigParser()
 
@@ -8,7 +10,7 @@ os.chdir(os.path.dirname(sys.argv[0]))
 
 reader.read('config.ini')
 
-base_directory = reader.get('File Structure', 'base_directory')
+base_directory = join(str(Path.home()), reader.get('File Structure', 'base_directory'))
 
 reweight = reader.getint('Grading', 'reweight')
 

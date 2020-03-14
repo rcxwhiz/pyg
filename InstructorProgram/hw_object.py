@@ -26,8 +26,22 @@ class HWObject:
             print('[0] Don\'t overwrite current key files')
             choice = IP.tools.input_num_range(0, 1)
             if choice == 1:
-                shutil.rmtree(self.dir['key-output'], ignore_errors=True)
-                os.mkdir(self.dir['key-output'])
+                k = 0
+                while True:
+                    k += 1
+                    if k > 25:
+                        print(f'There was an issue clearing {self.dir["key output"]}')
+                        IP.run()
+                    try:
+                        shutil.rmtree(self.dir['key-output'], ignore_errors=True)
+                        os.mkdir(self.dir['key-output'])
+                        break
+                    except FileExistsError:
+                        continue
+                    except PermissionError:
+                        print(f'Permission error clearing the directory {self.dir["key-output"]}'
+                              f'Please close it if it is open')
+                        IP.run()
             else:
                 return None
 
