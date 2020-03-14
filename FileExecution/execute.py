@@ -3,7 +3,6 @@ import shutil
 import threading
 from os.path import join
 
-import Grading
 import InstructorProgram.main
 from Config import cfg
 from FileExecution import scripting
@@ -72,7 +71,7 @@ def run_key(assignment_dir):
     # remember to delete the whole TEMP directory when done
     shutil.rmtree(join(assignment_dir, 'TEMP'), ignore_errors=True)
 
-    Grading.Text.criteria.find_parts(out_file_list)
+    return out_file_list
 
 
 def run_students(assignment_dir, download_dir):

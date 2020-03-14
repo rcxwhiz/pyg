@@ -2,6 +2,7 @@ import os
 import shutil
 from os.path import join
 
+import Grading
 import InstructorProgram as IP
 from FileExecution import execute
 from Navigation.structure import Dirs
@@ -16,6 +17,12 @@ class HWObject:
         for other_dir in ['custom criteria', 'key-output', 'key-source', 'results', 'student-source', 'test-cases',
                           'sag-info.txt']:
             self.dir[other_dir] = join(self.dir['home'], other_dir)
+        self.problem_parts = None
+        self.test_cases = os.listdir(self.dir['test-cases'])
+
+        self.part_weights = {}
+        self.test_case_weights = []
+        self.total_points = None
 
     def check_full(self):
         return self.dirs.check_full(self.assignment_num)
@@ -45,7 +52,29 @@ class HWObject:
             else:
                 return None
 
-        execute.run_key(self.dir['home'])
+        out_file_list = execute.run_key(self.dir['home'])
+        self.problem_parts = Grading.Text.criteria.find_parts(out_file_list)
+
+        print('\nEnter the total weight of the assignment, 1-100:')
+        self.total_points = IP.tools.input_num_range(1, 100)
+
+        print(f'\n{len(self.problem_parts)} parts detected in {len(self.test_cases)} test cases')
+        print('Parts:', end=' ')
+        print_parts = []
+        for part in self.problem_parts:
+            print_parts.append(f'{part[0]} {part[1]}')
+        print(', '.join(print_parts))
+        print('Enter the point weight of each part 0-100, -1 to weight all evenly:')
+        for part in self.problem_parts:
+            print(f'{part[0]} {part[1]}:')
+            part_weight = IP.tools.input_num_range(-1, 100)
+            if part_weight == -1:
+                for part2 in self.problem_parts:
+                    self.part_weights[part2[1]] = 10
+                break
+            self.part_weights[part[1]] = part_weight
+
+        # TODO now make a way to enter the weight of different test cases
 
     def export_student_tester(self):
         print('export student tester')
