@@ -1,4 +1,3 @@
-import os
 import sys
 from os.path import join
 from pathlib import Path
@@ -6,7 +5,6 @@ from pathlib import Path
 from Config import cfg
 
 if cfg.base_directory == 'default':
-    s_path = os.path.normpath(sys.argv[0]).split(os.sep)
 
     new_base_dir = join(str(Path.home()), 'AutoGrader')
     print(f'[1] Create {new_base_dir} and use as base directory')
