@@ -74,7 +74,7 @@ class HWObject:
                 break
             self.part_weights[part[1]] = part_weight
 
-        # TODO now make a way to enter the weight of different test cases
+        # TODO now make a way to enter the weights of different test cases
 
     def export_student_tester(self):
         print('export student tester')
