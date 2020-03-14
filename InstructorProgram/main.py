@@ -1,11 +1,7 @@
-import os
-import shutil
 import sys
-from os.path import join
 
 import InstructorProgram as IP
 from Config import cfg
-from FileExecution import execute
 from Navigation.structure import Dirs
 
 dirs = Dirs()
@@ -28,6 +24,7 @@ def grade():
     if len(dirs.assignment_dirs) == 0:
         print('\nNo assignment directories created.')
         run()
+
     print('Select assignment to grade:')
     dirs.print_dirs()
     print('[0] Cancel\n')
@@ -35,8 +32,9 @@ def grade():
 
     if assignment_num == -1:
         run()
+    this_hw = IP.HWObject(assignment_num)
 
-    errors = dirs.check_full(assignment_num)
+    errors = this_hw.check_full()
     if len(errors) > 0:
         print('\n'.join(errors))
         print('Returning to menu...')
@@ -51,19 +49,11 @@ def grade():
     assignment_option = IP.tools.input_num_range(0, 4)
 
     if assignment_option == 1:
-        # check to see if there are already key files
-        if len(os.listdir(join(dirs.base, dirs.assignment_dirs[assignment_num], 'key-output'))) > 0:
-            print('[1] Overwrite current key files')
-            print('[0] Don\'t overwrite current key files')
-            overwrite = IP.tools.input_num_range(0, 1)
-            if overwrite == 1:
-                shutil.rmtree(join(dirs.base, dirs.assignment_dirs[assignment_num], 'key-output'), ignore_errors=True)
-                os.mkdir(join(dirs.base, dirs.assignment_dirs[assignment_num], 'key-output'))
-            else:
-                print('Returning to menu...')
-                run()
-
-        execute.run_key(join(dirs.base, dirs.assignment_dirs[assignment_num]))
+        try:
+            this_hw.generate_key_files()
+        except RuntimeError:
+            print('Returning to menu...')
+            run()
 
     if assignment_option == 2:
         print('')
