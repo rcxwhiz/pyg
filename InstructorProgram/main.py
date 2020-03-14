@@ -4,12 +4,23 @@ import InstructorProgram as IP
 from Config import cfg
 from Navigation.structure import Dirs
 
+version = 0.0
 dirs = Dirs()
 
 
 def run(display_title=True):
     if display_title:
-        print(IP.title.title_string)
+        print(f"""
+The Squad Automatic Grader
+-----------------------------------------
+
+Version - {version}
+
+Options:
+[1] Grade from an existing directory
+[2] Create a directory for a new HW
+[3] Exit
+""")
     choice = IP.tools.input_num_range(1, 3)
     if choice == 1:
         grade()

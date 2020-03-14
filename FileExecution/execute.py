@@ -3,6 +3,7 @@ import shutil
 import threading
 from os.path import join
 
+import Grading
 import InstructorProgram.main
 from Config import cfg
 from FileExecution import scripting
@@ -68,6 +69,8 @@ def run_key(assignment_dir):
 
     # remember to delete the whole TEMP directory when done
     shutil.rmtree(join(assignment_dir, 'TEMP'), ignore_errors=True)
+    # TODO somehow this is getting called twice and failing the second time
+    Grading.Text.criteria.find_parts(run_pairs[:][1])
 
 
 def run_students(assignment_dir, download_dir):
