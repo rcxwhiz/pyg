@@ -49,29 +49,19 @@ def grade():
     assignment_option = IP.tools.input_num_range(0, 4)
 
     if assignment_option == 1:
-        try:
-            this_hw.generate_key_files()
-        except RuntimeError:
-            print('Returning to menu...')
-            run()
+        this_hw.generate_key_files()
 
     if assignment_option == 2:
-        print('')
+        this_hw.export_student_tester()
+
     if assignment_option == 3:
-        print('')
+        this_hw.grade_student_code()
+
     if assignment_option == 4:
-        print('')
-    if assignment_option == 0:
-        run()
+        this_hw.view_grading_report()
 
-    # enter a menu with the following options
-    # [1] generate key files
-    # There needs to be some option to only have 1 test case I guess for problems where data will not be loaded
-    # [2] export student's grading program
-    # [3] run student code
-    # [4] visually look at the code student's submitted (like my old program)
-    # When running code on threads it might be the best idea to just clear the screen with a bunch of new lines?
-
+    # if they choose 0 it goes here anyway
+    print('Returning to menu...')
     run()
 
 

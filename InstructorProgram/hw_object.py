@@ -29,6 +29,15 @@ class HWObject:
                 shutil.rmtree(self.dir['key-output'], ignore_errors=True)
                 os.mkdir(self.dir['key-output'])
             else:
-                raise RuntimeError('Key-output full')
+                return None
 
         execute.run_key(self.dir['home'])
+
+    def export_student_tester(self):
+        print('export student tester')
+
+    def grade_student_code(self):
+        print('grade student code')
+
+    def view_grading_report(self):
+        print('view grading report')
