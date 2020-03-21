@@ -61,4 +61,6 @@ It would be cool if it had all the old functionality so it still worked for HWs 
 
 When transplanting the GUI make it so that things like file name number and student are on different lines / in different labels
 
-Figure out why sometimes the program killed unresponsive message comes up when it theoretically shouldn't
+Figure out why sometimes the program killed unresponsive message comes up when it theoretically shouldn't (I think this is just due to volume of programs)
+
+Include time run in timeout message
