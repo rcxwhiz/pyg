@@ -60,3 +60,5 @@ Finding a way to bind the arrow keys would be pretty lit
 It would be cool if it had all the old functionality so it still worked for HWs without strict formatting
 
 When transplanting the GUI make it so that things like file name number and student are on different lines / in different labels
+
+Figure out why sometimes the program killed unresponsive message comes up when it theoretically shouldn't
