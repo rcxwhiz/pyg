@@ -47,3 +47,9 @@ How would there be custom criteria for having certain things in the code?
 I will need to write out a few rubrics to figure it out
 
 The output files should be analyzied and give warnings if packages were attempted to be imported that didn't exist on the interpreter
+
+There should still be an option to grade (or at least look at) excel files
+Could actually grade them if given a template, could have a UI where you select the cells that matter
+Could test to see if the cell value vs equation are the same to make sure they didn't just punch it in
+
+The UI should be able to resize (text windows grow and shrink, labels start to scroll?)
