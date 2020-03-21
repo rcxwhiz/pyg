@@ -53,3 +53,6 @@ Could actually grade them if given a template, could have a UI where you select 
 Could test to see if the cell value vs equation are the same to make sure they didn't just punch it in
 
 The UI should be able to resize (text windows grow and shrink, labels start to scroll?)
+
+On the python viewing GUI, it should attempt to stay on the same problem number when switching between students
+Finding a way to bind the arrow keys would be pretty lit
