@@ -64,3 +64,5 @@ When transplanting the GUI make it so that things like file name number and stud
 Figure out why sometimes the program killed unresponsive message comes up when it theoretically shouldn't (I think this is just due to volume of programs)
 
 Include time run in timeout message
+
+There should be some built in diff checking to show what % similarity there is between files
