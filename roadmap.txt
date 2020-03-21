@@ -45,3 +45,5 @@ Could make the points awarded progressive on number of cases passed or number of
 Could be set to some default linear scale of lines or test cases matched
 How would there be custom criteria for having certain things in the code?
 I will need to write out a few rubrics to figure it out
+
+The output files should be analyzied and give warnings if packages were attempted to be imported that didn't exist on the interpreter
