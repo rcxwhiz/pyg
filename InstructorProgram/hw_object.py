@@ -66,8 +66,7 @@ class HWObject:
         print(', '.join(print_parts))
         print('Enter the point weight of each part 0-100, -1 to weight all evenly:')
         for part in self.problem_parts:
-            print(f'{part[0]} {part[1]}:')
-            part_weight = IP.tools.input_num_range(-1, 100)
+            part_weight = IP.tools.input_num_range(-1, 100, message=f'{part[0]} {part[1]}: ')
             if part_weight == -1:
                 for part2 in self.problem_parts:
                     self.part_weights[part2[1]] = 10

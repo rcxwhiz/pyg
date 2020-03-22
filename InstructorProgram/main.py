@@ -19,14 +19,14 @@ Version - {version}
 Options:
 [1] Grade from an existing directory
 [2] Create a directory for a new HW
-[3] Exit
+[0] Exit
 """)
-    choice = IP.tools.input_num_range(1, 3)
+    choice = IP.tools.input_num_range(0, 2)
     if choice == 1:
         grade()
     if choice == 2:
         make_dir()
-    if choice == 3:
+    if choice == 0:
         print('\nExiting...')
         sys.exit()
 
