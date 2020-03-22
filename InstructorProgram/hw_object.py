@@ -73,12 +73,29 @@ class HWObject:
                 break
             self.part_weights[part[1]] = part_weight
 
-        # TODO now make a way to enter the weights of different test cases
-
     def export_student_tester(self):
         print('export student tester')
 
     def grade_student_code(self):
+        # TODO look for directories in student-source
+        source_dirs = []
+        for file in os.listdir(self.dir['student-source']):
+            if os.path.isdir(file):
+                source_dirs.append(file)
+
+        if len(source_dirs) == 0:
+            print(f'No directories with student code found in {self.dir["student-source"]}. Returning to menu...')
+            IP.run()
+        print('Choose a directory of student files to grade from:')
+        for i, source_dir in enumerate(source_dirs):
+            print(f'[{i + 1}] - {source_dir}')
+        choice = IP.tools.input_num_range(1, len(source_dirs))
+
+        # TODO ask which one to grade from
+        # TODO run all of them and fill up student output with some folders (decide what to do with non py files?)
+        # TODO need to have a way to grade the outputs based on if their parts are the same
+        # TODO generate a xlsx or something with the student results and scores
+        # TODO put everything into a zip file and put that in results and say it's in there
         print('grade student code')
 
     def view_grading_report(self):

@@ -66,3 +66,5 @@ Figure out why sometimes the program killed unresponsive message comes up when i
 Include time run in timeout message
 
 There should be some built in diff checking to show what % similarity there is between files
+
+As of this moment, weighting different test cases has been tabled
