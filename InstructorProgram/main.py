@@ -17,8 +17,8 @@ The Squad Automatic Grader
 Version - {version}
 
 Options:
-[1] Grade from an existing directory
-[2] Create a directory for a new HW
+[1] Grade an existing assignment
+[2] Create a directory for a new assignment
 [0] Exit
 """)
     choice = IP.tools.input_num_range(0, 2)

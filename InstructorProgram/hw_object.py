@@ -58,29 +58,29 @@ class HWObject:
         print('\nEnter the total weight of the assignment, 1-100:')
         self.total_points = IP.tools.input_num_range(1, 100)
 
-        print(f'\n{len(self.problem_parts)} parts detected in {len(self.test_cases)} test cases')
-        print('Parts:', end=' ')
-        print_parts = []
-        for part in self.problem_parts:
-            print_parts.append(f'{part[0]} {part[1]}')
-        print(', '.join(print_parts))
-        print('Enter the point weight of each part 0-100, -1 to weight all evenly:')
-        for part in self.problem_parts:
-            part_weight = IP.tools.input_num_range(-1, 100, message=f'{part[0]} {part[1]}: ')
-            if part_weight == -1:
-                for part2 in self.problem_parts:
-                    self.part_weights[part2[1]] = 10
-                break
-            self.part_weights[part[1]] = part_weight
+        if len(self.problem_parts) != 0:
+            print(f'\n{len(self.problem_parts)} parts detected in {len(self.test_cases)} test cases')
+            print('Parts:', end=' ')
+            print_parts = []
+            for part in self.problem_parts:
+                print_parts.append(f'{part[0]} {part[1]}')
+            print(', '.join(print_parts))
+            print('Enter the point weight of each part 0-100, -1 to weight all evenly:')
+            for part in self.problem_parts:
+                part_weight = IP.tools.input_num_range(-1, 100, message=f'{part[0]} {part[1]}: ')
+                if part_weight == -1:
+                    for part2 in self.problem_parts:
+                        self.part_weights[part2[1]] = 10
+                    break
+                self.part_weights[part[1]] = part_weight
 
     def export_student_tester(self):
         print('export student tester')
 
     def grade_student_code(self):
-        # TODO look for directories in student-source
         source_dirs = []
         for file in os.listdir(self.dir['student-source']):
-            if os.path.isdir(file):
+            if os.path.isdir(join(self.dir['student-source'], file)):
                 source_dirs.append(file)
 
         if len(source_dirs) == 0:
@@ -89,10 +89,16 @@ class HWObject:
         print('Choose a directory of student files to grade from:')
         for i, source_dir in enumerate(source_dirs):
             print(f'[{i + 1}] - {source_dir}')
-        choice = IP.tools.input_num_range(1, len(source_dirs))
+        source_dir = join(self.dir['student-source'], source_dirs[IP.tools.input_num_range(1, len(source_dirs)) - 1])
 
-        # TODO ask which one to grade from
-        # TODO run all of them and fill up student output with some folders (decide what to do with non py files?)
+        student_ids = set()
+        for file in os.listdir(source_dir):
+            student_ids.add('_'.join(file.split('_')[:3]))
+        student_ids = sorted(student_ids)
+        print(student_ids)
+
+        # TODO fill up student output with some folders (decide what to do with non py files?)
+        # TODO run them all
         # TODO need to have a way to grade the outputs based on if their parts are the same
         # TODO generate a xlsx or something with the student results and scores
         # TODO put everything into a zip file and put that in results and say it's in there
