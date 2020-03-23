@@ -22,7 +22,7 @@ def check_packages(source_code):
     import_checker2 = re.compile(r'(from[ ]+)([^ \n;.]+)')
 
     for match in re.findall(import_checker1, source_code):
-        if match[2] not in package_whitelist:
+        if match[2] not in package_whitelist and match[0] == '':
             bad_packages.add(match[2])
     for match in re.findall(import_checker2, source_code):
         if match[1] not in package_whitelist:
