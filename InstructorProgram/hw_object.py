@@ -52,12 +52,15 @@ class HWObject:
             else:
                 return None
 
-        # TODO this is an issue because an exception cannot be caught in a different thread
-        try:
-            out_file_list = execute.run_key(self.dir['home'])
-        except ValueError:
-            print('Illegal code submitted. Exiting ot menu...\n')
-            return None
+        out_file_list = execute.run_key(self.dir['home'])
+        # check if there was any illegal code
+        for file in out_file_list:
+            if ' + ILLEGAL CODE + ' in execute.read_file(file):
+                print(f'Illegal code in {file}\n')
+                print(execute.read_file(file))
+                print('\nGrading criteria cannot be created. Returning to menu...')
+                IP.run()
+
         self.problem_parts = Grading.Text.criteria.find_parts(out_file_list)
 
         print('\nEnter the total weight of the assignment, 1-100:')

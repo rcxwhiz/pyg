@@ -71,3 +71,6 @@ As of this moment, weighting different test cases has been tabled
 
 There are some serious security risks going on here that probably require at least screening imported packages and
 writing files
+
+Make it so that legal imports are found from sag info or something
+Probably rename it to HW settings
