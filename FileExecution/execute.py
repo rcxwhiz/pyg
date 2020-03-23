@@ -108,7 +108,7 @@ def run_file(py_file, out_file):
     file_issues = security_check(student_source_code)
     if len(file_issues) > 0:
         open(out_file, 'w').write('\n'.join(file_issues))
-        return -1
+        raise ValueError(py_file)
 
     full_script = (scripting.prepend + student_source_code + scripting.append)
     full_script = full_script.replace('TIME BEFORE KILL HERE', str(cfg.max_program_time))
