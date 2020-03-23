@@ -68,3 +68,6 @@ Include time run in timeout message
 There should be some built in diff checking to show what % similarity there is between files
 
 As of this moment, weighting different test cases has been tabled
+
+There are some serious security risks going on here that probably require at least screening imported packages and
+writing files

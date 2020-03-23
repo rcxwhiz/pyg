@@ -6,6 +6,7 @@ from os.path import join
 import InstructorProgram.main
 from Config import cfg
 from FileExecution import scripting
+from FileExecution.security import security_check
 
 error_msgs = {'unicode': '\n[GRADER] Unicode decode error',
               'input': '\n[GRADER] File terminated for using input',
@@ -51,7 +52,9 @@ def run_key(assignment_dir):
 
         shutil.copyfile(key_source_file, join(assignment_dir, 'TEMP', f'key-{test}', key_file_name))
         run_pairs.append([join(assignment_dir, 'TEMP', f'key-{test}', key_file_name),
-                          join(assignment_dir, 'TEMP', f'key-{test}', 'output.txt')])
+                          join(assignment_dir, 'TEMP', f'key-{test}',
+                               'output.txt')])  # TODO this second file shouldn't be going into a temp directory?
+        # TODO need to test if file is being succesfully written
 
     # start threading crap here
     run_file_group(run_pairs)
@@ -98,18 +101,21 @@ def run_file_group(run_pairs):
 
 
 def run_file(py_file, out_file):
+    print(f'Running:[{py_file}, {out_file}]')
     temp_script_name = py_file[:-3] + '-MODIFIED.py'
     student_source_code = read_file(py_file)
 
-    if 'input(' in student_source_code or 'input (' in student_source_code:
-        open(out_file, 'w').write(error_msgs['input'])
-        return None
+    file_issues = security_check(student_source_code)
+    if len(file_issues) > 0:
+        open(out_file, 'w').write('\n'.join(file_issues))
+        return -1
 
     full_script = (scripting.prepend + student_source_code + scripting.append)
     full_script = full_script.replace('TIME BEFORE KILL HERE', str(cfg.max_program_time))
     open(temp_script_name, 'w', encoding='utf-8').write(full_script)
 
     os.system(f'python "{temp_script_name}" > "{out_file}" 2>&1')
+    input(f'Pausing to look at {out_file}')
     os.remove(temp_script_name)
 
 
