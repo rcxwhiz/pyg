@@ -1,6 +1,7 @@
 import os
 import shutil
 import subprocess
+import sys
 import threading
 from os.path import join
 
@@ -54,12 +55,10 @@ def run_key(assignment_dir):
         shutil.copyfile(key_source_file, join(assignment_dir, 'TEMP', f'key-{test}', key_file_name))
         run_pairs.append([join(assignment_dir, 'TEMP', f'key-{test}', key_file_name),
                           join(assignment_dir, 'TEMP', f'key-{test}',
-                               'output.txt')])  # TODO this second file shouldn't be going into a temp directory?
-        # TODO need to test if file is being succesfully written
+                               'output.txt')])
 
     # start threading crap here
     run_file_group(run_pairs)
-
     # move the generated stuff into the appropiate out folders
     out_file_list = []
     for test in test_cases:
@@ -112,11 +111,25 @@ def run_file(py_file, out_file):
         return None
 
     full_script = (scripting.prepend + student_source_code + scripting.append)
-    full_script = full_script.replace('TIME BEFORE KILL HERE', str(cfg.max_program_time))
+    if cfg.max_program_time > 0:
+        kill_time = cfg.max_program_time
+    else:
+        kill_time = sys.maxsize
+    full_script = full_script.replace('TIME BEFORE KILL HERE', str(kill_time))
     open(temp_script_name, 'w', encoding='utf-8').write(full_script)
 
     with open(out_file, 'w') as f:
-        f.write(subprocess.check_output(['python', temp_script_name], stderr=subprocess.STDOUT).decode('utf-8'))
+        # TODO this is the spot with the issue about getting output from batch
+        # THIS TEST WILL PASS WHEN CALLED FROM WHEREVER
+        print('test:', subprocess.check_output(['echo', 'bigmood'], shell=True).decode('utf-8'))
+        print('test over')
+
+        # THIS TEST WILL ONLY PASS FROM IDE, NOT BATCH OR COMMAND LINE
+        # THIS TEST DOES NOT PASS WHEN A DIFFERENT INTERPRETER IS SPECIFIED
+        output = subprocess.check_output(['python', temp_script_name], stderr=subprocess.STDOUT, shell=True).decode(
+            'utf-8')
+        print(output)
+        f.write(output)
     os.remove(temp_script_name)
 
 

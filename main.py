@@ -4,6 +4,8 @@ from pathlib import Path
 
 from Config import cfg
 
+for p in sys.path:
+    print(p)
 
 def change_config(new_name):
     f = open('config.ini', 'r')
