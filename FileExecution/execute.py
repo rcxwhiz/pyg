@@ -1,5 +1,6 @@
 import os
 import shutil
+import subprocess
 import threading
 from os.path import join
 
@@ -114,8 +115,8 @@ def run_file(py_file, out_file):
     full_script = full_script.replace('TIME BEFORE KILL HERE', str(cfg.max_program_time))
     open(temp_script_name, 'w', encoding='utf-8').write(full_script)
 
-    os.system(f'python "{temp_script_name}" > "{out_file}" 2>&1')
-    input(f'Pausing to look at {out_file}')
+    with open(out_file, 'w') as f:
+        f.write(subprocess.check_output(['python', temp_script_name], stderr=subprocess.STDOUT).decode('utf-8'))
     os.remove(temp_script_name)
 
 

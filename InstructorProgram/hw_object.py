@@ -63,8 +63,8 @@ class HWObject:
 
         self.problem_parts = Grading.Text.criteria.find_parts(out_file_list)
 
-        print('\nEnter the total weight of the assignment, 1-100:')
-        self.total_points = IP.tools.input_num_range(1, 100)
+        self.total_points = IP.tools.input_num_range(1, 100,
+                                                     message='\nEnter the total weight of the assignment, 1-100: ')
 
         if len(self.problem_parts) != 0:
             print(f'\n{len(self.problem_parts)} parts detected in {len(self.test_cases)} test cases')

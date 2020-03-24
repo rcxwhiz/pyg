@@ -1,4 +1,3 @@
-input()
 print('part 1')
 print('part 2')
 print('PART a')

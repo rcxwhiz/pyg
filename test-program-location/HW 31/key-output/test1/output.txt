@@ -1,3 +1,6 @@
- + ILLEGAL CODE + 
-Illegal package imported: os
-Contained illegal phrase: input(
+part 1
+part 2
+PART a
+42
+partc
+[42, 42, 42, 42, 42, 42, 42, 42, 42, 42, 42, 42, 42, 42, 42, 42, 42, 42, 42, 42, 42, 42, 42, 42, 42, 42, 42, 42, 42, 42, 42, 42, 42, 42, 42, 42, 42, 42, 42, 42, 42, 42]
