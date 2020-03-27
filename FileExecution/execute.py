@@ -87,6 +87,7 @@ def run_file_group(run_pairs):
     base_threads = threading.active_count()
     my_threads = []
     print(f'\n[Running {num_to_run} files on {cfg.max_threads} threads]')
+
     while ran < num_to_run:
         if threading.active_count() - base_threads < cfg.max_threads:
             new_thread = threading.Thread(target=run_file, args=(run_pairs[ran][0], run_pairs[ran][1]))
@@ -97,11 +98,11 @@ def run_file_group(run_pairs):
                 print(f'[{ran}/{num_to_run}]')
     for thread in my_threads:
         thread.join()
+
     print(f'[{ran}/{num_to_run}] Complete!')
 
 
 def run_file(py_file, out_file):
-    print(f'Running:[{py_file}, {out_file}]')
     temp_script_name = py_file[:-3] + '-MODIFIED.py'
     student_source_code = read_file(py_file)
 
@@ -121,15 +122,27 @@ def run_file(py_file, out_file):
     with open(out_file, 'w') as f:
         # TODO this is the spot with the issue about getting output from batch
         # THIS TEST WILL PASS WHEN CALLED FROM WHEREVER
-        print('test:', subprocess.check_output(['echo', 'bigmood'], shell=True).decode('utf-8'))
-        print('test over')
+        # test = subprocess.run(['echo', 'bigmood'], stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
+        # stdout = test.stdout.decode('utf-8')
+        # stderr = test.stderr.decode('utf-8')
+        # print('Test:')
+        # print(f'stdout: {stdout}')
+        # print(f'stderr: {stderr}')
 
         # THIS TEST WILL ONLY PASS FROM IDE, NOT BATCH OR COMMAND LINE
         # THIS TEST DOES NOT PASS WHEN A DIFFERENT INTERPRETER IS SPECIFIED
-        output = subprocess.check_output(['python', temp_script_name], stderr=subprocess.STDOUT, shell=True).decode(
-            'utf-8')
-        print(output)
-        f.write(output)
+        result_string = subprocess.check_output(['python', temp_script_name], stderr=subprocess.STDOUT,
+                                                shell=True).decode('utf-8')
+
+        # THIS TEST HAS THE SAME EFFECTIVENESS AS ABOVE
+        # result = subprocess.run(['python', temp_script_name], stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
+        # result_stdout = result.stdout.decode('utf-8')
+        # result_stderr = result.stderr.decode('utf-8')
+        # result_string = result_stdout + result_stderr
+        # print(f'Result return code: {result.returncode}')
+
+        print(result_string)
+        f.write(result_string)
     os.remove(temp_script_name)
 
 

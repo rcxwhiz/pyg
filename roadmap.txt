@@ -76,3 +76,5 @@ Make it so that legal imports are found from sag info or something
 Probably rename it to HW settings
 
 I think there is an issue where headers are getting removed from source files?
+
+My next guess on the execute from bat issue is that it is in a different thread
