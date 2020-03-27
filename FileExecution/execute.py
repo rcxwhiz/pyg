@@ -131,8 +131,7 @@ def run_file(py_file, out_file):
 
         # THIS TEST WILL ONLY PASS FROM IDE, NOT BATCH OR COMMAND LINE
         # THIS TEST DOES NOT PASS WHEN A DIFFERENT INTERPRETER IS SPECIFIED
-        result_string = subprocess.check_output(['python', temp_script_name], stderr=subprocess.STDOUT,
-                                                shell=True).decode('utf-8')
+        result_string = subprocess.check_output(['python', temp_script_name], stderr=subprocess.STDOUT).decode('utf-8')
 
         # THIS TEST HAS THE SAME EFFECTIVENESS AS ABOVE
         # result = subprocess.run(['python', temp_script_name], stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
