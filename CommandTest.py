@@ -1,39 +1,30 @@
-import subprocess
+# EXIT SCRIPT ###################################
+import os
+import sys
 import threading
-
-temp_script_name = r'C:\Users\josh-laptop\PycharmProjects\sag\test-program-location\HW 31\key-source\butts.py'
-
-
-def func(script_name, shelltf):
-    result_string = subprocess.check_output(['python', script_name], stderr=subprocess.STDOUT, shell=shelltf).decode(
-        'utf-8')
-    print(result_string)
+import time
 
 
-"""
-Literally all of these test are working in all cases so that kind of sucks
-"""
+def kill_prog():
+    time.sleep(1)
+    print('\n[GRADER] Program killed after being unresponsive')
+    os._exit(0)
 
-input('Test 1. Press enter to continue')
-print(subprocess.check_output(['python', temp_script_name], stderr=subprocess.STDOUT).decode('utf-8'))
 
-input('Test 2. Press enter to continue')
-print(subprocess.check_output(['python', temp_script_name], stderr=subprocess.STDOUT, shell=True).decode('utf-8'))
+kill_thread = threading.Thread(target=kill_prog)
+kill_thread.start()
+os.chdir(os.path.dirname(sys.argv[0]))
+# ###############################################
 
-input('Test 3. Press enter to continue')
-func(temp_script_name, False)
 
-input('Test 4. Press enter to continue')
-func(temp_script_name, True)
+print('part 1')
+print('part 2')
+print('PART a')
+print('42')
+print('partc')
+print([[42] * 42] * 42)
+print('done')
 
-input('Test 5. Press enter to continue')
-my_thread = threading.Thread(target=func, args=(temp_script_name, False))
-my_thread.start()
-my_thread.join()
-
-input('Test 6. Press enter to continue')
-my_thread = threading.Thread(target=func, args=(temp_script_name, True))
-my_thread.start()
-my_thread.join()
-
-input('Finished tests. Press enter to exit')
+# EXIT SCRIPT ###################################
+os._exit(0)
+# ###############################################

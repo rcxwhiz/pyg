@@ -134,7 +134,6 @@ def run_file(py_file, out_file):
     full_script = full_script.replace('TIME BEFORE KILL HERE', str(kill_time))
     open(temp_script_name, 'w', encoding='utf-8').write(full_script)
 
-    # This is the output
     result_string = subprocess.check_output(['python', temp_script_name], stderr=subprocess.STDOUT).decode('utf-8')
 
     print('Verify script output:')
