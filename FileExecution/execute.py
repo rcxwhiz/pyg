@@ -10,6 +10,7 @@ from Config import cfg
 from FileExecution import scripting
 from FileExecution.security import security_check
 
+# some of these messages never get used but they can be appended to things
 error_msgs = {'unicode': '\n[GRADER] Unicode decode error',
               'input': '\n[GRADER] File terminated for using input',
               'long out': f'\n[GRADER] File output was cut off because it is longer than {cfg.max_out_lines} '
@@ -19,7 +20,7 @@ error_msgs = {'unicode': '\n[GRADER] Unicode decode error',
 
 def run_key(assignment_dir):
     """
-    This program will take the assignment directory and run stuff from key source to populate key output
+    This function will take the assignment directory and run stuff from key source to populate key output
     It will run stuff on threads and write files and ask for a grading criteria that needs to be saved
     """
 
@@ -92,12 +93,14 @@ def run_file_group(run_pairs):
     It mostly manages the threading
     """
 
+    # decide number of total threads to allow
     num_to_run = len(run_pairs)
     ran = 0
     base_threads = threading.active_count()
     my_threads = []
     print(f'\n[Running {num_to_run} files on {cfg.max_threads} threads]')
 
+    # keep running threads until they have all been run
     while ran < num_to_run:
         if threading.active_count() - base_threads < cfg.max_threads:
             new_thread = threading.Thread(target=run_file, args=(run_pairs[ran][0], run_pairs[ran][1]))
@@ -106,6 +109,7 @@ def run_file_group(run_pairs):
             ran += 1
             if ran % 5 == 0 and ran != num_to_run:
                 print(f'[{ran}/{num_to_run}]')
+    # wait for any remaining threads to finish
     for thread in my_threads:
         thread.join()
 
@@ -117,31 +121,33 @@ def run_file(py_file, out_file):
     Takes a source file and an output file and runs with checkoutput, then puts the results in the out file
     """
 
+    # make the temp file name and get the source code as string
     temp_script_name = py_file[:-3] + '-MODIFIED.py'
     student_source_code = read_file(py_file)
 
+    # do security check on source code, don't run if issues are detected
     file_issues = security_check(student_source_code)
     if len(file_issues) > 0:
         open(out_file, 'w', encoding='utf-8').write(' + ILLEGAL CODE + \n' + '\n'.join(file_issues))
         return None
 
+    # append and prepend to source code - the write the file
     full_script = (scripting.prepend + student_source_code + scripting.append)
     if cfg.max_program_time > 0:
         kill_time = cfg.max_program_time
     else:
         kill_time = sys.maxsize
-
     full_script = full_script.replace('TIME BEFORE KILL HERE', str(kill_time))
     open(temp_script_name, 'w', encoding='utf-8').write(full_script)
 
+    # run the system command and get the output
     result_string = subprocess.check_output(['python', temp_script_name], stderr=subprocess.STDOUT).decode('utf-8')
 
-    print('Verify script output:')
-    print(result_string)
-
+    # write the output to the specified file
     with open(out_file, 'w') as f:
         f.write(result_string)
 
+    # remove the modified script that was created
     os.remove(temp_script_name)
 
 

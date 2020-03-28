@@ -8,6 +8,7 @@ version = 0.0
 dirs = Dirs()
 
 
+# main loop-menu function
 def run(display_title=True):
     if display_title:
         print(f"""
@@ -17,7 +18,7 @@ The Squad Automatic Grader
 Version - {version}
 
 Options:
-[1] Grade an existing assignment
+[1] Grade/modify an existing assignment
 [2] Create a directory for a new assignment
 [0] Exit
 """)
@@ -31,6 +32,7 @@ Options:
         sys.exit()
 
 
+# interact with an assignment
 def grade():
     if len(dirs.assignment_dirs) == 0:
         print('\nNo assignment directories created.')
@@ -43,14 +45,17 @@ def grade():
 
     if assignment_num == -1:
         run()
+    # create a hw object for the selected assignment
     this_hw = IP.HWObject(assignment_num)
 
+    # check the object that got made to see if it has required directories
     errors = this_hw.check_full()
     if len(errors) > 0:
         print('\n'.join(errors))
         print('Returning to menu...')
         run()
 
+    # print options for hw object
     print('\nOptions:')
     print('[1] Generate key files')
     print('[2] Export student testing program')
@@ -76,6 +81,7 @@ def grade():
     run()
 
 
+# this is where an assignment directory can be made
 def make_dir():
     print('\nCurrent directories:')
     dirs.print_dirs()

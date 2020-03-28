@@ -5,6 +5,7 @@ from pathlib import Path
 from Config import cfg
 
 
+# used to make a config file if the storage location is set to default
 def change_config(new_name):
     f = open('config.ini', 'r')
     config_text = f.read().replace('default', new_name)
@@ -16,6 +17,8 @@ def change_config(new_name):
     sys.exit()
 
 
+# checks if the storage location is default
+# if it is, it prompts to try to make a new one and then exits
 if cfg.base_directory == 'default':
 
     new_base_dir = join(str(Path.home()), 'AutoGrader')
@@ -37,5 +40,8 @@ if cfg.base_directory == 'default':
     else:
         change_config(new_base_dir)
 
+# begins the menu loop
+# import instructor program here because there are some things it does that depend on having a good base directory
 import InstructorProgram as IP
+
 IP.run()

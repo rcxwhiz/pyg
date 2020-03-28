@@ -1,3 +1,4 @@
+# these are the strings to get prepended and appended to the source code
 prepend = r"""
 # EXIT SCRIPT ###################################
 import os

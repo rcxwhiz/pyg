@@ -10,6 +10,7 @@ import InstructorProgram as IP
 from Config import cfg
 
 
+# this is to make the dirs object a singleton because it does stuff on initialization I think
 class DirsMeta(type):
     _instance: Optional[Dirs] = None
 
@@ -20,7 +21,9 @@ class DirsMeta(type):
 
 
 class Dirs(metaclass=DirsMeta):
+
     def __init__(self):
+        # initialize and get the directories
         self.base = cfg.base_directory
         self.assignment_dirs = []
         self.required_dirs = ['key-source',
@@ -44,12 +47,14 @@ class Dirs(metaclass=DirsMeta):
         self.update()
 
     def update(self):
+        # decide if the directory is an assignment directory and if so add it to the list of assignment directories
         self.assignment_dirs = []
         for file in os.listdir(self.base):
             if os.path.isdir(join(self.base, file)) and 'sag-info.txt' in os.listdir(join(self.base, file)):
                 self.assignment_dirs.append(file)
 
     def create_new(self, assignment_name):
+        # tries to make the required directories in a new assignment directory
         if assignment_name not in os.listdir(self.base):
             try:
                 os.mkdir(join(self.base, assignment_name))
@@ -67,6 +72,7 @@ class Dirs(metaclass=DirsMeta):
             print(f'{assignment_name} already exists')
 
     def print_dirs(self):
+        # prints out all the assignment directories that we have
         if len(self.assignment_dirs) == 0:
             print('None')
         else:
@@ -74,6 +80,7 @@ class Dirs(metaclass=DirsMeta):
                 print(f'[{i + 1}] {folder}')
 
     def check_full(self, assignment_num):
+        # will check if an assignment directory has all the valid things in it
         issues = []
         assignment_dir = self.assignment_dirs[assignment_num]
         files = os.listdir(join(self.base, assignment_dir))
