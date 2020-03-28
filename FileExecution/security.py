@@ -19,10 +19,10 @@ def security_check(source_code):
 def check_packages(source_code):
     bad_packages = set()
     import_checker1 = re.compile(r'(from[ ]+[^ \n;]+[ ]+)?(import[ ]+)([^ \n;.]+)')
-    import_checker2 = re.compile(r'(from[ ]+)([^ \n;.]+)')
+    import_checker2 = re.compile(r'(from[ ]+)([^ \n;.]+)([ ]+import)')
 
     for match in re.findall(import_checker1, source_code):
-        if match[2] not in package_whitelist and match[0] == '':
+        if match[0] == '' and match[2] not in package_whitelist:
             bad_packages.add(match[2])
     for match in re.findall(import_checker2, source_code):
         if match[1] not in package_whitelist:
