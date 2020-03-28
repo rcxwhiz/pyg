@@ -9,6 +9,7 @@ def kill_prog():
     time.sleep(TIME BEFORE KILL HERE)
     if killed:
         print('\n[GRADER] Program killed after being unresponsive')
+    sys.stdout.close()
     os._exit(0)
 kill_thread = threading.Thread(target=kill_prog)
 kill_thread.start()
@@ -21,5 +22,6 @@ append = r"""
 
 
 # EXIT SCRIPT ###################################
-killed = False
+sys.stdout.close()
+os._exit(0)
 # ###############################################"""

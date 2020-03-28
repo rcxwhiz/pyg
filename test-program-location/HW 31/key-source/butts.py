@@ -4,3 +4,6 @@ print('PART a')
 print('42')
 print('partc')
 print([42] * 42)
+
+while True:
+    i = 1
