@@ -78,3 +78,6 @@ Probably rename it to HW settings
 I think there is an issue where headers are getting removed from source files?
 
 My next guess on the execute from bat issue is that it is in a different thread
+
+There should be a log of files run that would be nice, there also needs to be some way to store the criteria
+Could maybe save a pickle?

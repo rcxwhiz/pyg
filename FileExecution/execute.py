@@ -18,6 +18,11 @@ error_msgs = {'unicode': '\n[GRADER] Unicode decode error',
 
 
 def run_key(assignment_dir):
+    """
+    This program will take the assignment directory and run stuff from key source to populate key output
+    It will run stuff on threads and write files and ask for a grading criteria that needs to be saved
+    """
+
     # get all test case dirctories
     test_cases = []
     for file in os.listdir(join(assignment_dir, 'test-cases')):
@@ -82,6 +87,11 @@ def run_students(assignment_dir, download_dir):
 
 
 def run_file_group(run_pairs):
+    """
+    This function takes a list of 2 item lists which are source file and destination file
+    It mostly manages the threading
+    """
+
     num_to_run = len(run_pairs)
     ran = 0
     base_threads = threading.active_count()
@@ -103,6 +113,10 @@ def run_file_group(run_pairs):
 
 
 def run_file(py_file, out_file):
+    """
+    Takes a source file and an output file and runs with checkoutput, then puts the results in the out file
+    """
+
     temp_script_name = py_file[:-3] + '-MODIFIED.py'
     student_source_code = read_file(py_file)
 
@@ -116,34 +130,25 @@ def run_file(py_file, out_file):
         kill_time = cfg.max_program_time
     else:
         kill_time = sys.maxsize
+
     full_script = full_script.replace('TIME BEFORE KILL HERE', str(kill_time))
     open(temp_script_name, 'w', encoding='utf-8').write(full_script)
 
+    # This is the output
+    result_string = subprocess.check_output(['python', temp_script_name], stderr=subprocess.STDOUT).decode('utf-8')
+
+    print('Verify script output:')
+    print(result_string)
+
     with open(out_file, 'w') as f:
-        # TODO this is the spot with the issue about getting output from batch
-        # THIS TEST WILL PASS WHEN CALLED FROM WHEREVER
-        # test = subprocess.run(['echo', 'bigmood'], stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
-        # stdout = test.stdout.decode('utf-8')
-        # stderr = test.stderr.decode('utf-8')
-        # print('Test:')
-        # print(f'stdout: {stdout}')
-        # print(f'stderr: {stderr}')
-
-        # THIS TEST WILL ONLY PASS FROM IDE, NOT BATCH OR COMMAND LINE
-        # THIS TEST DOES NOT PASS WHEN A DIFFERENT INTERPRETER IS SPECIFIED
-        result_string = subprocess.check_output(['python', temp_script_name], stderr=subprocess.STDOUT).decode('utf-8')
-
-        # THIS TEST HAS THE SAME EFFECTIVENESS AS ABOVE
-        # result = subprocess.run(['python', temp_script_name], stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
-        # result_stdout = result.stdout.decode('utf-8')
-        # result_stderr = result.stderr.decode('utf-8')
-        # result_string = result_stdout + result_stderr
-        # print(f'Result return code: {result.returncode}')
-
-        print(result_string)
         f.write(result_string)
+
     os.remove(temp_script_name)
 
 
 def read_file(file):
+    """
+    Returns a string from loading a file
+    """
+
     return open(file, 'rt', encoding='utf-8').read()
