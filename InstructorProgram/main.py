@@ -1,3 +1,4 @@
+import os
 import sys
 
 import InstructorProgram as IP
@@ -46,14 +47,10 @@ def grade():
     if assignment_num == -1:
         run()
     # create a hw object for the selected assignment
-    this_hw = IP.HWObject(assignment_num)
+    this_hw = dirs.get_hw(assignment_num)
 
     # check the object that got made to see if it has required directories
-    errors = this_hw.check_full()
-    if len(errors) > 0:
-        print('\n'.join(errors))
-        print('Returning to menu...')
-        run()
+    dirs.initialize_dirs(assignment_num)
 
     # print options for hw object
     print('\nOptions:')
@@ -88,7 +85,7 @@ def make_dir():
     print('\nCreate a new assignment directory in your base directory (can be changed in config.ini)')
     print('Enter a blank directory to stop\n')
     while True:
-        new_dir = input(f'{cfg.base_directory}/')
+        new_dir = input(f'{cfg.base_directory}{os.sep}')
         if new_dir == '':
             break
         else:

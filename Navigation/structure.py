@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import os
+import pickle
 import shutil
 import sys
 from os.path import join
@@ -30,8 +31,7 @@ class Dirs(metaclass=DirsMeta):
                               'key-output',
                               'student-source',
                               'results',
-                              'test-cases',
-                              'criteria']
+                              'test-cases']
         try:
             os.listdir(self.base)
         except FileNotFoundError:
@@ -50,7 +50,7 @@ class Dirs(metaclass=DirsMeta):
         # decide if the directory is an assignment directory and if so add it to the list of assignment directories
         self.assignment_dirs = []
         for file in os.listdir(self.base):
-            if os.path.isdir(join(self.base, file)) and 'sag-info.txt' in os.listdir(join(self.base, file)):
+            if os.path.isdir(join(self.base, file)) and f'{file}.assignment' in os.listdir(join(self.base, file)):
                 self.assignment_dirs.append(file)
 
     def create_new(self, assignment_name):
@@ -58,16 +58,15 @@ class Dirs(metaclass=DirsMeta):
         if assignment_name not in os.listdir(self.base):
             try:
                 os.mkdir(join(self.base, assignment_name))
-                f = open(join(self.base, assignment_name, 'sag-info.txt'), 'w')
-                f.write('test')
-                f.close()
 
-                for file in self.required_dirs:
-                    os.mkdir(join(self.base, assignment_name, file))
+                pickle.dump(IP.HWObject(assignment_name),
+                            open(join(self.base, assignment_name, f'{assignment_name}.assignment'), 'wb'))
 
                 self.update()
+
+                self.initialize_dirs(self.assignment_dirs.index(assignment_name))
             except FileNotFoundError:
-                print('Do not create subdirectories')
+                print('Cannot create a subdirectory')
         else:
             print(f'{assignment_name} already exists')
 
@@ -79,10 +78,14 @@ class Dirs(metaclass=DirsMeta):
             for i, folder in enumerate(self.assignment_dirs):
                 print(f'[{i + 1}] {folder}')
 
-    def check_full(self, assignment_num):
-        # will check if an assignment directory has all the valid things in it
-        issues = []
-        assignment_dir = self.assignment_dirs[assignment_num]
+    def get_hw(self, assignment_index):
+        self.initialize_dirs(assignment_index)
+        assignment_name = self.assignment_dirs[assignment_index]
+        return pickle.load(open(join(self.base, assignment_name, f'{assignment_name}.assignment'), 'rb'))
+
+    def initialize_dirs(self, assignment_index):
+        # will check if an assignment directory has all the valid things in it and create them
+        assignment_dir = self.assignment_dirs[assignment_index]
         files = os.listdir(join(self.base, assignment_dir))
 
         if 'TEMP' in files:
@@ -90,15 +93,4 @@ class Dirs(metaclass=DirsMeta):
 
         for file in self.required_dirs:
             if file not in files:
-                issues.append(f'{file} not found in {join(self.base, assignment_dir)}')
-        if len(issues) > 0:
-            return issues
-
-        need_to_not_be_empty = ['key-source',
-                                'test-cases']
-
-        for directory in need_to_not_be_empty:
-            if not os.listdir(join(self.base, assignment_dir, directory)):
-                issues.append(f'Directory {directory} is empty')
-
-        return issues
+                os.mkdir(join(self.base, assignment_dir, file))

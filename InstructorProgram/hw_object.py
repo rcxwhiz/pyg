@@ -10,29 +10,32 @@ from Navigation.structure import Dirs
 
 class HWObject:
 
-    def __init__(self, assignment_num):
-        # set assignment number and make directory object
-        self.assignment_num = assignment_num
-        self.dirs = Dirs()
+    def __init__(self, assignment_name):
+        # set assignment name and make directory object
+        self.assignment_name = assignment_name
+        dirs = Dirs()
 
         # make dir dictionary with all directories relevant to this HW
-        self.dir = {'home': join(self.dirs.base, self.dirs.assignment_dirs[assignment_num])}
+        self.dir = {'home': join(dirs.base, assignment_name)}
         for other_dir in ['custom criteria', 'key-output', 'key-source', 'results', 'student-source', 'test-cases',
                           'sag-info.txt']:
             self.dir[other_dir] = join(self.dir['home'], other_dir)
 
         # make lists for parts and test cases
-        self.test_cases = os.listdir(self.dir['test-cases'])
         self.problem_parts = None
         self.part_weights = {}
         self.test_case_weights = []
         self.total_points = None
 
-    def check_full(self):
-        # returns true if essential files are present
-        return self.dirs.check_full(self.assignment_num)
-
     def generate_key_files(self):
+        # making sure there are source files and test cases
+        if len(os.listdir(self.dir['key-source'])) == 0:
+            print(f'No source files found in {self.dir["key-source"]}')
+            return None
+        if len(os.listdir(self.dir['test-cases'])) == 0:
+            print(f'No dirs found in {self.dir["test-cases"]}')
+            return None
+
         # resolve overwriting prveious key output if there is one
         if len(os.listdir(self.dir['key-output'])) > 0:
             print('[1] Overwrite current key files')
