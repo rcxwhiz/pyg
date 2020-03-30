@@ -6,7 +6,9 @@ It is going to have a variety of features.
 
 To run this program run main.py
 
-Required packages:
+This program uses the pickles module. Do not load pickles you do not trust, they can hold any code.
+
+Required 3rd party packages:
 - None yet
 
 To do list:
