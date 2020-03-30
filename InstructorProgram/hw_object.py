@@ -17,7 +17,7 @@ class HWObject:
 
         # make dir dictionary with all directories relevant to this HW
         self.dir = {'home': join(dirs.base, assignment_name)}
-        for other_dir in ['custom criteria', 'key-output', 'key-source', 'results', 'student-source', 'test-cases',
+        for other_dir in ['key-output', 'key-source', 'results', 'student-source', 'test-cases',
                           'sag-info.txt']:
             self.dir[other_dir] = join(self.dir['home'], other_dir)
 
@@ -117,13 +117,14 @@ class HWObject:
 
         # get the student ids from teh files in the selected student source directory
         student_ids = set()
+        types_found = set()
         for file in os.listdir(source_dir):
             student_ids.add('_'.join(file.split('_')[:3]))
+            types_found.add(file.split('.')[-1])
         student_ids = sorted(student_ids)
-        print(student_ids)
 
         # populate a directory that will get filled up and eventually zipped as the report
-        grading_dir = join(self.dir['home'], 'temp - grading')
+        grading_dir = join(self.dir['home'], 'TEMP')
         if os.path.exists(grading_dir):
             shutil.rmtree(grading_dir)
         os.mkdir(grading_dir)
@@ -132,7 +133,27 @@ class HWObject:
         for student_id in student_ids:
             os.mkdir(join(grading_dir, student_id))
 
-        # TODO fill up student output with some folders (decide what to do with non py files?)
+        # make a list of file types to move
+        types_to_move = []
+        print(f'Submitted file types: {types_found}')
+        print('Enter -1 to add all')
+        for file_type in types_found:
+            choice = IP.tools.input_num_range(0, 1, message=f'Move student {file_type} files\n1 - yes\n0 - no\n')
+            if choice == 1:
+                types_to_move.append(file_type)
+            elif choice == -1:
+                types_to_move = list(types_found)
+                break
+
+        # move the student source files into the temp folder
+        for file in os.listdir(source_dir):
+            try:
+                if file.split('.')[-1] in types_to_move:
+                    file_id = '_'.join(file.split('_')[:3])
+                    shutil.copyfile(join(source_dir, file), join(self.dir['home'], 'TEMP', file_id, file))
+            except IndexError:
+        # TODO I need to have a way to keep track of if I'm adding things without an extension
+
         # TODO run them all
         # TODO need to have a way to grade the outputs based on if their parts are the same
         # TODO generate a xlsx or something with the student results and scores
