@@ -79,7 +79,8 @@ class HWObject:
                                                      message='\nEnter the total weight of the assignment, 1-100: ')
 
         if len(self.problem_parts) != 0:
-            print(f'\n{len(self.problem_parts)} parts detected in {len(self.test_cases)} test cases')
+            print(
+                f'\n{len(self.problem_parts)} parts detected in the first test case ({os.listdir(self.dir["test-cases"])[0]})')
             print('Parts:', end=' ')
             print_parts = []
             for part in self.problem_parts:
@@ -93,7 +94,6 @@ class HWObject:
                         self.part_weights[part2[1]] = 10
                     break
                 self.part_weights[part[1]] = part_weight
-        # TODO it would be better to save the grading criteria not just as members of the object
 
     def export_student_tester(self):
         print('export student tester')
