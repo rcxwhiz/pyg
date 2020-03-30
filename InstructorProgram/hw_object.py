@@ -1,6 +1,8 @@
 import os
 import shutil
+from datetime import datetime
 from os.path import join
+from zipfile import ZipFile
 
 import Grading
 import InstructorProgram as IP
@@ -165,7 +167,16 @@ class HWObject:
         # TODO run them all
         # TODO need to have a way to grade the outputs based on if their parts are the same
         # TODO generate a xlsx or something with the student results and scores
-        # TODO put everything into a zip file and put that in results and say it's in there
+
+        # make a zip file in results and copy everything from temp into it
+        timestamp = datetime.now().strftime('%d-%b-%Y %I-%M-%S%p')
+        with ZipFile(f'{join(self.dir["results"], timestamp)}.zip', 'w') as zip_obj:
+            for folder in os.listdir(join(self.dir['home'], 'TEMP')):
+                if os.path.isdir(join(self.dir['home'], 'TEMP', folder)):
+                    for file in os.listdir(join(self.dir['home'], 'TEMP', folder)):
+                        zip_obj.write(join(self.dir['home'], 'TEMP', folder, file), arcname=join(folder, file))
+        shutil.rmtree(join(self.dir['home'], 'TEMP'))
+
         print('grade student code')
 
     def view_grading_report(self):
