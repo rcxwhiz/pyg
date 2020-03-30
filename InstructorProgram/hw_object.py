@@ -22,7 +22,7 @@ class HWObject:
         # make dir dictionary with all directories relevant to this HW
         self.dir = {'home': join(dirs.base, assignment_name)}
         for other_dir in ['key-output', 'key-source', 'results', 'student-source', 'test-cases',
-                          'sag-info.txt']:
+                          'TEMP']:
             self.dir[other_dir] = join(self.dir['home'], other_dir)
 
         # make lists for parts and test cases
@@ -104,7 +104,7 @@ class HWObject:
 
     def grade_student_code(self):
         # in student source there are directories that are full of student code - get that list
-        # TODO maybe I could support having zip files here too
+        # TODO maybe I could support having zip files here too for holding student code
         source_dirs = []
         for file in os.listdir(self.dir['student-source']):
             if os.path.isdir(join(self.dir['student-source'], file)):
@@ -131,7 +131,7 @@ class HWObject:
         student_ids = sorted(student_ids)
 
         # populate a directory that will get filled up and eventually zipped as the report
-        grading_dir = join(self.dir['home'], 'TEMP')
+        grading_dir = self.dir['TEMP']
         if os.path.exists(grading_dir):
             shutil.rmtree(grading_dir)
         os.mkdir(grading_dir)
@@ -153,29 +153,34 @@ class HWObject:
                 break
 
         # move the student source files into the temp folder
-        # TODO choice to make here about if I should take off the IDs from the files at this point
+        # I HAVE DECIDED TO REMOVE THE IDS FROM THE FILES HERE
         for file in os.listdir(source_dir):
             try:
                 if file.split('.')[-1] in types_to_move:
                     file_id = '_'.join(file.split('_')[:3])
-                    shutil.copyfile(join(source_dir, file), join(self.dir['home'], 'TEMP', file_id, file))
+                    file_name = '_'.join(file.split('_')[3:])
+                    shutil.copyfile(join(source_dir, file), join(self.dir['TEMP'], file_id, file_name))
             except IndexError:
                 if no_ext_msg in types_to_move:
                     file_id = '_'.join(file.split('_')[:3])
-                    shutil.copyfile(join(source_dir, file), join(self.dir['home'], 'TEMP', file_id, file))
+                    file_name = '_'.join(file.split('_')[3:])
+                    shutil.copyfile(join(source_dir, file), join(self.dir['TEMP'], file_id, file_name))
 
         # TODO run them all
         # TODO need to have a way to grade the outputs based on if their parts are the same
         # TODO generate a xlsx or something with the student results and scores
 
         # make a zip file in results and copy everything from temp into it
+        # Note this will only go one folder deep into the temp folder, but this shouldn't be an issue
         timestamp = datetime.now().strftime('%d-%b-%Y %I-%M-%S%p')
         with ZipFile(f'{join(self.dir["results"], timestamp)}.zip', 'w') as zip_obj:
-            for folder in os.listdir(join(self.dir['home'], 'TEMP')):
-                if os.path.isdir(join(self.dir['home'], 'TEMP', folder)):
-                    for file in os.listdir(join(self.dir['home'], 'TEMP', folder)):
-                        zip_obj.write(join(self.dir['home'], 'TEMP', folder, file), arcname=join(folder, file))
-        shutil.rmtree(join(self.dir['home'], 'TEMP'))
+            for folder in os.listdir(self.dir['TEMP']):
+                if os.path.isdir(join(self.dir['TEMP'], folder)):
+                    for file in os.listdir(join(self.dir['TEMP'], folder)):
+                        zip_obj.write(join(self.dir['TEMP'], folder, file), arcname=join(folder, file))
+                else:
+                    zip_obj.write(join(self.dir['TEMP'], file), arcname=file)
+        shutil.rmtree(self.dir['TEMP'])
 
         print('grade student code')
 
