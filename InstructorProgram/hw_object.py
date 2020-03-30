@@ -7,6 +7,8 @@ import InstructorProgram as IP
 from FileExecution import execute
 from Navigation.structure import Dirs
 
+no_ext_msg = 'no-extension'
+
 
 class HWObject:
 
@@ -119,8 +121,11 @@ class HWObject:
         student_ids = set()
         types_found = set()
         for file in os.listdir(source_dir):
-            student_ids.add('_'.join(file.split('_')[:3]))
-            types_found.add(file.split('.')[-1])
+            if '.' not in file:
+                types_found.add(no_ext_msg)
+            else:
+                student_ids.add('_'.join(file.split('_')[:3]))
+                types_found.add(file.split('.')[-1])
         student_ids = sorted(student_ids)
 
         # populate a directory that will get filled up and eventually zipped as the report
@@ -135,24 +140,27 @@ class HWObject:
 
         # make a list of file types to move
         types_to_move = []
-        print(f'Submitted file types: {types_found}')
-        print('Enter -1 to add all')
+        print(f'\nSubmitted file types: {types_found}')
+        print('Enter 2 to add all')
         for file_type in types_found:
-            choice = IP.tools.input_num_range(0, 1, message=f'Move student {file_type} files\n1 - yes\n0 - no\n')
+            choice = IP.tools.input_num_range(0, 2, message=f'Move student .{file_type} files\n1 - yes\n0 - no\n')
             if choice == 1:
                 types_to_move.append(file_type)
-            elif choice == -1:
+            elif choice == 2:
                 types_to_move = list(types_found)
                 break
 
         # move the student source files into the temp folder
+        # TODO choice to make here about if I should take off the IDs from the files at this point
         for file in os.listdir(source_dir):
             try:
                 if file.split('.')[-1] in types_to_move:
                     file_id = '_'.join(file.split('_')[:3])
                     shutil.copyfile(join(source_dir, file), join(self.dir['home'], 'TEMP', file_id, file))
             except IndexError:
-        # TODO I need to have a way to keep track of if I'm adding things without an extension
+                if no_ext_msg in types_to_move:
+                    file_id = '_'.join(file.split('_')[:3])
+                    shutil.copyfile(join(source_dir, file), join(self.dir['home'], 'TEMP', file_id, file))
 
         # TODO run them all
         # TODO need to have a way to grade the outputs based on if their parts are the same

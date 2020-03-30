@@ -3,10 +3,12 @@ import re
 package_whitelist = ['numpy',
                      'matplotlib',
                      'scipy']
-phrase_blacklist = ['input(',
-                    'input (']
+
 import_checker1 = re.compile(r'(from[ ]+[^ \n;]+[ ]+)?(import[ ]+)([^ \n;.]+)')
 import_checker2 = re.compile(r'(from[ ]+)([^ \n;.]+)([ ]+import)')
+
+phrase_blacklist = [re.compile(r'input[ ]*\('),
+                    re.compile(r'open[ ]*\(')]
 
 
 def security_check(source_code):
@@ -37,6 +39,7 @@ def check_phrases(source_code):
     # check for bas strings inside the source code
     bad_phrases = set()
     for phrase in phrase_blacklist:
-        if phrase in source_code:
-            bad_phrases.add(phrase)
+        match = re.match(phrase, source_code)
+        if match:
+            bad_phrases.add(match)
     return bad_phrases
