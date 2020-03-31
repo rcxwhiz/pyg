@@ -64,3 +64,5 @@ I think there is an issue where headers are getting removed from source files?
 
 There should be a log of files run that would be nice, there also needs to be some way to store the criteria
 Could maybe save a pickle?
+
+I should look into why I made the directory object a singleton

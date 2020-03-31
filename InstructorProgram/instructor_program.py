@@ -80,10 +80,10 @@ def grade():
 
 # this is where an assignment directory can be made
 def make_dir():
-    print('\nCurrent directories:')
+    print('\nCurrent assignments:')
     dirs.print_dirs()
     print('\nCreate a new assignment directory in your base directory (can be changed in config.ini)')
-    print('Enter a blank directory to stop\n')
+    print('Enter a blank assignment to stop\n')
     while True:
         new_dir = input(f'{cfg.base_directory}{os.sep}')
         if new_dir == '':

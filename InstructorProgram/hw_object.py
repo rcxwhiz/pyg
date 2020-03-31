@@ -6,7 +6,7 @@ from zipfile import ZipFile
 
 import Grading
 import InstructorProgram as IP
-from FileExecution import execute
+from FileExecution import execution
 from Navigation.structure import Dirs
 
 no_ext_msg = 'no-extension'
@@ -31,53 +31,41 @@ class HWObject:
         self.test_case_weights = []
         self.total_points = None
 
-    def generate_key_files(self):
-        # making sure there are source files and test cases
+    def can_run_key(self):
         if len(os.listdir(self.dir['key-source'])) == 0:
             print(f'No source files found in {self.dir["key-source"]}')
-            return None
+            return False
         if len(os.listdir(self.dir['test-cases'])) == 0:
             print(f'No dirs found in {self.dir["test-cases"]}')
-            return None
+            return False
+        return True
 
-        # resolve overwriting prveious key output if there is one
-        if len(os.listdir(self.dir['key-output'])) > 0:
-            print('[1] Overwrite current key files')
-            print('[0] Don\'t overwrite current key files')
-            choice = IP.tools.input_num_range(0, 1)
-            if choice == 1:
-                k = 0
-                while True:
-                    k += 1
-                    if k > 25:
-                        print(f'There was an issue clearing {self.dir["key output"]}')
-                        IP.run()
-                    try:
-                        shutil.rmtree(self.dir['key-output'], ignore_errors=True)
-                        os.mkdir(self.dir['key-output'])
-                        break
-                    except FileExistsError:
-                        continue
-                    except PermissionError:
-                        print(f'Permission error clearing the directory {self.dir["key-output"]}'
-                              f'Please close it if it is open')
-                        IP.run()
-            else:
-                return None
+    def clear_key(self):
+        print('[1] Overwrite current key files')
+        print('[0] Don\'t overwrite current key files')
+        choice = IP.tools.input_num_range(0, 1)
+        if choice == 1:
+            k = 0
+            while True:
+                k += 1
+                if k > 25:
+                    print(f'There was an issue clearing {self.dir["key output"]}')
+                    IP.run()
+                try:
+                    shutil.rmtree(self.dir['key-output'], ignore_errors=True)
+                    os.mkdir(self.dir['key-output'])
+                    break
+                except FileExistsError:
+                    continue
+                except PermissionError:
+                    print(f'Permission error clearing the directory {self.dir["key-output"]}'
+                          f'Please close it if it is open')
+                    IP.run()
+            return True
+        else:
+            return False
 
-        # get a list of the finished files using the run key function
-        out_file_list = execute.run_key(self.dir['home'])
-
-        # check if there was any illegal code by looking at output files
-        for file in out_file_list:
-            if ' + ILLEGAL CODE + ' in execute.read_file(file):
-                print(execute.read_file(file))
-                print('\nGrading criteria cannot be created. Returning to menu...')
-                IP.run()
-
-        # find the parts of the assignment from the outfile list
-        self.problem_parts = Grading.Text.criteria.find_parts(out_file_list)
-
+    def set_criteria(self):
         # prompt for total points and points for the parts of the assignments etc...
         self.total_points = IP.tools.input_num_range(1, 100,
                                                      message='\nEnter the total weight of the assignment, 1-100: ')
@@ -99,11 +87,35 @@ class HWObject:
                     break
                 self.part_weights[part[1]] = part_weight
 
+    def generate_key_files(self):
+        # making sure there are source files and test cases
+        if not self.can_run_key():
+            return None
+
+        # resolve overwriting prveious key output if there is one
+        if len(os.listdir(self.dir['key-output'])) > 0:
+            if not self.clear_key():
+                return None
+
+        # get a list of the finished files using the run key function
+        out_file_list = execution.run_key(self.dir['home'])
+
+        # check if there was any illegal code by looking at output files
+        for file in out_file_list:
+            if ' + ILLEGAL CODE + ' in execution.read_file(file):
+                print(execution.read_file(file))
+                print('\nGrading criteria cannot be created. Returning to menu...')
+                IP.run()
+
+        # find the parts of the assignment from the outfile list
+        self.problem_parts = Grading.Text.criteria.find_parts(out_file_list)
+
+        self.set_criteria()
+
     def export_student_tester(self):
         print('export student tester')
 
-    def grade_student_code(self):
-        # in student source there are directories that are full of student code - get that list
+    def choose_student_source_dir(self):
         # TODO maybe I could support having zip files here too for holding student code
         source_dirs = []
         for file in os.listdir(self.dir['student-source']):
@@ -114,12 +126,12 @@ class HWObject:
         if len(source_dirs) == 0:
             print(f'No directories with student code found in {self.dir["student-source"]}. Returning to menu...')
             IP.run()
-        print('Choose a directory of student files to grade from:')
+        print('Choose a batch of student files to grade from:')
         for i, source_dir in enumerate(source_dirs):
             print(f'[{i + 1}] - {source_dir}')
-        source_dir = join(self.dir['student-source'], source_dirs[IP.tools.input_num_range(1, len(source_dirs)) - 1])
+        return join(self.dir['student-source'], source_dirs[IP.tools.input_num_range(1, len(source_dirs)) - 1])
 
-        # get the student ids from teh files in the selected student source directory
+    def get_ids_from_files(self, source_dir):
         student_ids = set()
         types_found = set()
         for file in os.listdir(source_dir):
@@ -128,19 +140,19 @@ class HWObject:
             else:
                 student_ids.add('_'.join(file.split('_')[:3]))
                 types_found.add(file.split('.')[-1])
-        student_ids = sorted(student_ids)
+        return sorted(student_ids), types_found
 
+    def make_temp_dir(self, student_ids):
         # populate a directory that will get filled up and eventually zipped as the report
-        grading_dir = self.dir['TEMP']
-        if os.path.exists(grading_dir):
-            shutil.rmtree(grading_dir)
-        os.mkdir(grading_dir)
+        if os.path.exists(self.dir['TEMP']):
+            shutil.rmtree(self.dir['TEMP'])
+        os.mkdir(self.dir['TEMP'])
 
         # make a directory for each student in the temp dir
         for student_id in student_ids:
-            os.mkdir(join(grading_dir, student_id))
+            os.mkdir(join(self.dir['TEMP'], student_id))
 
-        # make a list of file types to move
+    def get_types_to_move(self, types_found):
         types_to_move = []
         print(f'\nSubmitted file types: {types_found}')
         print('Enter 2 to add all')
@@ -151,8 +163,9 @@ class HWObject:
             elif choice == 2:
                 types_to_move = list(types_found)
                 break
+        return types_to_move
 
-        # move the student source files into the temp folder
+    def move_student_files(self, source_dir, types_to_move):
         # I HAVE DECIDED TO REMOVE THE IDS FROM THE FILES HERE
         for file in os.listdir(source_dir):
             try:
@@ -166,11 +179,7 @@ class HWObject:
                     file_name = '_'.join(file.split('_')[3:])
                     shutil.copyfile(join(source_dir, file), join(self.dir['TEMP'], file_id, file_name))
 
-        # TODO run them all
-        # TODO need to have a way to grade the outputs based on if their parts are the same
-        # TODO generate a xlsx or something with the student results and scores
-
-        # make a zip file in results and copy everything from temp into it
+    def zip_report(self):
         # Note this will only go one folder deep into the temp folder, but this shouldn't be an issue
         timestamp = datetime.now().strftime('%d-%b-%Y %I-%M-%S%p')
         with ZipFile(f'{join(self.dir["results"], timestamp)}.zip', 'w') as zip_obj:
@@ -181,6 +190,27 @@ class HWObject:
                 else:
                     zip_obj.write(join(self.dir['TEMP'], file), arcname=file)
         shutil.rmtree(self.dir['TEMP'])
+
+    def grade_student_code(self):
+        source_dir = self.choose_student_source_dir()
+
+        # get the student ids from the files in the selected student source directory
+        student_ids, types_found = self.get_ids_from_files(source_dir)
+
+        self.make_temp_dir(student_ids)
+
+        # make a list of file types to move
+        types_to_move = self.get_types_to_move(types_found)
+
+        # move the student source files into the temp folder
+        self.move_student_files(source_dir, types_to_move)
+
+        # TODO run them all
+        # TODO need to have a way to grade the outputs based on if their parts are the same
+        # TODO generate a xlsx or something with the student results and scores
+
+        # make a zip file in results and copy everything from temp into it
+        self.zip_report()
 
         print('grade student code')
 

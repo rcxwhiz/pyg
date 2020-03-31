@@ -5,7 +5,7 @@ import sys
 import threading
 from os.path import join
 
-import InstructorProgram.main
+import InstructorProgram.instructor_program
 from Config import cfg
 from FileExecution import scripting
 from FileExecution.security import security_check
@@ -14,8 +14,7 @@ from FileExecution.security import security_check
 error_msgs = {'unicode': '\n[GRADER] Unicode decode error',
               'input': '\n[GRADER] File terminated for using input',
               'long out': f'\n[GRADER] File output was cut off because it is longer than {cfg.max_out_lines} '
-                          f'lines\nThe full output is located in the output file for this script '
-                          f'(if it is not set to be deleted)'}
+                          f'lines\nThe full output is located in the output file for this script'}
 
 
 def run_key(assignment_dir):
@@ -33,7 +32,7 @@ def run_key(assignment_dir):
         print(f'No test case directories found in {join(assignment_dir, "test-cases")}')
         print(f'If you want to run without any input files, just create an empty directory\n'
               f'inside of {join(assignment_dir, "test-cases")}')
-        InstructorProgram.main.run()
+        InstructorProgram.instructor_program.run()
 
     # get the key source file
     key_source_file = ''
@@ -46,7 +45,7 @@ def run_key(assignment_dir):
             break
     if key_source_file == '':
         print(f'There was no python key file in: {join(assignment_dir, "key-source")}')
-        InstructorProgram.main.run()
+        InstructorProgram.instructor_program.run()
 
     # copy all test case files into temporary running directories
     run_pairs = []
