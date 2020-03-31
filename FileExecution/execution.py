@@ -82,8 +82,14 @@ def run_key(assignment_dir):
     return out_file_list
 
 
-def run_students(assignment_dir, download_dir):
-    print('')
+def run_students(temp_dir):
+    file_groups = []
+    for dir_ in os.listdir(temp_dir):
+        if os.path.isdir(dir_):
+            for file in os.listdir(join(temp_dir, dir_)):
+                if file.endswith('.py'):
+                    file_groups.append([join(temp_dir, dir_, file), join(temp_dir, dir_, f'{file[:-3]}-OUTPUT.txt')])
+    run_file_group(file_groups)
 
 
 def run_file_group(run_pairs):

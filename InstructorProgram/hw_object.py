@@ -205,7 +205,8 @@ class HWObject:
         # move the student source files into the temp folder
         self.move_student_files(source_dir, types_to_move)
 
-        # TODO run them all
+        # run the student code on a bunch of threads and leaves the output.txt s
+        execution.run_students(self.dir['TEMP'])
         # TODO need to have a way to grade the outputs based on if their parts are the same
         # TODO generate a xlsx or something with the student results and scores
 
