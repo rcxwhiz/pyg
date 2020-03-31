@@ -10,3 +10,14 @@ def find_parts(out_files):
     for hit in hits:
         found_parts.append([hit[0], hit[1]])
     return found_parts
+
+
+class Criteria:
+
+    def __init__(self, parts_in, points_in, key_in):
+        self.parts = parts_in
+        self.total_points = points_in
+        self.key_folder = key_in
+
+    def grade(self, folder_in):
+        print(f'Graded {folder_in}')

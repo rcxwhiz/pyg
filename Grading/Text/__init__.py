@@ -1,1 +1,1 @@
-import Grading.Text.criteria
+import Grading.Text.text

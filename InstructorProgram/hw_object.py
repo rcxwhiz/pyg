@@ -25,11 +25,7 @@ class HWObject:
                           'TEMP']:
             self.dir[other_dir] = join(self.dir['home'], other_dir)
 
-        # make lists for parts and test cases
-        self.problem_parts = None
-        self.part_weights = {}
-        self.test_case_weights = []
-        self.total_points = None
+        self.criteria = None
 
     def can_run_key(self):
         if len(os.listdir(self.dir['key-source'])) == 0:
@@ -65,27 +61,29 @@ class HWObject:
         else:
             return False
 
-    def set_criteria(self):
+    def set_criteria(self, problem_parts):
         # prompt for total points and points for the parts of the assignments etc...
-        self.total_points = IP.tools.input_num_range(1, 100,
-                                                     message='\nEnter the total weight of the assignment, 1-100: ')
+        total_points = IP.tools.input_num_range(1, 100, message='\nEnter the total weight of the assignment, 1-100: ')
 
-        if len(self.problem_parts) != 0:
+        part_weights = {}
+        if len(problem_parts) != 0:
             print(
-                f'\n{len(self.problem_parts)} parts detected in the first test case ({os.listdir(self.dir["test-cases"])[0]})')
+                f'\n{len(problem_parts)} parts detected in the first test case ({os.listdir(self.dir["test-cases"])[0]})')
             print('Parts:', end=' ')
             print_parts = []
-            for part in self.problem_parts:
+            for part in problem_parts:
                 print_parts.append(f'{part[0]} {part[1]}')
             print(', '.join(print_parts))
             print('Enter the point weight of each part 0-100, -1 to weight all evenly:')
-            for part in self.problem_parts:
+            for part in problem_parts:
                 part_weight = IP.tools.input_num_range(-1, 100, message=f'{part[0]} {part[1]}: ')
                 if part_weight == -1:
-                    for part2 in self.problem_parts:
-                        self.part_weights[part2[1]] = 10
+                    for part2 in problem_parts:
+                        part_weights[part2[1]] = 10
                     break
-                self.part_weights[part[1]] = part_weight
+                part_weights[part[1]] = part_weight
+
+        self.criteria = Grading.Text.text.Criteria(part_weights, total_points, self.dir['key-output'])
 
     def generate_key_files(self):
         # making sure there are source files and test cases
@@ -108,9 +106,9 @@ class HWObject:
                 IP.run()
 
         # find the parts of the assignment from the outfile list
-        self.problem_parts = Grading.Text.criteria.find_parts(out_file_list)
+        problem_parts = Grading.Text.text.find_parts(out_file_list)
 
-        self.set_criteria()
+        self.set_criteria(problem_parts)
 
     def export_student_tester(self):
         print('export student tester')
