@@ -90,6 +90,10 @@ def run_students(temp_dir):
                 if file.endswith('.py'):
                     file_groups.append([join(temp_dir, dir_, file), join(temp_dir, dir_, f'{file[:-3]}-OUTPUT.txt')])
     run_file_group(file_groups)
+    outs = []
+    for pair in file_groups:
+        outs.append(pair[1])
+    return outs
 
 
 def run_file_group(run_pairs):

@@ -66,6 +66,7 @@ class HWObject:
         total_points = IP.tools.input_num_range(1, 100, message='\nEnter the total weight of the assignment, 1-100: ')
 
         part_weights = {}
+        prog_points = False
         if len(problem_parts) != 0:
             print(
                 f'\n{len(problem_parts)} parts detected in the first test case ({os.listdir(self.dir["test-cases"])[0]})')
@@ -83,7 +84,13 @@ class HWObject:
                     break
                 part_weights[part[1]] = part_weight
 
-        self.criteria = Grading.Text.text.Criteria(part_weights, total_points, self.dir['key-output'])
+            print('Progressive points? (part 2 cannot be passed without part 1)')
+            print('[1] - yes')
+            print('[0] - no')
+            if IP.tools.input_num_range(0, 1) == 1:
+                prog_points = True
+
+        self.criteria = Grading.Text.text.Criteria(part_weights, total_points, self.dir['key-output'], prog_points)
 
     def generate_key_files(self):
         # making sure there are source files and test cases
@@ -155,7 +162,7 @@ class HWObject:
         print(f'\nSubmitted file types: {types_found}')
         print('Enter 2 to add all')
         for file_type in types_found:
-            choice = IP.tools.input_num_range(0, 2, message=f'Move student .{file_type} files\n1 - yes\n0 - no\n')
+            choice = IP.tools.input_num_range(0, 2, message=f'Move student .{file_type} files\n[1] - yes\n[0] - no\n')
             if choice == 1:
                 types_to_move.append(file_type)
             elif choice == 2:
@@ -179,7 +186,7 @@ class HWObject:
 
     def zip_report(self):
         # Note this will only go one folder deep into the temp folder, but this shouldn't be an issue
-        timestamp = datetime.now().strftime('%d-%b-%Y %I-%M-%S%p')
+        timestamp = datetime.now().strftime('%d-%b-%Y %I-%M-%S %p')
         with ZipFile(f'{join(self.dir["results"], timestamp)}.zip', 'w') as zip_obj:
             for folder in os.listdir(self.dir['TEMP']):
                 if os.path.isdir(join(self.dir['TEMP'], folder)):
@@ -204,7 +211,7 @@ class HWObject:
         self.move_student_files(source_dir, types_to_move)
 
         # run the student code on a bunch of threads and leaves the output.txt s
-        execution.run_students(self.dir['TEMP'])
+        out_files = execution.run_students(self.dir['TEMP'])
         # TODO need to have a way to grade the outputs based on if their parts are the same
         # TODO generate a xlsx or something with the student results and scores
 

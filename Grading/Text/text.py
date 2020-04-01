@@ -14,10 +14,23 @@ def find_parts(out_files):
 
 class Criteria:
 
-    def __init__(self, parts_in, points_in, key_in):
+    def __init__(self, parts_in, points_in, key_in, pp_in):
         self.parts = parts_in
         self.total_points = points_in
         self.key_folder = key_in
+        self.progressive_points = pp_in
 
-    def grade(self, folder_in):
-        print(f'Graded {folder_in}')
+    def grade(self, out_files):
+        # TODO I should probably load the key outputs a strings here
+        # TODO here I am going to make an excel report with xlrd of what people got on what parts
+
+        # TODO first make a dict with the ids and outputs
+        # outputs will be a dict as well with the testcase and the output
+        # raise an issue here if there are duplicates
+
+        print('Done grading')
+
+    def grade_student(self, files):
+
+    def write_xlsx_report(self):
+        print('Made report')

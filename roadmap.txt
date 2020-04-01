@@ -66,3 +66,6 @@ There should be a log of files run that would be nice, there also needs to be so
 Could maybe save a pickle?
 
 I should look into why I made the directory object a singleton
+
+I should add the ability to grade student code as modules not as main
+Maybe students will need to name their files correctly?
