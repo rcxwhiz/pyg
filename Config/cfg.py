@@ -12,8 +12,6 @@ reader.read('config.ini')
 
 base_directory = join(str(Path.home()), reader.get('File Structure', 'base_directory'))
 
-reweight = reader.getint('Grading', 'reweight')
-
 max_threads = reader.getint('Runtime', 'max_threads')
 max_out_lines = reader.getint('Runtime', 'max_out_lines')
 max_program_time = reader.getint('Runtime', 'max_program_time')
