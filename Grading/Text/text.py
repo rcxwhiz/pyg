@@ -31,6 +31,7 @@ class Criteria:
         print('Done grading')
 
     def grade_student(self, files):
+        print('grade student')
 
     def write_xlsx_report(self):
         print('Made report')

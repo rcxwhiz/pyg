@@ -1,47 +1,5 @@
-import sys
-from os.path import join
-from pathlib import Path
-
-from Config import cfg
-
-
-# used to make a config file if the storage location is set to default
-def change_config(new_name):
-    f = open('config.ini', 'r')
-    config_text = f.read().replace('default', new_name)
-    f.close()
-    f = open('config.ini', 'w')
-    f.write(config_text)
-    f.close()
-    print('Please restart the program')
-    sys.exit()
-
-
-# checks if the storage location is default
-# if it is, it prompts to try to make a new one and then exits
-if cfg.base_directory == 'default':
-
-    new_base_dir = join(str(Path.home()), 'AutoGrader')
-    if not Path.exists(Path(new_base_dir)):
-        print(f'[1] Create {new_base_dir} and use as base directory')
-        print(f'[0] Exit and change config.ini')
-        choice = -1
-        answer = -1
-        while answer < 0 or answer > 1:
-            try:
-                answer = int(input('\rOption: '))
-            except ValueError:
-                continue
-        if choice == 1:
-            change_config(new_base_dir)
-            print('Please restart the program')
-
-        sys.exit()
-    else:
-        change_config(new_base_dir)
-
-# begins the menu loop
-# import instructor program here because there are some things it does that depend on having a good base directory
+# begins the menu loop TODO it's not very cash money that this import runs stuff TODO maybe this goes in the same
+#  category as the issue of having the dirs object be a singleton since it doesn't store anything that gets mutated
 import InstructorProgram as IP
 
-IP.run()
+IP.start()

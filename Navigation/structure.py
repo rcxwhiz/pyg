@@ -12,29 +12,31 @@ from Config import cfg
 
 
 # this is to make the dirs object a singleton because it does stuff on initialization I think
-class DirsMeta(type):
-    _instance: Optional[Dirs] = None
+# class DirsMeta(type):
+#     _instance: Optional[Dirs] = None
+#
+#     def __call__(self) -> Dirs:
+#         if self._instance is None:
+#             self._instance = super().__call__()
+#         return self._instance
+# this is to make it not a singleton because why was it that
 
-    def __call__(self) -> Dirs:
-        if self._instance is None:
-            self._instance = super().__call__()
-        return self._instance
 
-
-class Dirs(metaclass=DirsMeta):
+class Dirs:
 
     def __init__(self):
         # initialize and get the directories
         self.base = cfg.base_directory
         self.assignment_dirs = []
-        self.required_dirs = ['key-source',
-                              'key-output',
-                              'student-source',
-                              'results',
-                              'test-cases']
+        self.required_assignment_dirs = ['key-source',
+                                         'key-output',
+                                         'student-source',
+                                         'results',
+                                         'test-cases']
         try:
             os.listdir(self.base)
         except FileNotFoundError:
+            print(f'Program location: {self.base} not found')
             print(f'[1] Create {self.base}')
             print(f'[0] Do not create {self.base}')
             create_new_base = IP.tools.input_num_range(0, 1)
@@ -91,6 +93,6 @@ class Dirs(metaclass=DirsMeta):
         if 'TEMP' in files:
             shutil.rmtree(join(self.base, assignment_dir, 'TEMP'), ignore_errors=True)
 
-        for file in self.required_dirs:
+        for file in self.required_assignment_dirs:
             if file not in files:
                 os.mkdir(join(self.base, assignment_dir, file))

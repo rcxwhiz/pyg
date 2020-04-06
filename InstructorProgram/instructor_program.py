@@ -9,15 +9,15 @@ version = 0.0
 dirs = Dirs()
 
 
+def start():
+    print(f'PYG v{version}', end='\n'*2)
+    print('Python Grader - Josh Bedwell')
+    run()
+
+
 # main loop-menu function
-def run(display_title=True):
-    if display_title:
-        print(f"""
-The Squad Automatic Grader
------------------------------------------
-
-Version - {version}
-
+def run():
+    print(f"""{'-'*25}
 Options:
 [1] Grade/modify an existing assignment
 [2] Create a directory for a new assignment
