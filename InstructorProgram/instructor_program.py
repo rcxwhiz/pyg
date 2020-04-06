@@ -36,7 +36,7 @@ Options:
 # interact with an assignment
 def grade():
     if len(dirs.assignment_dirs) == 0:
-        print('\nNo assignment directories created.')
+        print('\nNo assignment directories have been created')
         run()
 
     print('Select assignment to grade:')
