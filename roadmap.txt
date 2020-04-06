@@ -69,3 +69,7 @@ I should look into why I made the directory object a singleton
 
 I should add the ability to grade student code as modules not as main
 Maybe students will need to name their files correctly?
+
+Change it so that importing instructor program imports inputnumrange directly
+
+Make it so that if there are no test case folders a default test case is created (with a message)
