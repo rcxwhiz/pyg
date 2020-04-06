@@ -12,7 +12,7 @@ from Navigation.structure import Dirs
 no_ext_msg = 'no-extension'
 
 
-class HWObject:
+class Assignment:
 
     def __init__(self, assignment_name):
         # set assignment name and make directory object

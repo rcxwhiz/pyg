@@ -5,21 +5,9 @@ import pickle
 import shutil
 import sys
 from os.path import join
-from typing import Optional
 
 import InstructorProgram as IP
 from Config import cfg
-
-
-# this is to make the dirs object a singleton because it does stuff on initialization I think
-# class DirsMeta(type):
-#     _instance: Optional[Dirs] = None
-#
-#     def __call__(self) -> Dirs:
-#         if self._instance is None:
-#             self._instance = super().__call__()
-#         return self._instance
-# this is to make it not a singleton because why was it that
 
 
 class Dirs:
@@ -61,7 +49,7 @@ class Dirs:
             try:
                 os.mkdir(join(self.base, assignment_name))
 
-                pickle.dump(IP.HWObject(assignment_name),
+                pickle.dump(IP.Assignment(assignment_name),
                             open(join(self.base, assignment_name, f'{assignment_name}.assignment'), 'wb'))
 
                 self.update()
