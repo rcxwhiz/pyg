@@ -137,6 +137,7 @@ def run_file(py_file, out_file):
     # do security check on source code, don't run if issues are detected
     file_issues = security_check(student_source_code)
     if len(file_issues) > 0:
+        print(f'Did not run {py_file.split(os.sep)[-1]} for security reasons')
         open(out_file, 'w', encoding='utf-8').write(' + ILLEGAL CODE + \n' + '\n'.join(file_issues))
         return None
 

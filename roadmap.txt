@@ -7,7 +7,7 @@ Could include a batch and sh file for students to run or they could run it in sp
 The points will be awarded base on output matching or beginning with certain things
 Graphs will be compared as images
 
-This will be a terminal program.
+This will be a terminal program
 
 The student version will have a small GUI that simply says "please put your file here {file path + name}" and has
 a single run button, then it either has some popup or something showing what points were achieved and lost with
@@ -22,18 +22,10 @@ In the end when you run the instructor program, it will give you some sort of cs
 did and didn't get with a lot of homework stats and such
 A classlist could be imported/exported to keep track of people who didn't turn in the HW?
 
-There needs to be a way to reweight everything to 100
-
-Run student result stuff will go in a zip
-
-Could transplant my GUI for grading from before that would be sick
-
 Could make the points awarded progressive on number of cases passed or number of lines matched
 Could be set to some default linear scale of lines or test cases matched
 How would there be custom criteria for having certain things in the code?
 I will need to write out a few rubrics to figure it out
-
-The output files should be analyzed and give warnings if packages were attempted to be imported that didn't exist on the interpreter
 
 There should still be an option to grade (or at least look at) excel files
 Could actually grade them if given a template, could have a UI where you select the cells that matter
@@ -75,3 +67,5 @@ Change it so that importing instructor program imports inputnumrange directly
 Make it so that if there are no test case folders a default test case is created (with a message)
 
 Could possibly have a thing where it helps you enter stuff by copying the scores for you?
+
+Perhaps I should add linenumbers to the text viewers somehow?
