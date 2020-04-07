@@ -15,6 +15,7 @@ no_ext_msg = 'no-extension'
 class Assignment:
 
     def __init__(self, assignment_name):
+        # TODO this should not need to be pickled anymore
         # set assignment name and make directory object
         self.assignment_name = assignment_name
         dirs = Dirs()

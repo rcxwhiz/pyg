@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 import os
-import pickle
 import shutil
 import sys
 from os.path import join
@@ -49,8 +48,9 @@ class Dirs:
             try:
                 os.mkdir(join(self.base, assignment_name))
 
-                pickle.dump(IP.Assignment(assignment_name),
-                            open(join(self.base, assignment_name, f'{assignment_name}.assignment'), 'wb'))
+                # TODO here I am just writing something to mark this as an assigment directory
+                with open(f'{assignment_name}.assignment', 'w') as file:
+                    file.write('This file marks this directory as an assignment directory')
 
                 self.update()
 
@@ -70,8 +70,7 @@ class Dirs:
 
     def get_hw(self, assignment_index):
         self.initialize_dirs(assignment_index)
-        assignment_name = self.assignment_dirs[assignment_index]
-        return pickle.load(open(join(self.base, assignment_name, f'{assignment_name}.assignment'), 'rb'))
+        return IP.Assignment(self.assignment_dirs[assignment_index])
 
     def initialize_dirs(self, assignment_index):
         # will check if an assignment directory has all the valid things in it and create them

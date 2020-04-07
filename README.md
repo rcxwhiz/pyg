@@ -6,10 +6,8 @@ It is going to have a variety of features.
 
 To run this program run main.py
 
-This program uses the pickles module. Do not load pickles you do not trust, they can hold any code.
-
 Required 3rd party packages:
-- None yet
+- PYQT5
 
 To do list:
 - Make student code run
