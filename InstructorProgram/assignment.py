@@ -218,8 +218,25 @@ class Assignment:
         # make a zip file in results and copy everything from temp into it
         self.zip_report()
 
-        print('grade student code')
-
     def view_grading_report(self):
         # TODO make reporter object and pass it to the UI
-        print('view grading report')
+        # TODO this should also pop up a seperate window with the xlsx report (this would have to be from the program)
+
+        if len(os.listdir(self.dir['results'])) == 0:
+            print(f'No reports have been generated for {self.assignment_name} yet.')
+            return None
+
+        zips = []
+        for file in os.listdir(self.dir['results']):
+            if file.endswith('.zip'):
+                zips.append(file)
+        print('Choose report to view:')
+        for i, file in enumerate(zips):
+            print(f'[{i}] {file}')
+        print('[0] Cancel')
+        choice = IP.input_num_range(0, len(zips))
+        if choice == 0:
+            return None
+
+        viewer = IP.ui.Viewer(self.dir['results'], zips[choice - 1])
+        IP.ui.start_ui(viewer)
