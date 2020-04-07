@@ -69,4 +69,4 @@ class Viewer:
         return self.key_outputs[self.test_case_index]
 
     def test_case_name(self):
-        return # TODO I don't know how I'm sotring the test cases (name or index)
+        return self.test_cases[self.test_case_index]

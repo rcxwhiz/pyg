@@ -39,7 +39,7 @@ class Assignment:
     def clear_key(self):
         print('[1] Overwrite current key files')
         print('[0] Don\'t overwrite current key files')
-        choice = IP.tools.input_num_range(0, 1)
+        choice = IP.input_num_range(0, 1)
         if choice == 1:
             k = 0
             while True:
@@ -63,7 +63,7 @@ class Assignment:
 
     def set_criteria(self, problem_parts):
         # prompt for total points and points for the parts of the assignments etc...
-        total_points = IP.tools.input_num_range(1, 100, message='\nEnter the total weight of the assignment, 1-100: ')
+        total_points = IP.input_num_range(1, 100, message='\nEnter the total weight of the assignment, 1-100: ')
 
         part_weights = {}
         prog_points = False
@@ -77,7 +77,7 @@ class Assignment:
             print(', '.join(print_parts))
             print('Enter the point weight of each part 0-100, -1 to weight all evenly:')
             for part in problem_parts:
-                part_weight = IP.tools.input_num_range(-1, 100, message=f'{part[0]} {part[1]}: ')
+                part_weight = IP.input_num_range(-1, 100, message=f'{part[0]} {part[1]}: ')
                 if part_weight == -1:
                     for part2 in problem_parts:
                         part_weights[part2[1]] = 10
@@ -87,7 +87,7 @@ class Assignment:
             print('Progressive points? (part 2 cannot be passed without part 1)')
             print('[1] - yes')
             print('[0] - no')
-            if IP.tools.input_num_range(0, 1) == 1:
+            if IP.input_num_range(0, 1) == 1:
                 prog_points = True
 
         self.criteria = Grading.Text.text.Criteria(part_weights, total_points, self.dir['key-output'], prog_points)
@@ -134,7 +134,7 @@ class Assignment:
         print('Choose a batch of student files to grade from:')
         for i, source_dir in enumerate(source_dirs):
             print(f'[{i + 1}] - {source_dir}')
-        return join(self.dir['student-source'], source_dirs[IP.tools.input_num_range(1, len(source_dirs)) - 1])
+        return join(self.dir['student-source'], source_dirs[IP.input_num_range(1, len(source_dirs)) - 1])
 
     def get_ids_from_files(self, source_dir):
         student_ids = set()
@@ -162,7 +162,7 @@ class Assignment:
         print(f'\nSubmitted file types: {types_found}')
         print('Enter 2 to add all')
         for file_type in types_found:
-            choice = IP.tools.input_num_range(0, 2, message=f'Move student .{file_type} files\n[1] - yes\n[0] - no\n')
+            choice = IP.input_num_range(0, 2, message=f'Move student .{file_type} files\n[1] - yes\n[0] - no\n')
             if choice == 1:
                 types_to_move.append(file_type)
             elif choice == 2:
@@ -221,4 +221,5 @@ class Assignment:
         print('grade student code')
 
     def view_grading_report(self):
+        # TODO make reporter object and pass it to the UI
         print('view grading report')

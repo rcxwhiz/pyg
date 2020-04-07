@@ -73,3 +73,5 @@ Maybe students will need to name their files correctly?
 Change it so that importing instructor program imports inputnumrange directly
 
 Make it so that if there are no test case folders a default test case is created (with a message)
+
+Could possibly have a thing where it helps you enter stuff by copying the scores for you?

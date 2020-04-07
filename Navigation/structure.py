@@ -27,7 +27,7 @@ class Dirs:
             print(f'Program location: {self.base} not found')
             print(f'[1] Create {self.base}')
             print(f'[0] Do not create {self.base}')
-            create_new_base = IP.tools.input_num_range(0, 1)
+            create_new_base = IP.input_num_range(0, 1)
             if create_new_base == 1:
                 os.makedirs(self.base)
             else:

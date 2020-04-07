@@ -23,7 +23,7 @@ Options:
 [2] Create a directory for a new assignment
 [0] Exit
 """)
-    choice = IP.tools.input_num_range(0, 2)
+    choice = IP.input_num_range(0, 2)
     if choice == 1:
         grade()
     if choice == 2:
@@ -42,7 +42,7 @@ def grade():
     print('Select assignment to grade:')
     dirs.print_dirs()
     print('[0] Cancel\n')
-    assignment_num = IP.tools.input_num_range(0, len(dirs.assignment_dirs) + 1) - 1
+    assignment_num = IP.input_num_range(0, len(dirs.assignment_dirs) + 1) - 1
 
     if assignment_num == -1:
         run()
@@ -59,7 +59,7 @@ def grade():
     print('[3] Grade student code')
     print('[4] View grading report')
     print('[0] Cancel\n')
-    assignment_option = IP.tools.input_num_range(0, 4)
+    assignment_option = IP.input_num_range(0, 4)
 
     if assignment_option == 1:
         this_hw.generate_key_files()
