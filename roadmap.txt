@@ -69,3 +69,6 @@ Make it so that if there are no test case folders a default test case is created
 Could possibly have a thing where it helps you enter stuff by copying the scores for you?
 
 Perhaps I should add linenumbers to the text viewers somehow?
+
+Perhaps there should be a way to always mark a problem correct?
+Maybe the way the ruberic should be made is with a .ini file?

@@ -17,7 +17,8 @@ def start():
 
 # main loop-menu function
 def run():
-    print(f"""{'-'*25}
+    print('Menu')
+    print(f"""{'-' * 25}
 Options:
 [1] Grade/modify an existing assignment
 [2] Create a directory for a new assignment
