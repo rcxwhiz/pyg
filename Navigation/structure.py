@@ -48,13 +48,8 @@ class Dirs:
             try:
                 os.mkdir(join(self.base, assignment_name))
 
-                # TODO here I am just writing something to mark this as an assigment directory
-                with open(f'{assignment_name}.assignment', 'w') as file:
-                    file.write('This file marks this directory as an assignment directory')
-
+                self.initialize_dirs(join(self.base, assignment_name))
                 self.update()
-
-                self.initialize_dirs(self.assignment_dirs.index(assignment_name))
             except FileNotFoundError:
                 print('Cannot create a subdirectory')
         else:
@@ -69,12 +64,15 @@ class Dirs:
                 print(f'[{i + 1}] {folder}')
 
     def get_hw(self, assignment_index):
-        self.initialize_dirs(assignment_index)
+        self.initialize_dirs(join(self.base, self.assignment_dirs[assignment_index]))
         return IP.Assignment(self.assignment_dirs[assignment_index])
 
-    def initialize_dirs(self, assignment_index):
+    def initialize_dirs(self, assignment_dir):
+        # TODO here I am just writing something to mark this as an assigment directory
+        with open(join(assignment_dir, f'{assignment_dir.split(os.sep)[-1]}.assignment'), 'w') as file:
+            file.write('This file marks this directory as an assignment directory')
+
         # will check if an assignment directory has all the valid things in it and create them
-        assignment_dir = self.assignment_dirs[assignment_index]
         files = os.listdir(join(self.base, assignment_dir))
 
         if 'TEMP' in files:

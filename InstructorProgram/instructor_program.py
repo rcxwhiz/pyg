@@ -17,7 +17,7 @@ def start():
 
 # main loop-menu function
 def run():
-    print('Menu')
+    print('\nMenu')
     print(f"""{'-' * 25}
 Options:
 [1] Grade/modify an existing assignment
@@ -49,9 +49,6 @@ def grade():
         run()
     # create a hw object for the selected assignment
     this_hw = dirs.get_hw(assignment_num)
-
-    # check the object that got made to see if it has required directories
-    dirs.initialize_dirs(assignment_num)
 
     # print options for hw object
     print('\nOptions:')

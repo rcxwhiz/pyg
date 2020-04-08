@@ -101,7 +101,8 @@ class Assignment:
 
         # choose which directory of student files they should use
         if len(source_dirs) == 0:
-            print(f'No directories with student code found in {self.dir["student-source"]}. Returning to menu...')
+            print(f'No directories with student code found in {self.dir["student-source"]}.')
+            print('Returning to menu...')
             IP.run()
         print('Choose a batch of student files to grade from:')
         for i, source_dir in enumerate(source_dirs):
