@@ -4,10 +4,10 @@
  <widget class="QMainWindow" name="MainWindow">
   <property name="geometry">
    <rect>
-    <x>0</x>
-    <y>0</y>
-    <width>910</width>
-    <height>839</height>
+       <x>0</x>
+       <y>0</y>
+       <width>973</width>
+       <height>597</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -152,7 +152,7 @@ ID - Total Score</string>
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>910</width>
+        <width>973</width>
      <height>25</height>
     </rect>
    </property>
