@@ -1,5 +1,5 @@
-from zipfile import ZipFile
 from os.path import join
+from zipfile import ZipFile
 
 
 class Viewer:
@@ -8,7 +8,7 @@ class Viewer:
         ZipFile(join(folder, zip_file)).extractall()
 
         self.assignment_name = ''
-        self.student_info = {}
+        self.student_info = []
 
         self.key_source = ''
         self.key_outputs = {}
@@ -32,7 +32,20 @@ class Viewer:
         return self.formatter(self.index - 1)
 
     def current_name_id(self):
-        return self.formatter(self.index)
+        name_id = self.student_name_id_list[self.index]
+        parts = name_id.split('_')
+        last = parts[0]
+        first = parts[1]
+        student_id = parts[2]
+        content = f'{first} {last} ({self.index + 1}/{len(self.student_name_id_list)})\n'
+        content += f'{student_id} - Total score: {self.student_info[name_id]["total score"]}'
+        return content
+
+    def current_pass_fail(self):
+        if self.student_info[self.student_name_id_list[self.index]]['pass fail'][self.test_case_index]:
+            return 'Passed'
+        else:
+            return 'Failed'
 
     def formatter(self, index):
         parts = self.student_name_id_list[index].split('_')
@@ -49,6 +62,9 @@ class Viewer:
             self.index = len(self.student_name_id_list)
         else:
             self.index -= 1
+
+    def set_student_index(self, index):
+        self.index = index
 
     def set_test_case_index(self, index):
         self.test_case_index = index

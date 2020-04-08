@@ -8,7 +8,8 @@
 
 
 import sys
-from PyQt5 import QtCore, QtGui, QtWidgets
+
+from PyQt5 import QtCore, QtWidgets
 
 
 class Ui_MainWindow(object):
@@ -104,20 +105,65 @@ class Ui_MainWindow(object):
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
+        self.link_buttons()
+        self.update_ui()
+
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
-        MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
-        self.full_student_dropdown.setItemText(0, _translate("MainWindow", "Every"))
-        self.full_student_dropdown.setItemText(1, _translate("MainWindow", "Single"))
-        self.full_student_dropdown.setItemText(2, _translate("MainWindow", "Student"))
+        MainWindow.setWindowTitle(_translate("MainWindow", self.viewer.assignment_name))
+        for i in range(len(self.viewer.student_name_id_list)):
+            self.full_student_dropdown.setItemText(i, _translate("MainWindow", self.viewer.formatter(i)))
+
         self.prev_student_button.setText(_translate("MainWindow", "Previous Student - Name - ID"))
         self.next_student_button.setText(_translate("MainWindow", "Next Student - Name - ID"))
         self.key_file_label.setText(_translate("MainWindow", "Key Source \n"
-                                                             "Assignment Name"))
+                                                             f"{self.viewer.assignment_name}"))
         self.test_case_label.setText(_translate("MainWindow", "Test Case 1"))
-        self.student_label.setText(_translate("MainWindow", "Student Name\n"
+        self.student_label.setText(_translate("MainWindow", "Student Name (num/total)\n"
                                                             "ID - Total Score"))
         self.test_case_pass_fail_label.setText(_translate("MainWindow", "Passed / Failed"))
+        self.key_source_viewer.setText(self.viewer.key_source)
+
+    def link_buttons(self):
+        self.prev_student_button.clicked.connect(self.move_page_backward)
+        self.next_student_button.clicked.connect(self.move_page_forward)
+        self.test_case_changer.setMinimum(1)
+        self.test_case_changer.setMaximum(len(self.viewer.test_cases))
+        self.test_case_changer.valueChanged.connect(self.update_test_case)
+        self.full_student_dropdown.currentIndexChanged.connect(self.change_student_id)
+
+    def change_student_id(self):
+        self.viewer.set_student_index(self.full_student_dropdown.currentIndex())
+        self.update_ui()
+
+    def move_page_backward(self):
+        self.viewer.decrement()
+        self.update_ui()
+
+    def move_page_forward(self):
+        self.viewer.increment()
+        self.update_ui()
+
+    def update_test_case(self):
+        self.viewer.set_test_case_index(self.test_case_changer.value())
+        self.update_ui()
+
+    def update_ui(self):
+        self.prev_student_button.setText(self.viewer.prev_name_id())
+        self.next_student_button.setText(self.viewer.next_name_id())
+
+        self.test_case_label.setText(self.viewer.test_case_name())
+
+        self.student_label.setText(self.viewer.current_name_id())
+
+        self.test_case_pass_fail_label.setText(self.viewer.current_pass_fail())
+
+        self.key_output_viewer.setText(self.viewer.key_output())
+
+        self.student_source_viewer.setText(self.viewer.student_source_code())
+        self.student_output_viewer.setText(self.viewer.student_output())
+
+        self.full_student_dropdown.setCurrentIndex(self.viewer.index)
 
 def start_ui(viewer):
     app = QtWidgets.QApplication(sys.argv)
