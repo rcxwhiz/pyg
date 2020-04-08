@@ -9,6 +9,7 @@ import InstructorProgram as IP
 from FileExecution import execution
 from Navigation.structure import Dirs
 
+# this is the extension type assigned to files that don't have an extension
 no_ext_msg = 'no-extension'
 
 
@@ -34,7 +35,8 @@ class Assignment:
             return False
         if len(os.listdir(self.dir['test-cases'])) == 0:
             print(f'No dirs found in {self.dir["test-cases"]}')
-            return False
+            print('Creating a default test case')
+            os.mkdir(join(self.dir['test-cases'], 'default'))
         return True
 
     def clear_key(self):
@@ -57,6 +59,7 @@ class Assignment:
                 except PermissionError:
                     print(f'Permission error clearing the directory {self.dir["key-output"]}'
                           f'Please close it if it is open')
+                    # doing things like this where my call stack gets deeper and deeper are probably bad but...
                     IP.run()
             return True
         else:
