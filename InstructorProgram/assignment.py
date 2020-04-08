@@ -12,10 +12,10 @@ from Navigation.structure import Dirs
 no_ext_msg = 'no-extension'
 
 
+# TODO when this is finished I need to make all the static functions static (and make some static that aren't)
 class Assignment:
 
     def __init__(self, assignment_name):
-        # TODO this should not need to be pickled anymore
         # set assignment name and make directory object
         self.assignment_name = assignment_name
         dirs = Dirs()
@@ -61,37 +61,6 @@ class Assignment:
             return True
         else:
             return False
-
-    # def set_criteria(self, problem_parts):
-    #     # prompt for total points and points for the parts of the assignments etc...
-    #     total_points = IP.input_num_range(1, 100, message='\nEnter the total weight of the assignment, 1-100: ')
-    #
-    #     part_weights = {}
-    #     prog_points = False
-    #     if len(problem_parts) != 0:
-    #         print(
-    #             f'\n{len(problem_parts)} parts detected in the first test case ({os.listdir(self.dir["test-cases"])[0]})')
-    #         print('Parts:', end=' ')
-    #         print_parts = []
-    #         for part in problem_parts:
-    #             print_parts.append(f'{part[0]} {part[1]}')
-    #         print(', '.join(print_parts))
-    #         print('Enter the point weight of each part 0-100, -1 to weight all evenly:')
-    #         for part in problem_parts:
-    #             part_weight = IP.input_num_range(-1, 100, message=f'{part[0]} {part[1]}: ')
-    #             if part_weight == -1:
-    #                 for part2 in problem_parts:
-    #                     part_weights[part2[1]] = 10
-    #                 break
-    #             part_weights[part[1]] = part_weight
-    #
-    #         print('Progressive points? (part 2 cannot be passed without part 1)')
-    #         print('[1] - yes')
-    #         print('[0] - no')
-    #         if IP.input_num_range(0, 1) == 1:
-    #             prog_points = True
-    #
-    #     self.criteria = Grading.Text.text.Criteria(part_weights, total_points, self.dir['key-output'], prog_points)
 
     def generate_key_files(self):
         # making sure there are source files and test cases

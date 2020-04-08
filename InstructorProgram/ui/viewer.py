@@ -1,12 +1,6 @@
-from os.path import join
-from zipfile import ZipFile
-
-
 class Viewer:
 
     def __init__(self, folder, zip_file):
-        ZipFile(join(folder, zip_file)).extractall()
-
         self.assignment_name = ''
         self.student_info = []
 
@@ -21,6 +15,13 @@ class Viewer:
 
         # TODO load all this crap
         # TODO num test cases and students
+        """
+        The way this is going to work is I am going to load the data purely from the excel sheet and the given files
+        If there is an issue loading the files I am going to do a try except and just print that it was expected that
+        I would get whatever file and then move on
+        
+        I will... raise a file not found error that will be caught in assignment.py and stop the ui from launching
+        """
 
     def next_name_id(self):
         if self.index == len(self.student_name_id_list):
