@@ -11,9 +11,11 @@ import sys
 
 from PyQt5 import QtCore, QtWidgets
 
+import InstructorProgram as IP
+
 
 class Ui_MainWindow(object):
-    def setupUi(self, MainWindow, viewer):
+    def setupUi(self, MainWindow: QtWidgets.QMainWindow, viewer: IP.ui.viewer) -> None:
         self.viewer = viewer
 
         MainWindow.setObjectName("MainWindow")
@@ -105,7 +107,7 @@ class Ui_MainWindow(object):
         self.link_buttons()
         self.update_ui()
 
-    def retranslateUi(self, MainWindow):
+    def retranslateUi(self, MainWindow: QtWidgets.QMainWindow) -> None:
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", self.viewer.assignment_name))
         for i in range(len(self.viewer.student_name_id_list)):
@@ -121,7 +123,7 @@ class Ui_MainWindow(object):
         self.test_case_pass_fail_label.setText(_translate("MainWindow", "Passed / Failed"))
         self.key_source_viewer.setText(self.viewer.key_source)
 
-    def link_buttons(self):
+    def link_buttons(self) -> None:
         self.prev_student_button.clicked.connect(self.move_page_backward)
         self.next_student_button.clicked.connect(self.move_page_forward)
         self.test_case_changer.setMinimum(1)
@@ -129,23 +131,23 @@ class Ui_MainWindow(object):
         self.test_case_changer.valueChanged.connect(self.update_test_case)
         self.full_student_dropdown.currentIndexChanged.connect(self.change_student_id)
 
-    def change_student_id(self):
+    def change_student_id(self) -> None:
         self.viewer.set_student_index(self.full_student_dropdown.currentIndex())
         self.update_ui()
 
-    def move_page_backward(self):
+    def move_page_backward(self) -> None:
         self.viewer.decrement()
         self.update_ui()
 
-    def move_page_forward(self):
+    def move_page_forward(self) -> None:
         self.viewer.increment()
         self.update_ui()
 
-    def update_test_case(self):
+    def update_test_case(self) -> None:
         self.viewer.set_test_case_index(self.test_case_changer.value())
         self.update_ui()
 
-    def update_ui(self):
+    def update_ui(self) -> None:
         self.prev_student_button.setText(self.viewer.prev_name_id())
         self.next_student_button.setText(self.viewer.next_name_id())
 
@@ -162,7 +164,8 @@ class Ui_MainWindow(object):
 
         self.full_student_dropdown.setCurrentIndex(self.viewer.index)
 
-def start_ui(viewer):
+
+def start_ui(viewer: IP.ui.viewer) -> None:
     app = QtWidgets.QApplication(sys.argv)
     MainWindow = QtWidgets.QMainWindow()
     ui = Ui_MainWindow()

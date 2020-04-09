@@ -9,14 +9,14 @@ version = 0.0
 dirs = Dirs()
 
 
-def start():
-    print(f'PYG v{version}', end='\n'*2)
+def start() -> None:
+    print(f'PYG v{version}', end='\n' * 2)
     print('Python Grader - Josh Bedwell')
     run()
 
 
 # main loop-menu function
-def run():
+def run() -> None:
     print('\nMenu')
     print(f"""{'-' * 25}
 Options:
@@ -35,7 +35,7 @@ Options:
 
 
 # interact with an assignment
-def grade():
+def grade() -> None:
     if len(dirs.assignment_dirs) == 0:
         print('\nNo assignment directories have been created')
         run()
@@ -77,7 +77,7 @@ def grade():
 
 
 # this is where an assignment directory can be made
-def make_dir():
+def make_dir() -> None:
     print('\nCurrent assignments:')
     dirs.print_dirs()
     print('\nCreate a new assignment directory in your base directory (can be changed in config.ini)')

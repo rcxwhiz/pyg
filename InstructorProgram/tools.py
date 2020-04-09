@@ -2,7 +2,7 @@ import os
 
 
 # this function just makes sure you get a value in the range
-def input_num_range(low, high, message='Option: '):
+def input_num_range(low: int, high: int, message: str = 'Option: ') -> int:
     answer = -100
     while answer < low or answer > high:
         try:
@@ -12,7 +12,7 @@ def input_num_range(low, high, message='Option: '):
     return answer
 
 
-def generate_blank_ruberic(parts, file_name, assignment_name):
+def generate_blank_ruberic(parts: list, file_name: str, assignment_name: str) -> None:
     if os.path.exists(file_name):
         os.remove(file_name)
 

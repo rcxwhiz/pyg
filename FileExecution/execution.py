@@ -96,7 +96,7 @@ def run_students(temp_dir):
     return outs
 
 
-def run_file_group(run_pairs):
+def run_file_group(run_pairs: list) -> None:
     """
     This function takes a list of 2 item lists which are source file and destination file
     It mostly manages the threading
@@ -125,7 +125,7 @@ def run_file_group(run_pairs):
     print(f'[{ran}/{num_to_run}] Complete!')
 
 
-def run_file(py_file, out_file):
+def run_file(py_file: str, out_file: str) -> None:
     """
     Takes a source file and an output file and runs with checkoutput, then puts the results in the out file
     """
@@ -161,7 +161,7 @@ def run_file(py_file, out_file):
     os.remove(temp_script_name)
 
 
-def read_file(file):
+def read_file(file: str) -> str:
     """
     Returns a string from loading a file
     """

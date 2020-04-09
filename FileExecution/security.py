@@ -11,7 +11,7 @@ phrase_blacklist = [re.compile(r'input[ ]*\('),
                     re.compile(r'open[ ]*\(')]
 
 
-def security_check(source_code):
+def security_check(source_code: str) -> list:
     # will run the source code as a string through the security checkers and return a list of issues
     issues = []
     for issue in check_packages(source_code):
@@ -21,7 +21,7 @@ def security_check(source_code):
     return issues
 
 
-def check_packages(source_code):
+def check_packages(source_code: str) -> set:
     # use the regex to detect a set of the pakages imported
     bad_packages = set()
 
@@ -35,7 +35,7 @@ def check_packages(source_code):
     return bad_packages
 
 
-def check_phrases(source_code):
+def check_phrases(source_code: str) -> set:
     # check for bas strings inside the source code
     bad_phrases = set()
     for phrase in phrase_blacklist:

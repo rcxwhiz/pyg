@@ -16,7 +16,7 @@ no_ext_msg = 'no-extension'
 # TODO when this is finished I need to make all the static functions static (and make some static that aren't)
 class Assignment:
 
-    def __init__(self, assignment_name):
+    def __init__(self, assignment_name: str):
         # set assignment name and make directory object
         self.assignment_name = assignment_name
         dirs = Dirs()
@@ -29,7 +29,7 @@ class Assignment:
 
         # self.criteria = None
 
-    def can_run_key(self):
+    def can_run_key(self) -> bool:
         if len(os.listdir(self.dir['key-source'])) == 0:
             print(f'No source files found in {self.dir["key-source"]}')
             return False
@@ -39,7 +39,7 @@ class Assignment:
             os.mkdir(join(self.dir['test-cases'], 'default'))
         return True
 
-    def clear_key(self):
+    def clear_key(self) -> bool:
         print('[1] Overwrite current key files')
         print('[0] Don\'t overwrite current key files')
         choice = IP.input_num_range(0, 1)
@@ -65,7 +65,7 @@ class Assignment:
         else:
             return False
 
-    def generate_key_files(self):
+    def generate_key_files(self) -> None:
         # making sure there are source files and test cases
         if not self.can_run_key():
             return None
@@ -87,6 +87,8 @@ class Assignment:
 
         # find the parts of the assignment from the outfile list
         problem_parts = Grading.Text.text.find_parts(out_file_list)
+        if not problem_parts:
+            problem_parts = ['default']
 
         IP.tools.generate_blank_ruberic(problem_parts, join(self.dir['home'], 'ruberic.ini'), self.assignment_name)
         print(f'Please fill out {join(self.dir["home"], "ruberic.ini")}')
@@ -95,7 +97,7 @@ class Assignment:
     def export_student_tester(self):
         print('export student tester')
 
-    def choose_student_source_dir(self):
+    def choose_student_source_dir(self) -> str:
         # TODO maybe I could support having zip files here too for holding student code
         source_dirs = []
         for file in os.listdir(self.dir['student-source']):
@@ -112,7 +114,7 @@ class Assignment:
             print(f'[{i + 1}] - {source_dir}')
         return join(self.dir['student-source'], source_dirs[IP.input_num_range(1, len(source_dirs)) - 1])
 
-    def get_ids_from_files(self, source_dir):
+    def get_ids_from_files(self, source_dir: str) -> (list, set):
         student_ids = set()
         types_found = set()
         for file in os.listdir(source_dir):
@@ -123,7 +125,7 @@ class Assignment:
                 types_found.add(file.split('.')[-1])
         return sorted(student_ids), types_found
 
-    def make_temp_dir(self, student_ids):
+    def make_temp_dir(self, student_ids: list) -> None:
         # populate a directory that will get filled up and eventually zipped as the report
         if os.path.exists(self.dir['TEMP']):
             shutil.rmtree(self.dir['TEMP'])
@@ -133,7 +135,7 @@ class Assignment:
         for student_id in student_ids:
             os.mkdir(join(self.dir['TEMP'], student_id))
 
-    def get_types_to_move(self, types_found):
+    def get_types_to_move(self, types_found: set) -> list:
         types_to_move = []
         print(f'\nSubmitted file types: {types_found}')
         print('Enter 2 to add all')
@@ -146,7 +148,7 @@ class Assignment:
                 break
         return types_to_move
 
-    def move_student_files(self, source_dir, types_to_move):
+    def move_student_files(self, source_dir: str, types_to_move: list) -> None:
         # I HAVE DECIDED TO REMOVE THE IDS FROM THE FILES HERE
         for file in os.listdir(source_dir):
             try:
@@ -160,7 +162,7 @@ class Assignment:
                     file_name = '_'.join(file.split('_')[3:])
                     shutil.copyfile(join(source_dir, file), join(self.dir['TEMP'], file_id, file_name))
 
-    def zip_report(self):
+    def zip_report(self) -> None:
         # Note this will only go one folder deep into the temp folder, but this shouldn't be an issue
         timestamp = datetime.now().strftime('%d-%b-%Y %I-%M-%S %p')
         with ZipFile(f'{join(self.dir["results"], timestamp)}.zip', 'w') as zip_obj:
@@ -172,7 +174,7 @@ class Assignment:
                     zip_obj.write(join(self.dir['TEMP'], file), arcname=file)
         shutil.rmtree(self.dir['TEMP'])
 
-    def grade_student_code(self):
+    def grade_student_code(self) -> None:
         # TODO need to load the ini file (make a function in tools) and catch any errors loading it
 
         source_dir = self.choose_student_source_dir()
@@ -196,7 +198,7 @@ class Assignment:
         # make a zip file in results and copy everything from temp into it
         self.zip_report()
 
-    def view_grading_report(self):
+    def view_grading_report(self) -> None:
         # TODO make reporter object and pass it to the UI
         # TODO this should also pop up a seperate window with the xlsx report (this would have to be from the program)
 

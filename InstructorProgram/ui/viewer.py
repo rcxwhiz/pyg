@@ -8,7 +8,7 @@ import xlrd
 
 class Viewer:
 
-    def __init__(self, folder, zip_file):
+    def __init__(self, folder: str, zip_file: str):
         self.assignment_name = ''
         self.student_info = {}
 
@@ -40,6 +40,7 @@ class Viewer:
                     elif sub_file.endswith('.txt'):
                         if 'output' not in self.student_info[file].keys():
                             self.student_info[file]['output'] = {}
+                        # TODO I need to figure out how I am saving the txt files and load those here
                         # self.student_info[file]['output'][]
 
         if not found_xlsx:
@@ -56,7 +57,7 @@ class Viewer:
         I will... raise a file not found error that will be caught in assignment.py and stop the ui from launching
         """
 
-    def get_data_from_xlsx(self, full_path):
+    def get_data_from_xlsx(self, full_path: str) -> None:
         wb = xlrd.open_workbook(full_path)
         sheet = wb.sheet_by_name('Grades')
         num_parts = 0
@@ -92,16 +93,16 @@ class Viewer:
             else:
                 break
 
-    def next_name_id(self):
+    def next_name_id(self) -> str:
         if self.index == len(self.student_name_id_list):
             return self.formatter(0)
         else:
             return self.formatter(self.index + 1)
 
-    def prev_name_id(self):
+    def prev_name_id(self) -> str:
         return self.formatter(self.index - 1)
 
-    def current_name_id(self):
+    def current_name_id(self) -> str:
         name_id = self.student_name_id_list[self.index]
         parts = name_id.split('_')
         last = parts[0]
@@ -111,45 +112,45 @@ class Viewer:
         content += f'{student_id} - Total score: {self.student_info[name_id]["total score"]}'
         return content
 
-    def current_pass_fail(self):
+    def current_pass_fail(self) -> str:
         return self.student_info[self.student_name_id_list[self.index]]['pass fail'][self.test_case_index]
 
-    def formatter(self, index):
+    def formatter(self, index: int) -> str:
         parts = self.student_name_id_list[index].split('_')
         return f'{parts[1]} {parts[0]} - {parts[2]}'
 
-    def increment(self):
+    def increment(self) -> None:
         if self.index == len(self.student_name_id_list):
             self.index = 0
         else:
             self.index += 1
 
-    def decrement(self):
+    def decrement(self) -> None:
         if self.index == 0:
             self.index = len(self.student_name_id_list)
         else:
             self.index -= 1
 
-    def set_student_index(self, index):
+    def set_student_index(self, index: int) -> None:
         self.index = index
 
-    def set_test_case_index(self, index):
+    def set_test_case_index(self, index: int) -> None:
         self.test_case_index = index
 
-    def student_source_code(self):
+    def student_source_code(self) -> str:
         return self.student_info[self.student_name_id_list[self.index]]['source']
 
-    def student_output(self):
+    def student_output(self) -> str:
         return self.student_info[self.student_name_id_list[self.index]]['output'][self.test_case_index]
 
-    def student_case_score(self):
+    def student_case_score(self) -> str:
         return self.student_info[self.student_name_id_list[self.index]]['score'][self.test_case_index]
 
-    def student_total_score(self):
+    def student_total_score(self) -> str:
         return self.student_info[self.student_name_id_list[self.index]]['total score']
 
-    def key_output(self):
+    def key_output(self) -> str:
         return self.key_outputs[self.test_case_index]
 
-    def test_case_name(self):
+    def test_case_name(self) -> str:
         return self.test_cases[self.test_case_index]
