@@ -6,8 +6,8 @@ from zipfile import ZipFile
 
 import Grading
 import InstructorProgram as IP
+from Config import cfg
 from FileExecution import execution
-from Navigation.structure import Dirs
 
 # this is the extension type assigned to files that don't have an extension
 no_ext_msg = 'no-extension'
@@ -19,10 +19,9 @@ class Assignment:
     def __init__(self, assignment_name: str):
         # set assignment name and make directory object
         self.assignment_name = assignment_name
-        dirs = Dirs()
 
         # make dir dictionary with all directories relevant to this HW
-        self.dir = {'home': join(dirs.base, assignment_name)}
+        self.dir = {'home': join(cfg.base_directory, assignment_name)}
         for other_dir in ['key-output', 'key-source', 'results', 'student-source', 'test-cases',
                           'TEMP']:
             self.dir[other_dir] = join(self.dir['home'], other_dir)

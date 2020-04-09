@@ -53,7 +53,7 @@ class Viewer:
         The way this is going to work is I am going to load the data purely from the excel sheet and the given files
         If there is an issue loading the files I am going to do a try except and just print that it was expected that
         I would get whatever file and then move on
-        
+
         I will... raise a file not found error that will be caught in assignment.py and stop the ui from launching
         """
 

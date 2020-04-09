@@ -3,8 +3,9 @@ import shutil
 import sys
 from os.path import join
 
-import InstructorProgram as IP
+from Assignment.assignment import Assignment
 from Config import cfg
+from InstructorProgram.tools import input_num_range
 
 
 class Dirs:
@@ -24,7 +25,7 @@ class Dirs:
             print(f'Program location: {self.base} not found')
             print(f'[1] Create {self.base}')
             print(f'[0] Do not create {self.base}')
-            create_new_base = IP.input_num_range(0, 1)
+            create_new_base = input_num_range(0, 1)
             if create_new_base == 1:
                 os.makedirs(self.base)
             else:
@@ -61,9 +62,9 @@ class Dirs:
             for i, folder in enumerate(self.assignment_dirs):
                 print(f'[{i + 1}] {folder}')
 
-    def get_hw(self, assignment_index: int) -> IP.Assignment:
+    def get_hw(self, assignment_index: int) -> Assignment:
         self.initialize_dirs(join(self.base, self.assignment_dirs[assignment_index]))
-        return IP.Assignment(self.assignment_dirs[assignment_index])
+        return Assignment(self.assignment_dirs[assignment_index])
 
     def initialize_dirs(self, assignment_dir: str) -> None:
         # TODO here I am just writing something to mark this as an assigment directory

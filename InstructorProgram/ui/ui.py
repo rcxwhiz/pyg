@@ -11,11 +11,11 @@ import sys
 
 from PyQt5 import QtCore, QtWidgets
 
-import InstructorProgram as IP
+from Viewer.viewer import Viewer
 
 
 class Ui_MainWindow(object):
-    def setupUi(self, MainWindow: QtWidgets.QMainWindow, viewer: IP.ui.viewer) -> None:
+    def setupUi(self, MainWindow: QtWidgets.QMainWindow, viewer: Viewer) -> None:
         self.viewer = viewer
 
         MainWindow.setObjectName("MainWindow")
@@ -165,7 +165,7 @@ class Ui_MainWindow(object):
         self.full_student_dropdown.setCurrentIndex(self.viewer.index)
 
 
-def start_ui(viewer: IP.ui.viewer) -> None:
+def start_ui(viewer: Viewer) -> None:
     app = QtWidgets.QApplication(sys.argv)
     MainWindow = QtWidgets.QMainWindow()
     ui = Ui_MainWindow()
