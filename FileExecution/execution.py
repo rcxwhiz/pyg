@@ -4,6 +4,7 @@ import subprocess
 import sys
 import threading
 from os.path import join
+from typing import List
 
 import InstructorProgram.instructor_program
 from Config import cfg
@@ -17,7 +18,7 @@ error_msgs = {'unicode': '\n[GRADER] Unicode decode error',
                           f'lines\nThe full output is located in the output file for this script'}
 
 
-def run_key(assignment_dir):
+def run_key(assignment_dir: str) -> List[str]:
     """
     This function will take the assignment directory and run stuff from key source to populate key output
     It will run stuff on threads and write files and ask for a grading criteria that needs to be saved
@@ -82,7 +83,7 @@ def run_key(assignment_dir):
     return out_file_list
 
 
-def run_students(temp_dir):
+def run_students(temp_dir: str) -> List[str]:
     file_groups = []
     for dir_ in os.listdir(temp_dir):
         if os.path.isdir(dir_):
@@ -96,7 +97,7 @@ def run_students(temp_dir):
     return outs
 
 
-def run_file_group(run_pairs: list) -> None:
+def run_file_group(run_pairs: List[List[str]]) -> None:
     """
     This function takes a list of 2 item lists which are source file and destination file
     It mostly manages the threading

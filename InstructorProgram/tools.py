@@ -1,4 +1,5 @@
 import os
+from typing import List
 
 
 # this function just makes sure you get a value in the range
@@ -12,7 +13,7 @@ def input_num_range(low: int, high: int, message: str = 'Option: ') -> int:
     return answer
 
 
-def generate_blank_ruberic(parts: list, file_name: str, assignment_name: str) -> None:
+def generate_blank_ruberic(parts: List[str], file_name: str, assignment_name: str) -> None:
     if os.path.exists(file_name):
         os.remove(file_name)
 

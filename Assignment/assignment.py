@@ -2,6 +2,7 @@ import os
 import shutil
 from datetime import datetime
 from os.path import join
+from typing import List, Set, Tuple
 from zipfile import ZipFile
 
 import Grading
@@ -113,7 +114,7 @@ class Assignment:
             print(f'[{i + 1}] - {source_dir}')
         return join(self.dir['student-source'], source_dirs[IP.input_num_range(1, len(source_dirs)) - 1])
 
-    def get_ids_from_files(self, source_dir: str) -> (list, set):
+    def get_ids_from_files(self, source_dir: str) -> Tuple[List[str], Set[str]]:
         student_ids = set()
         types_found = set()
         for file in os.listdir(source_dir):
@@ -124,7 +125,7 @@ class Assignment:
                 types_found.add(file.split('.')[-1])
         return sorted(student_ids), types_found
 
-    def make_temp_dir(self, student_ids: list) -> None:
+    def make_temp_dir(self, student_ids: List[str]) -> None:
         # populate a directory that will get filled up and eventually zipped as the report
         if os.path.exists(self.dir['TEMP']):
             shutil.rmtree(self.dir['TEMP'])
@@ -134,7 +135,7 @@ class Assignment:
         for student_id in student_ids:
             os.mkdir(join(self.dir['TEMP'], student_id))
 
-    def get_types_to_move(self, types_found: set) -> list:
+    def get_types_to_move(self, types_found: Set[str]) -> List[str]:
         types_to_move = []
         print(f'\nSubmitted file types: {types_found}')
         print('Enter 2 to add all')
@@ -147,7 +148,7 @@ class Assignment:
                 break
         return types_to_move
 
-    def move_student_files(self, source_dir: str, types_to_move: list) -> None:
+    def move_student_files(self, source_dir: str, types_to_move: List[str]) -> None:
         # I HAVE DECIDED TO REMOVE THE IDS FROM THE FILES HERE
         for file in os.listdir(source_dir):
             try:

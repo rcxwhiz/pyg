@@ -1,4 +1,5 @@
 import re
+from typing import List, Set
 
 package_whitelist = ['numpy',
                      'matplotlib',
@@ -11,7 +12,7 @@ phrase_blacklist = [re.compile(r'input[ ]*\('),
                     re.compile(r'open[ ]*\(')]
 
 
-def security_check(source_code: str) -> list:
+def security_check(source_code: str) -> List[str]:
     # will run the source code as a string through the security checkers and return a list of issues
     issues = []
     for issue in check_packages(source_code):
@@ -21,7 +22,7 @@ def security_check(source_code: str) -> list:
     return issues
 
 
-def check_packages(source_code: str) -> set:
+def check_packages(source_code: str) -> Set[str]:
     # use the regex to detect a set of the pakages imported
     bad_packages = set()
 
@@ -35,11 +36,11 @@ def check_packages(source_code: str) -> set:
     return bad_packages
 
 
-def check_phrases(source_code: str) -> set:
-    # check for bas strings inside the source code
+def check_phrases(source_code: str) -> Set[str]:
+    # check for bad strings inside the source code
     bad_phrases = set()
     for phrase in phrase_blacklist:
         match = re.match(phrase, source_code)
         if match:
-            bad_phrases.add(match)
+            bad_phrases.add(str(match))
     return bad_phrases
