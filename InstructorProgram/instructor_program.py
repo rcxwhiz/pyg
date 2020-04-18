@@ -3,10 +3,10 @@ import sys
 
 import InstructorProgram as IP
 from Config import cfg
-from Navigation.structure import Dirs
+from Navigation.structure import Navigator
 
 version = 0.0
-dirs = Dirs()
+dirs = Navigator()
 
 
 def start() -> None:
@@ -48,7 +48,7 @@ def grade() -> None:
     if assignment_num == -1:
         run()
     # create a hw object for the selected assignment
-    this_hw = dirs.get_hw(assignment_num)
+    this_hw = dirs.get_assignment(assignment_num)
 
     # print options for hw object
     print('\nOptions:')

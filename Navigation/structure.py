@@ -8,7 +8,7 @@ from Config import cfg
 from InstructorProgram.tools import input_num_range
 
 
-class Dirs:
+class Navigator:
 
     def __init__(self):
         # initialize and get the directories
@@ -62,7 +62,7 @@ class Dirs:
             for i, folder in enumerate(self.assignment_dirs):
                 print(f'[{i + 1}] {folder}')
 
-    def get_hw(self, assignment_index: int) -> Assignment:
+    def get_assignment(self, assignment_index: int) -> Assignment:
         self.initialize_dirs(join(self.base, self.assignment_dirs[assignment_index]))
         return Assignment(self.assignment_dirs[assignment_index])
 

@@ -1,1 +1,1 @@
-import Navigation.structure
+from Navigation.structure import Navigator
