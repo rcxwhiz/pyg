@@ -196,6 +196,7 @@ class Assignment:
         # run the student code on a bunch of threads and leaves the output.txt s
         out_files = execution.run_students(self.dir['TEMP'])
         # TODO need to have a way to grade the outputs based on if their parts are the same
+        grades = Grading.Text.text.grade_students(self.dir['home'], out_files)
         # TODO generate a xlsx or something with the student results and scores
 
         # make a zip file in results and copy everything from temp into it

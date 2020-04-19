@@ -1,16 +1,29 @@
+import os
 import re
-from typing import List
+import typing
 
 part_re = re.compile(r'([P|p][A|a][R|r][T|t][ ]*[:]?[-]*[ ]*)([a-zA-Z]|[0-9]+)')
 
 
-def find_parts(out_files: List[str]) -> List[List[str]]:
+def find_parts(out_files: typing.List[str]) -> typing.List[typing.List[str]]:
     # make a list of parts using regex from a given out file (not string)
     found_parts = []
     hits = re.findall(part_re, open(out_files[0], 'r', encoding='utf-8').read())
     for hit in hits:
         found_parts.append([hit[0], hit[1]])
     return found_parts
+
+
+grade_type = typing.Dict[typing.Tuple[str], typing.Dict[str, int]]
+
+
+def grade_students(assignment_dir: str, student_out_files: typing.List[str]) -> grade_type:
+    student_grades = {}
+    for file in student_out_files:
+        student_id = tuple(file.split(os.sep)[-1].split('_')[:3])
+        student_grades[student_id] = {'test': 0}
+
+    return student_grades
 
 
 class Criteria:
