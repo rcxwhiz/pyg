@@ -105,9 +105,8 @@ class Assignment:
 
         # choose which directory of student files they should use
         if len(source_dirs) == 0:
-            print(f'No directories with student code found in {self.dir["student-source"]}.')
-            print('Returning to menu...')
             return ''
+
         print('Choose a batch of student files to grade from:')
         for i, source_dir in enumerate(source_dirs):
             print(f'[{i + 1}] - {source_dir}')
@@ -178,6 +177,11 @@ class Assignment:
 
         source_dir = self.choose_student_source_dir()
 
+        if source_dir == '':
+            print('There are no student source directories in')
+            print(join(cfg.base_directory, self.dir['student-source']))
+            return None
+
         # get the student ids from the files in the selected student source directory
         student_ids, types_found = self.get_ids_from_files(source_dir)
 
@@ -202,7 +206,7 @@ class Assignment:
         # TODO this should also pop up a seperate window with the xlsx report (this would have to be from the program)
 
         if len(os.listdir(self.dir['results'])) == 0:
-            print(f'No reports have been generated for {self.assignment_name} yet.')
+            print(f'No reports have been generated for {self.assignment_name} yet')
             return None
 
         zips = []

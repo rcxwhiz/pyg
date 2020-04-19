@@ -7,8 +7,6 @@ Could include a batch and sh file for students to run or they could run it in sp
 The points will be awarded base on output matching or beginning with certain things
 Graphs will be compared as images
 
-This will be a terminal program
-
 The student version will have a small GUI that simply says "please put your file here {file path + name}" and has
 a single run button, then it either has some popup or something showing what points were achieved and lost with
 comparisons between the student outfiles and the given key outfiles
@@ -31,44 +29,12 @@ There should still be an option to grade (or at least look at) excel files
 Could actually grade them if given a template, could have a UI where you select the cells that matter
 Could test to see if the cell value vs equation are the same to make sure they didn't just punch it in
 
-The UI should be able to resize (text windows grow and shrink, labels start to scroll?)
-
-On the python viewing GUI, it should attempt to stay on the same problem number when switching between students
-Finding a way to bind the arrow keys would be pretty lit
-
-It would be cool if it had all the old functionality so it still worked for HWs without strict formatting
-
-When transplanting the GUI make it so that things like file name number and student are on different lines / in different labels
-
-Figure out why sometimes the program killed unresponsive message comes up when it theoretically shouldn't (I think this is just due to volume of programs)
-
 There should be some built in diff checking to show what % similarity there is between student files
 
-As of this moment, weighting different test cases has been tabled
-
-There are some serious security risks going on here that probably require at least screening imported packages and
-writing files
-
-Make it so that legal imports are found from sag info or something
-Probably rename it to HW settings
-
-I think there is an issue where headers are getting removed from source files?
-
 There should be a log of files run that would be nice, there also needs to be some way to store the criteria
-Could maybe save a pickle?
-
-I should look into why I made the directory object a singleton
-
-I should add the ability to grade student code as modules not as main
-Maybe students will need to name their files correctly?
-
-Change it so that importing instructor program imports inputnumrange directly
-
-Make it so that if there are no test case folders a default test case is created (with a message)
 
 Could possibly have a thing where it helps you enter stuff by copying the scores for you?
 
 Perhaps I should add linenumbers to the text viewers somehow?
 
-Perhaps there should be a way to always mark a problem correct?
 Maybe the way the ruberic should be made is with a .ini file?

@@ -1,12 +1,12 @@
 import Config as cfg
 from PYGUtils import *
 
-version = '0.0'
+VERSION = '0.0'
 navi = Navigator()
 
 
 def main() -> None:
-    print(f'PYG v{version}')
+    print(f'PYG v{VERSION}')
     print('Python Grader - Josh Bedwell')
 
     while True:
@@ -28,13 +28,11 @@ def main() -> None:
             return None
 
 
-if __name__ == '__main__':
-    main()
-
-
 def grade() -> None:
+    print('')
+
     if len(navi.assignment_dirs) == 0:
-        print('\nNo assignment directories have been created')
+        print('No assignment directories have been created')
         return None
 
     print('Select an assignment to grade:')
@@ -81,3 +79,7 @@ def make_dir() -> None:
             break
         else:
             navi.create_new(new_dir)
+
+
+if __name__ == '__main__':
+    main()
