@@ -1,14 +1,14 @@
-import os
 import shutil
 from datetime import datetime
 from os.path import join
-from typing import List, Set, Tuple
+# from typing import List, Set, Tuple
 from zipfile import ZipFile
 
 import Grading
-import InstructorProgram as IP
+import UI
 from Config import cfg
 from FileExecution import execution
+from PYGUtils import *
 
 # this is the extension type assigned to files that don't have an extension
 no_ext_msg = 'no-extension'
@@ -42,14 +42,14 @@ class Assignment:
     def clear_key(self) -> bool:
         print('[1] Overwrite current key files')
         print('[0] Don\'t overwrite current key files')
-        choice = IP.input_num_range(0, 1)
+        choice = input_range(0, 1)
         if choice == 1:
             k = 0
             while True:
                 k += 1
                 if k > 25:
                     print(f'There was an issue clearing {self.dir["key output"]}')
-                    IP.run()
+                    return False
                 try:
                     shutil.rmtree(self.dir['key-output'], ignore_errors=True)
                     os.mkdir(self.dir['key-output'])
@@ -59,8 +59,7 @@ class Assignment:
                 except PermissionError:
                     print(f'Permission error clearing the directory {self.dir["key-output"]}'
                           f'Please close it if it is open')
-                    # doing things like this where my call stack gets deeper and deeper are probably bad but...
-                    IP.run()
+                    return False
             return True
         else:
             return False
@@ -83,14 +82,14 @@ class Assignment:
             if ' + ILLEGAL CODE + ' in execution.read_file(file):
                 print(execution.read_file(file))
                 print('\nGrading criteria cannot be created. Returning to menu...')
-                IP.run()
+                return None
 
         # find the parts of the assignment from the outfile list
         problem_parts = Grading.Text.text.find_parts(out_file_list)
         if not problem_parts:
             problem_parts = ['default']
 
-        IP.tools.generate_blank_ruberic(problem_parts, join(self.dir['home'], 'ruberic.ini'), self.assignment_name)
+        generate_blank_ruberic(problem_parts, join(self.dir['home'], 'ruberic.ini'), self.assignment_name)
         print(f'Please fill out {join(self.dir["home"], "ruberic.ini")}')
         print('in order to be able to grade the file.')
 
@@ -108,13 +107,13 @@ class Assignment:
         if len(source_dirs) == 0:
             print(f'No directories with student code found in {self.dir["student-source"]}.')
             print('Returning to menu...')
-            IP.run()
+            return ''
         print('Choose a batch of student files to grade from:')
         for i, source_dir in enumerate(source_dirs):
             print(f'[{i + 1}] - {source_dir}')
-        return join(self.dir['student-source'], source_dirs[IP.input_num_range(1, len(source_dirs)) - 1])
+        return join(self.dir['student-source'], source_dirs[input_range(1, len(source_dirs)) - 1])
 
-    def get_ids_from_files(self, source_dir: str) -> Tuple[List[str], Set[str]]:
+    def get_ids_from_files(self, source_dir: str) -> typing.Tuple[typing.List[str], typing.Set[str]]:
         student_ids = set()
         types_found = set()
         for file in os.listdir(source_dir):
@@ -125,7 +124,7 @@ class Assignment:
                 types_found.add(file.split('.')[-1])
         return sorted(student_ids), types_found
 
-    def make_temp_dir(self, student_ids: List[str]) -> None:
+    def make_temp_dir(self, student_ids: typing.List[str]) -> None:
         # populate a directory that will get filled up and eventually zipped as the report
         if os.path.exists(self.dir['TEMP']):
             shutil.rmtree(self.dir['TEMP'])
@@ -135,12 +134,12 @@ class Assignment:
         for student_id in student_ids:
             os.mkdir(join(self.dir['TEMP'], student_id))
 
-    def get_types_to_move(self, types_found: Set[str]) -> List[str]:
+    def get_types_to_move(self, types_found: typing.Set[str]) -> typing.List[str]:
         types_to_move = []
         print(f'\nSubmitted file types: {types_found}')
         print('Enter 2 to add all')
         for file_type in types_found:
-            choice = IP.input_num_range(0, 2, message=f'Move student .{file_type} files\n[1] - yes\n[0] - no\n')
+            choice = input_range(0, 2, message=f'Move student .{file_type} files\n[1] - yes\n[0] - no\n')
             if choice == 1:
                 types_to_move.append(file_type)
             elif choice == 2:
@@ -148,7 +147,7 @@ class Assignment:
                 break
         return types_to_move
 
-    def move_student_files(self, source_dir: str, types_to_move: List[str]) -> None:
+    def move_student_files(self, source_dir: str, types_to_move: typing.List[str]) -> None:
         # I HAVE DECIDED TO REMOVE THE IDS FROM THE FILES HERE
         for file in os.listdir(source_dir):
             try:
@@ -214,9 +213,9 @@ class Assignment:
         for i, file in enumerate(zips):
             print(f'[{i}] {file}')
         print('[0] Cancel')
-        choice = IP.input_num_range(0, len(zips))
+        choice = input_range(0, len(zips))
         if choice == 0:
             return None
 
-        viewer = IP.ui.Viewer(self.dir['results'], zips[choice - 1])
-        IP.ui.start_ui(viewer)
+        viewer = UI.Viewer(self.dir['results'], zips[choice - 1])
+        UI.start_ui(viewer)

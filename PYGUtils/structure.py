@@ -5,7 +5,7 @@ from os.path import join
 
 from Assignment.assignment import Assignment
 from Config import cfg
-from InstructorProgram.tools import input_num_range
+from PYGUtils import input_range
 
 
 class Navigator:
@@ -25,12 +25,12 @@ class Navigator:
             print(f'Program location: {self.base} not found')
             print(f'[1] Create {self.base}')
             print(f'[0] Do not create {self.base}')
-            create_new_base = input_num_range(0, 1)
+            create_new_base = input_range(0, 1)
             if create_new_base == 1:
                 os.makedirs(self.base)
             else:
                 print('Please change base directory in config.ini')
-                sys.exit()
+                sys.exit(input('Press enter to exit...'))
 
         self.update()
 

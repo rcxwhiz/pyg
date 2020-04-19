@@ -1,16 +1,12 @@
-import os
-
 import Config as cfg
-import InstructorProgram as IP
-import Navigation
+from PYGUtils import *
 
 version = '0.0'
-navi = Navigation.Navigator()
+navi = Navigator()
 
 
 def main() -> None:
-    # TODO add lots of stuff here (menu)
-    print(f'PYG v{version}', end='\n' * 2)
+    print(f'PYG v{version}')
     print('Python Grader - Josh Bedwell')
 
     while True:
@@ -21,7 +17,7 @@ def main() -> None:
         print('[2] Create a directory for a new assignment')
         print('[0] Exit')
 
-        choice = IP.input_num_range(0, 2)
+        choice = input_range(0, 2)
 
         if choice == 1:
             grade()
@@ -44,7 +40,7 @@ def grade() -> None:
     print('Select an assignment to grade:')
     navi.print_dirs()
     print('[0] Cancel\n')
-    assignment_num = IP.input_num_range(0, len(navi.assignment_dirs) + 1) - 1
+    assignment_num = input_range(0, len(navi.assignment_dirs) + 1) - 1
 
     if assignment_num == -1:
         return None
@@ -57,7 +53,7 @@ def grade() -> None:
     print('[3] Grade student code')
     print('[4] View grading report')
     print('[0] Cancel\n')
-    assignment_option = IP.input_num_range(0, 4)
+    assignment_option = input_range(0, 4)
 
     if assignment_option == 1:
         assignment.generate_key_files()

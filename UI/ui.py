@@ -11,7 +11,7 @@ import sys
 
 from PyQt5 import QtCore, QtWidgets
 
-from Viewer.viewer import Viewer
+from Viewer import Viewer
 
 
 class Ui_MainWindow(object):

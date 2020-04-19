@@ -6,9 +6,8 @@ import threading
 from os.path import join
 from typing import List
 
-import InstructorProgram.instructor_program
 from Config import cfg
-from FileExecution import scripting
+from FileExecution import script_additions
 from FileExecution.security import security_check
 
 # some of these messages never get used but they can be appended to things
@@ -33,7 +32,7 @@ def run_key(assignment_dir: str) -> List[str]:
         print(f'No test case directories found in {join(assignment_dir, "test-cases")}')
         print(f'If you want to run without any input files, just create an empty directory\n'
               f'inside of {join(assignment_dir, "test-cases")}')
-        InstructorProgram.instructor_program.run()
+        return []
 
     # get the key source file
     key_source_file = ''
@@ -46,7 +45,7 @@ def run_key(assignment_dir: str) -> List[str]:
             break
     if key_source_file == '':
         print(f'There was no python key file in: {join(assignment_dir, "key-source")}')
-        InstructorProgram.instructor_program.run()
+        return []
 
     # copy all test case files into temporary running directories
     run_pairs = []
@@ -143,7 +142,7 @@ def run_file(py_file: str, out_file: str) -> None:
         return None
 
     # append and prepend to source code - the write the file
-    full_script = (scripting.prepend + student_source_code + scripting.append)
+    full_script = (script_additions.prepend + student_source_code + script_additions.append)
     if cfg.max_program_time > 0:
         kill_time = cfg.max_program_time
     else:

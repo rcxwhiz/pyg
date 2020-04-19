@@ -12,7 +12,7 @@ try:
     reader.read('config.ini')
 except FileNotFoundError:
     print(f"Couldn't find {join(os.getcwd(), 'config.ini')}")
-    sys.exit()
+    sys.exit(input('Press enter to exit...'))
 
 base_directory = join(str(Path.home()), reader.get('File Structure', 'base_directory'))
 
