@@ -4,6 +4,8 @@ import re
 import typing
 from os.path import join
 
+from StudentReport import StudentReport
+
 part_re = re.compile(r'([P|p][A|a][R|r][T|t][ ]*[:]?[-]*[ ]*)([a-zA-Z]|[0-9]+)')
 part_output_re = re.compile(
     r'([P|p][A|a][R|r][T|t][ ]*[:]?[-]*[ ]*)([a-zA-Z]|[0-9]+)(.*)([P|p][A|a][R|r][T|t][ ]*[:]?[-]*[ ]*[a-zA-Z]|[0-9]+)?')
@@ -18,16 +20,14 @@ def find_parts(out_files: typing.List[str]) -> typing.List[typing.List[str]]:
     return found_parts
 
 
-grade_type = typing.Dict[typing.Tuple[str], typing.List[typing.Dict[str, int], typing.Dict[str, int]]]
-
-
-def grade_students(assignment_dir: str, student_out_files: typing.List[str]) -> grade_type:
+def grade_students(assignment_dir: str, student_out_folders: typing.List[str]) -> typing.List[StudentReport]:
     criteria = Criteria(assignment_dir)
-    student_grades = {}
+    student_grades = []
 
-    for file in student_out_files:
+    for file in student_out_folders:
         student_id = tuple(file.split(os.sep)[-1].split('_')[:3])
-        student_grades[student_id] = criteria.grade(file)
+        student_grades.append(StudentReport(student_id))
+        criteria.grade(student_grades[-1], assignment_dir)
 
     return student_grades
 
@@ -46,14 +46,21 @@ class Criteria:
             try:
                 hits = re.findall(part_output_re, open(join(assignment_dir, test_case), 'r', encoding='utf-8').read())
             except FileNotFoundError:
-                print(f'Issue loading key for test case: {test_case}!')
+                print(f'Issue loading key output for test case: {test_case}!')
 
             for hit in hits:
                 self.parts[hit[0] + hit[1]][test_case] = re.sub(r'\n+', r'\n', re.sub(r' +', ' ', hit[2]))
 
-    def grade(self, student_folder: str) -> typing.List[typing.Dict[str, bool], typing.Dict[str, bool]]:
-        results = [{}, {}]
+    def grade(self, student_report: StudentReport, assignment_dir: str) -> None:
         for test_case in self.test_cases:
             hits = []
+            current_folder = join(assignment_dir, student_report.id(), f'{student_report.id()}-{test_case}-OUTPUT.txt')
             try:
-                hits = re.findall(part_output_re, open(join(student_folder, f'')))
+                hits = re.findall(part_output_re, open(current_folder, 'r', encoding='utf-8').read())
+            except FileNotFoundError:
+                print(f'Issue loading {current_folder} for grading')
+
+            student_report.test_cases[test_case][hits[0] + hits[1]] = self.parts[hits[0] + hits[1]][
+                                                                          test_case] == re.sub(r'\n+', r'\n',
+                                                                                               re.sub(r' +', ' ',
+                                                                                                      hits[2]))
