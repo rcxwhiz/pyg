@@ -115,8 +115,7 @@ def run_file_group(run_pairs: List[List[str]]) -> None:
             new_thread.start()
             my_threads.append(new_thread)
             ran += 1
-            if ran % 5 == 0 and ran != num_to_run:
-                print(f'\r[{ran}/{num_to_run}]', end=' ' * 10)
+            print(f'\r[{ran}/{num_to_run}]', end=' ' * 10)
     # wait for any remaining threads to finish
     for thread in my_threads:
         thread.join()
@@ -141,7 +140,7 @@ def run_file(py_file: str, out_file: str) -> None:
         return None
 
     # append and prepend to source code - the write the file
-    full_script = (script_additions.prepend + student_source_code + script_additions.append)
+    full_script = script_additions.prepend + student_source_code + script_additions.append
     if cfg.max_program_time > 0:
         kill_time = cfg.max_program_time
     else:
