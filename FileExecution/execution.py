@@ -71,6 +71,7 @@ def run_key(assignment_dir: str) -> List[str]:
                     join(assignment_dir, 'key-source')):
                 if not os.path.exists(join(assignment_dir, 'key-output', test)):
                     os.mkdir(join(assignment_dir, 'key-output', test))
+
                 shutil.copyfile(join(assignment_dir, 'TEMP', f'key-{test}', file),
                                 join(assignment_dir, 'key-output', test, file))
                 out_file_list.append(join(assignment_dir, 'key-output', test, file))
@@ -81,17 +82,37 @@ def run_key(assignment_dir: str) -> List[str]:
     return out_file_list
 
 
-def run_students(temp_dir: str) -> List[str]:
+def run_students(assignment_dir: str) -> List[str]:
+    test_cases = []
+    for file in os.listdir(join(assignment_dir, 'test-cases')):
+        if os.path.isdir(join(assignment_dir, 'test-cases', file)):
+            test_cases.append(file)
+
+    temp_dir = join(assignment_dir, 'TEMP')
     file_groups = []
     for dir_ in os.listdir(temp_dir):
         if os.path.isdir(join(temp_dir, dir_)):
+            # make all the testcase dirs and copy files into them
+            for test_case in test_cases:
+                os.mkdir(join(temp_dir, dir_, test_case))
+                for file in os.listdir(join(assignment_dir, 'test-cases', test_case)):
+                    shutil.copyfile(join(assignment_dir, 'test-cases', test_case, file),
+                                    join(join(temp_dir, dir_, test_case, file)))
+
             for file in os.listdir(join(temp_dir, dir_)):
                 if file.endswith('.py'):
-                    file_groups.append([join(temp_dir, dir_, file), join(temp_dir, dir_, f'{file[:-3]}-OUTPUT.txt')])
+                    for test_case in test_cases:
+                        shutil.copyfile(join(temp_dir, dir_, file), join(temp_dir, dir_, test_case, file))
+                        file_groups.append([join(temp_dir, dir_, test_case, file),
+                                            join(temp_dir, dir_, f'{file[:-3]}-{test_case}-OUTPUT.txt')])
+                    # this break is forcing it to be one python file now
+                    break
+
     run_file_group(file_groups)
     outs = []
     for pair in file_groups:
         outs.append(pair[1])
+
     return outs
 
 

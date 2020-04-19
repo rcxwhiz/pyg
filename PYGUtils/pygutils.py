@@ -28,10 +28,10 @@ def generate_blank_ruberic(parts: typing.List[str], file_name: str, assignment_n
     content = f'# This is the ruberic for {assignment_name}\n'
     content += '# Fill in the values so that you can grade this assignment\n\n'
 
-    content += '# Enter the total weight of the assignment here (ex. 0-100):\n'
+    content += '[Assignment]\n\n# Enter the total weight of the assignment here (ex. 0-100):\n'
     content += 'total_weight=\n\n'
 
-    content += '# Enter the relative weight of each problem here (ex. 0-100):\n'
+    content += '[Parts]\n\n# Enter the relative weight of each problem here (ex. 0-100):\n'
     for part in parts:
         content += f'{part}=\n'
     content += '\n'
