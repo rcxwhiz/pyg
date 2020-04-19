@@ -60,7 +60,5 @@ class Criteria:
             except FileNotFoundError:
                 print(f'Issue loading {current_folder} for grading')
 
-            student_report.test_cases[test_case][hits[0] + hits[1]] = self.parts[hits[0] + hits[1]][
-                                                                          test_case] == re.sub(r'\n+', r'\n',
-                                                                                               re.sub(r' +', ' ',
-                                                                                                      hits[2]))
+            student_report.test_cases[test_case][hits[0] + hits[1]] = \
+                self.parts[hits[0] + hits[1]][test_case] == re.sub(r'\n+', r'\n', re.sub(r' +', ' ', hits[2]))
