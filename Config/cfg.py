@@ -6,8 +6,6 @@ from pathlib import Path
 
 reader = configparser.ConfigParser()
 
-os.chdir(os.path.dirname(sys.argv[0]))
-
 try:
     reader.read('config.ini')
 except FileNotFoundError:
