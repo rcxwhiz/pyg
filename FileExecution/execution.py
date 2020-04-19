@@ -1,7 +1,5 @@
-import os
 import shutil
 import subprocess
-import sys
 import threading
 from os.path import join
 from typing import List
@@ -9,6 +7,7 @@ from typing import List
 from Config import cfg
 from FileExecution import script_additions
 from FileExecution.security import security_check
+from PYGUtils import *
 
 # some of these messages never get used but they can be appended to things
 error_msgs = {'unicode': '\n[GRADER] Unicode decode error',
@@ -85,7 +84,7 @@ def run_key(assignment_dir: str) -> List[str]:
 def run_students(temp_dir: str) -> List[str]:
     file_groups = []
     for dir_ in os.listdir(temp_dir):
-        if os.path.isdir(dir_):
+        if os.path.isdir(join(temp_dir, dir_)):
             for file in os.listdir(join(temp_dir, dir_)):
                 if file.endswith('.py'):
                     file_groups.append([join(temp_dir, dir_, file), join(temp_dir, dir_, f'{file[:-3]}-OUTPUT.txt')])
@@ -117,12 +116,12 @@ def run_file_group(run_pairs: List[List[str]]) -> None:
             my_threads.append(new_thread)
             ran += 1
             if ran % 5 == 0 and ran != num_to_run:
-                print(f'[{ran}/{num_to_run}]')
+                print(f'\r[{ran}/{num_to_run}]', end=' ' * 10)
     # wait for any remaining threads to finish
     for thread in my_threads:
         thread.join()
 
-    print(f'[{ran}/{num_to_run}] Complete!')
+    print(f'\r[{ran}/{num_to_run}] Complete!')
 
 
 def run_file(py_file: str, out_file: str) -> None:
