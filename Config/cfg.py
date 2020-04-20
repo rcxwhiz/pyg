@@ -12,6 +12,10 @@ except FileNotFoundError:
     print(f"Couldn't find {join(os.getcwd(), 'config.ini')}")
     sys.exit(input('Press enter to exit...'))
 
+show_warning = reader.getboolean('General', 'show_warning')
+if show_warning:
+    reader.set('General', 'show_warning', 'false')
+
 base_directory = join(str(Path.home()), reader.get('File Structure', 'base_directory'))
 
 max_threads = reader.getint('Runtime', 'max_threads')

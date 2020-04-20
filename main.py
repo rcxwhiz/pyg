@@ -6,6 +6,10 @@ navi = Navigator()
 
 
 def main() -> None:
+    if cfg.show_warning:
+        print(open('warning.txt', 'r', encoding='utf-8').read())
+        input('\nPress enter to continue...')
+
     print(f'PYG v{VERSION}')
     print('Python Grader - Josh Bedwell')
 
@@ -15,14 +19,17 @@ def main() -> None:
         print('Options:')
         print('[1] Grade/modify an existing assignment')
         print('[2] Create a directory for a new assignment')
+        print('[3] About')
         print('[0] Exit')
 
-        choice = input_range(0, 2)
+        choice = input_range(0, 3)
 
         if choice == 1:
             grade()
         if choice == 2:
             make_dir()
+        if choice == 3:
+            print(open('info.txt', 'r', encoding='utf=8').read())
         if choice == 0:
             input('\nPress enter to exit...')
             return None

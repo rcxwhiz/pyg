@@ -9,7 +9,9 @@ import_checker1 = re.compile(r'(from[ ]+[^ \n;]+[ ]+)?(import[ ]+)([^ \n;.]+)')
 import_checker2 = re.compile(r'(from[ ]+)([^ \n;.]+)([ ]+import)')
 
 phrase_blacklist = [re.compile(r'input[ ]*\('),
-                    re.compile(r'open[ ]*\(')]
+                    re.compile(r'open[ ]*\('),
+                    re.compile(r'\\'),
+                    re.compile(r'/')]
 
 
 def security_check(source_code: str) -> List[str]:
