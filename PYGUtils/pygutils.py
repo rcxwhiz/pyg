@@ -31,9 +31,9 @@ def generate_blank_ruberic(parts: typing.List[str], file_name: str, assignment_n
     content += '[Assignment]\n\n# Enter the total weight of the assignment here (ex. 0-100):\n'
     content += 'total_weight=\n\n'
 
-    content += '[Parts]\n\n# Enter the relative weight of each problem here (ex. 0-100):\n'
+    content += '\n# Enter the relative weight of each problem here (ex. 0-100):\n[Parts]\n\n'
     for part in parts:
-        content += f'{part}=\n'
+        content += f'{(part[0] + part[1]).replace(" ", "_")}=\n'
     content += '\n'
 
     with open(file_name, 'w') as file:

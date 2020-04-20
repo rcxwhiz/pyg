@@ -3,7 +3,8 @@ from typing import List, Set
 
 package_whitelist = ['numpy',
                      'matplotlib',
-                     'scipy']
+                     'scipy',
+                     'math']
 
 import_checker1 = re.compile(r'(from[ ]+[^ \n;]+[ ]+)?(import[ ]+)([^ \n;.]+)')
 import_checker2 = re.compile(r'(from[ ]+)([^ \n;.]+)([ ]+import)')

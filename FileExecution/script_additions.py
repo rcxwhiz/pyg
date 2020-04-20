@@ -3,10 +3,11 @@ prepend = r"""
 # EXIT SCRIPT ###################################
 import os as EXECUTION_OS
 import sys as EXECUTION_SYS
-import time EXECUTION_TIME
-import threading EXECUTION_THREADING
+import time as EXECUTION_TIME
+import threading as EXECUTION_THREADING
 def kill_prog():
-    EXECUTION_TIME.sleep(TIME BEFORE KILL HERE)
+    timer = TIME BEFORE KILL HERE
+    EXECUTION_TIME.sleep(timer)
     print(f'\n[GRADER] Program killed after {timer} seconds')
     EXECUTION_SYS.stdout.close()
     EXECUTION_OS._exit(0)
