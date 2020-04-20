@@ -5,12 +5,9 @@ import os as EXECUTION_OS
 import sys as EXECUTION_SYS
 import time EXECUTION_TIME
 import threading EXECUTION_THREADING
-killed = True
 def kill_prog():
-    timer = TIME BEFORE KILL HERE
-    EXECUTION_TIME.sleep(timer)
-    if killed:
-        print(f'\n[GRADER] Program killed after {timer} seconds')
+    EXECUTION_TIME.sleep(TIME BEFORE KILL HERE)
+    print(f'\n[GRADER] Program killed after {timer} seconds')
     EXECUTION_SYS.stdout.close()
     EXECUTION_OS._exit(0)
 kill_thread = EXECUTION_THREADING.Thread(target=kill_prog)
