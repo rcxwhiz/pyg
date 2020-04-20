@@ -89,8 +89,8 @@ class Assignment:
         if not problem_parts:
             problem_parts = ['default']
 
-        generate_blank_ruberic(problem_parts, join(self.dir['home'], 'ruberic.ini'), self.assignment_name)
-        print(f'Please fill out {join(self.dir["home"], "ruberic.ini")}')
+        generate_blank_rubric(problem_parts, join(self.dir['home'], 'rubric.ini'), self.assignment_name)
+        print(f'Please fill out {join(self.dir["home"], "rubric.ini")}')
         print('in order to be able to grade the file.')
 
     def export_student_tester(self):
@@ -138,10 +138,11 @@ class Assignment:
         print(f'\nSubmitted file types: {types_found}')
         print('Enter 2 to add all')
         for file_type in types_found:
-            choice = input_range(0, 2, message=f'Move student .{file_type} files\n[1] - yes\n[0] - no\n')
+            choice = input_range(0, 2,
+                                 message=f'Move student .{file_type} files\n[1] - yes\n[2] - no\n[0] - yes to all\n')
             if choice == 1:
                 types_to_move.append(file_type)
-            elif choice == 2:
+            elif choice == 0:
                 types_to_move = list(types_found)
                 break
         return types_to_move
@@ -197,6 +198,7 @@ class Assignment:
         out_files = execution.run_students(self.dir['home'])
         # TODO need to have a way to grade the outputs based on if their parts are the same
         grades = Grading.Text.text.grade_students(self.dir['home'], out_files)
+        print(grades)
         # TODO generate a xlsx or something with the student results and scores
 
         # make a zip file in results and copy everything from temp into it

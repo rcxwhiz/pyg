@@ -4,11 +4,11 @@ import typing
 class StudentReport:
 
     def __init__(self, id_in: typing.Tuple[str, ...]):
-        self.identity = {'last': id_in[0], 'first': id_in[1], 'id': id_in[2]}
+        self.identity = {'last': id_in[0], 'first': id_in[1], 'id': id_in[2].split('-')[0]}
         self.test_cases = {}
 
     def identifier(self) -> str:
-        return self.identity['last'] + '_' + self.identity['first'] + ' ' + self.identity['id']
+        return self.identity['last'] + '_' + self.identity['first'] + '_' + self.identity['id']
 
     def name(self) -> str:
         return self.identity['first'] + ' ' + self.identity['last']

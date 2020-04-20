@@ -21,8 +21,18 @@ def find_parts(out_files: typing.List[str]) -> typing.List[typing.List[str]]:
 
 
 def grade_students(assignment_dir: str, student_out_folders: typing.List[str]) -> typing.List[StudentReport]:
-    criteria = Criteria(assignment_dir)
     student_grades = []
+    error_str = f'\nERROR:\n' \
+                f'There is a problem with the rubric at\n{join(assignment_dir, "rubric.ini")}\n' \
+                f'If you have not filled it out, do that before automatically grading'
+    try:
+        criteria = Criteria(assignment_dir)
+    except configparser.Error:
+        print(error_str)
+        return student_grades
+    except ValueError:
+        print(error_str)
+        return student_grades
 
     for file in student_out_folders:
         student_id = tuple(file.split(os.sep)[-1].split('_')[:3])
@@ -36,7 +46,7 @@ class Criteria:
 
     def __init__(self, assignment_dir: str):
         reader = configparser.ConfigParser()
-        reader.read(join(assignment_dir, 'ruberic.ini'))
+        reader.read(join(assignment_dir, 'rubric.ini'))
         self.total_points = reader.getint('Assignment', 'total_weight')
         self.test_cases = os.listdir(join(assignment_dir, 'test-cases'))
 
@@ -44,21 +54,29 @@ class Criteria:
         for test_case in self.test_cases:
             hits = []
             try:
-                hits = re.findall(part_output_re, open(join(assignment_dir, test_case), 'r', encoding='utf-8').read())
+                hits = re.findall(part_output_re, open(join(assignment_dir, 'key-output', test_case, 'output.txt'), 'r',
+                                                       encoding='utf-8').read())
             except FileNotFoundError:
-                print(f'Issue loading key output for test case: {test_case}!')
+                print(
+                    f'Issue loading key output for test case: {test_case} ({join(assignment_dir, "key-output", test_case, "output.txt")})')
 
             for hit in hits:
+                if hit[0] + hit[1] not in self.parts.keys():
+                    self.parts[hit[0] + hit[1]] = {}
                 self.parts[hit[0] + hit[1]][test_case] = re.sub(r'\n+', r'\n', re.sub(r' +', ' ', hit[2]))
 
     def grade(self, student_report: StudentReport, assignment_dir: str) -> None:
         for test_case in self.test_cases:
             hits = []
-            current_folder = join(assignment_dir, student_report.id(), f'{student_report.id()}-{test_case}-OUTPUT.txt')
+            current_folder = join(assignment_dir,
+                                  'TEMP',
+                                  student_report.identifier(),
+                                  f'{student_report.identifier()}-{test_case}-OUTPUT.txt')
             try:
                 hits = re.findall(part_output_re, open(current_folder, 'r', encoding='utf-8').read())
             except FileNotFoundError:
                 print(f'Issue loading {current_folder} for grading')
 
-            student_report.test_cases[test_case][hits[0] + hits[1]] = \
-                self.parts[hits[0] + hits[1]][test_case] == re.sub(r'\n+', r'\n', re.sub(r' +', ' ', hits[2]))
+            for hit in hits:
+                student_report.test_cases[test_case][hit[0] + hit[1]] = \
+                    self.parts[hit[0] + hit[1]][test_case] == re.sub(r'\n+', r'\n', re.sub(r' +', ' ', hit[2]))

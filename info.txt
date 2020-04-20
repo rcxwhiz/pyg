@@ -7,9 +7,10 @@
 - Run key files against test cases and generate output files
 - Grade graph outputs using image recognition
 - Have assignments that have multiple parts (ex. 1, 2a, B)
-- Create a ruberic to weight the parts
+- Create a rubric with weighting
 - Run a batch of student code against the key output files
 - Automatically generate an Excel report with all the results
 from the student files
 - View the actual outputs of student code from a report
-- Have a copy past assister for entering grades
+* Manually grade student code
+* Have a copy paste assister for entering grades

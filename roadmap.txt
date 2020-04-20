@@ -37,7 +37,7 @@ Could possibly have a thing where it helps you enter stuff by copying the scores
 
 Perhaps I should add linenumbers to the text viewers somehow?
 
-Maybe the way the ruberic should be made is with a .ini file?
+Maybe the way the rubric should be made is with a .ini file?
 
 Could filter separater characters to stop people from saving files anywhere bad because they already can't get anywhere
 because there are no os or sys modules
