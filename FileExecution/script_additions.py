@@ -1,21 +1,21 @@
 # these are the strings to get prepended and appended to the source code
 prepend = r"""
 # EXIT SCRIPT ###################################
-import os
-import sys
-import time
-import threading
+import os as EXECUTION_OS
+import sys as EXECUTION_SYS
+import time EXECUTION_TIME
+import threading EXECUTION_THREADING
 killed = True
 def kill_prog():
     timer = TIME BEFORE KILL HERE
-    time.sleep(timer)
+    EXECUTION_TIME.sleep(timer)
     if killed:
         print(f'\n[GRADER] Program killed after {timer} seconds')
-    sys.stdout.close()
-    os._exit(0)
-kill_thread = threading.Thread(target=kill_prog)
+    EXECUTION_SYS.stdout.close()
+    EXECUTION_OS._exit(0)
+kill_thread = EXECUTION_THREADING.Thread(target=kill_prog)
 kill_thread.start()
-os.chdir(os.path.dirname(sys.argv[0]))
+EXECUTION_OS.chdir(EXECUTION_OS.path.dirname(EXECUTION_SYS.argv[0]))
 # ###############################################
 
 """
@@ -24,6 +24,6 @@ append = r"""
 
 
 # EXIT SCRIPT ###################################
-sys.stdout.close()
-os._exit(0)
+EXECUTION_SYS.stdout.close()
+EXECUTION_OS._exit(0)
 # ###############################################"""
