@@ -1,14 +1,18 @@
+import configparser
 import shutil
 from datetime import datetime
 from os.path import join
-# from typing import List, Set, Tuple
 from zipfile import ZipFile
+
+import openpyxl as pyxl
 
 import Grading
 import UI
 from Config import cfg
 from FileExecution import execution
+from Grading.Text.text import StudentReport
 from PYGUtils import *
+from Viewer import Viewer
 
 # this is the extension type assigned to files that don't have an extension
 no_ext_msg = 'no-extension'
@@ -170,7 +174,7 @@ class Assignment:
                     for file in os.listdir(join(self.dir['TEMP'], folder)):
                         zip_obj.write(join(self.dir['TEMP'], folder, file), arcname=join(folder, file))
                 else:
-                    zip_obj.write(join(self.dir['TEMP'], file), arcname=file)
+                    zip_obj.write(join(self.dir['TEMP'], folder), arcname=folder)
         shutil.rmtree(self.dir['TEMP'])
 
     def grade_student_code(self) -> None:
@@ -196,13 +200,57 @@ class Assignment:
 
         # run the student code on a bunch of threads and leaves the output.txt s
         out_files = execution.run_students(self.dir['home'])
-        # TODO need to have a way to grade the outputs based on if their parts are the same
+
         grades = Grading.Text.text.grade_students(self.dir['home'], out_files)
-        print(grades)
-        # TODO generate a xlsx or something with the student results and scores
+
+        self.generate_grade_report(grades)
 
         # make a zip file in results and copy everything from temp into it
         self.zip_report()
+
+    def generate_grade_report(self, grades: typing.List[StudentReport]) -> None:
+        wb = pyxl.Workbook()
+        grade_sheet = wb.create_sheet('Grades')
+        grade_sheet.cell(1, 1, 'Last Name')
+        grade_sheet.cell(1, 2, 'First Name')
+        grade_sheet.cell(1, 3, 'NetID')
+        grade_sheet.cell(1, 4, 'Total - Weighted')
+        grade_sheet.cell(1, 5, 'Total')
+        index = 6
+        reader = configparser.ConfigParser()
+        reader.read(join(self.dir['home'], 'rubric.ini'))
+        weighted_total = reader.getint('Assignment', 'total_weight')
+        parts = [x.replace('_', ' ') for x in reader.options('Parts')]
+        part_weights = {}
+        possible_points = 0
+        for part in reader.options('Parts'):
+            part_weights[part] = reader.getint('Parts', part)
+            possible_points += part_weights[part]
+        test_cases = os.listdir(self.dir['test-cases'])
+        for part in parts:
+            for test_case in test_cases:
+                grade_sheet.cell(1, index, f'{part} - {test_case}')
+                index += 1
+
+        for i, student in enumerate(grades):
+            grade_sheet.cell(i + 2, 1, student.identity['last'])
+            grade_sheet.cell(i + 2, 2, student.identity['first'])
+            grade_sheet.cell(i + 2, 3, student.identity['id'])
+            index = 6
+            student_total = 0
+            for part in parts:
+                for test_case in test_cases:
+                    grade_sheet.cell(i + 2, index, student.test_cases[test_case][part])
+                    index += 1
+                    if student.test_cases[test_case][part]:
+                        student += part_weights[part.replace(' ', '_')]
+            grade_sheet.cell(i + 2, 5, student_total)
+            grade_sheet.cell(i + 2, 4, round(student_total / possible_points * weighted_total, cfg.score_decimals))
+
+        stats_sheet = wb.create_sheet('Statistics')
+
+        wb.remove_sheet(wb.get_sheet_by_name('Sheet'))
+        wb.save(join(self.dir['TEMP'], 'grade_report.xlsx'))
 
     def view_grading_report(self) -> None:
         # TODO make reporter object and pass it to the UI
@@ -224,5 +272,5 @@ class Assignment:
         if choice == 0:
             return None
 
-        viewer = UI.Viewer(self.dir['results'], zips[choice - 1])
+        viewer = Viewer(self.dir['results'], zips[choice - 1])
         UI.start_ui(viewer)

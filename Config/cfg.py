@@ -13,6 +13,7 @@ except FileNotFoundError:
     sys.exit()
 
 show_warning = reader.getboolean('General', 'show_warning')
+score_decimals = reader.getint('General', 'score_decimals')
 
 base_directory = join(str(Path.home()), reader.get('File Structure', 'base_directory'))
 

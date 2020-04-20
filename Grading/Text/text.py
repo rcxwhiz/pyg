@@ -67,11 +67,16 @@ class Criteria:
 
     def grade(self, student_report: StudentReport, assignment_dir: str) -> None:
         for test_case in self.test_cases:
+            student_report.test_cases[test_case] = {}
+            for part in self.parts:
+                student_report.test_cases[test_case][part] = False
+
             hits = []
             current_folder = join(assignment_dir,
                                   'TEMP',
                                   student_report.identifier(),
-                                  f'{student_report.identifier()}-{test_case}-OUTPUT.txt')
+                                  test_case,
+                                  f'{student_report.identifier()}-OUTPUT.txt')
             try:
                 hits = re.findall(part_output_re, open(current_folder, 'r', encoding='utf-8').read())
             except FileNotFoundError:

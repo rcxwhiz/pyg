@@ -104,7 +104,7 @@ def run_students(assignment_dir: str) -> List[str]:
                     for test_case in test_cases:
                         shutil.copyfile(join(temp_dir, dir_, file), join(temp_dir, dir_, test_case, file))
                         file_groups.append([join(temp_dir, dir_, test_case, file),
-                                            join(temp_dir, dir_, f'{dir_}-{test_case}-OUTPUT.txt')])
+                                            join(temp_dir, dir_, test_case, f'{dir_}-OUTPUT.txt')])
                     # this break is forcing it to be one python file now
                     break
 
