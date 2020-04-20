@@ -1,6 +1,9 @@
+
                        ** WARNING **
 
 This program is made to grade batches of Python code. There is
 a package whitelist and a phrase blacklist which should help
 minimize the risk of running malicious code, but you should
 never run code you do not trust.
+
+This warning will only be show once and can be found in warning.txt

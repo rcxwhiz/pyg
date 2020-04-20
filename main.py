@@ -8,7 +8,8 @@ navi = Navigator()
 def main() -> None:
     if cfg.show_warning:
         print(open('warning.txt', 'r', encoding='utf-8').read())
-        input('\nPress enter to continue...')
+        input('Press enter to continue...')
+        print('\n')
 
     print(f'PYG v{VERSION}')
     print('Python Grader - Josh Bedwell')
@@ -31,7 +32,6 @@ def main() -> None:
         if choice == 3:
             print(open('info.txt', 'r', encoding='utf=8').read())
         if choice == 0:
-            input('\nPress enter to exit...')
             return None
 
 

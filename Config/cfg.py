@@ -10,11 +10,9 @@ try:
     reader.read('config.ini')
 except FileNotFoundError:
     print(f"Couldn't find {join(os.getcwd(), 'config.ini')}")
-    sys.exit(input('Press enter to exit...'))
+    sys.exit()
 
 show_warning = reader.getboolean('General', 'show_warning')
-if show_warning:
-    reader.set('General', 'show_warning', 'false')
 
 base_directory = join(str(Path.home()), reader.get('File Structure', 'base_directory'))
 
@@ -25,3 +23,8 @@ max_program_time = reader.getint('Runtime', 'max_program_time')
 max_threads = min(max_threads, 500)
 if max_threads <= 0:
     max_threads = 500
+
+if show_warning:
+    original_file = open('config.ini', 'r', encoding='utf-8').read()
+    open('config.ini', 'w', encoding='utf-8').write(
+        original_file.replace('show_warning = true', 'show_warning = false'))

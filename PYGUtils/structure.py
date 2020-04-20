@@ -30,7 +30,7 @@ class Navigator:
                 os.makedirs(self.base)
             else:
                 print('Please change base directory in config.ini')
-                sys.exit(input('Press enter to exit...'))
+                sys.exit()
 
         self.update()
 
