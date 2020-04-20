@@ -7,7 +7,7 @@ from pathlib import Path
 reader = configparser.ConfigParser()
 
 try:
-    reader.read('config.ini')
+    reader.read(os.sep.join(sys.argv[0].split(os.sep)[:-1]) + os.sep + 'config.ini')
 except FileNotFoundError:
     print(f"Couldn't find {join(os.getcwd(), 'config.ini')}")
     sys.exit()
