@@ -14,6 +14,7 @@ except FileNotFoundError:
 
 show_warning = reader.getboolean('General', 'show_warning')
 score_decimals = reader.getint('General', 'score_decimals')
+max_student_code_lines = reader.getint('General', 'max_student_code_lines')
 
 base_directory = join(str(Path.home()), reader.get('File Structure', 'base_directory'))
 

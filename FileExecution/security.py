@@ -1,6 +1,8 @@
 import re
 from typing import List, Set
 
+import Config as cfg
+
 package_whitelist = ['numpy',
                      'matplotlib',
                      'scipy',
@@ -22,6 +24,9 @@ def security_check(source_code: str) -> List[str]:
         issues.append(f'Illegal package imported: {issue}')
     for issue in check_phrases(source_code):
         issues.append(f'Contained illegal phrase: {issue}')
+    num_lines = source_code.count('\n')
+    if num_lines > cfg.max_student_code_lines:
+        issues.append(f'Code was too long: {num_lines} lines')
     return issues
 
 
