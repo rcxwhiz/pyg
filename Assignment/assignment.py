@@ -1,7 +1,5 @@
-import configparser
 import shutil
 from datetime import datetime
-from os.path import join
 from zipfile import ZipFile
 
 import openpyxl as pyxl
@@ -220,13 +218,13 @@ class Assignment:
         reader = configparser.ConfigParser()
         reader.read(join(self.dir['home'], 'rubric.ini'))
         weighted_total = reader.getint('Assignment', 'total_weight')
-        parts = [x.replace('_', ' ') for x in reader.options('Parts')]
+        parts = get_assignment_parts(self.dir['home'])
         part_weights = {}
         possible_points = 0
         for part in reader.options('Parts'):
             part_weights[part] = reader.getint('Parts', part)
             possible_points += part_weights[part]
-        test_cases = os.listdir(self.dir['test-cases'])
+        test_cases = get_assignment_test_cases(self.dir['home'])
         for part in parts:
             for test_case in test_cases:
                 grade_sheet.cell(1, index, f'{part} - {test_case}')

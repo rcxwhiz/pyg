@@ -1,6 +1,8 @@
+import configparser
 import os
 import sys
 import typing
+from os.path import join
 
 ERASE_LINE = '\x1b[2K'
 
@@ -38,3 +40,17 @@ def generate_blank_rubric(parts: typing.List[str], file_name: str, assignment_na
 
     with open(file_name, 'w') as file:
         file.write(content)
+
+
+def get_assignment_parts(assignment_dir: str, replace_underscores: bool = True) -> typing.List[str]:
+    reader = configparser.ConfigParser()
+    reader.read(join(assignment_dir, 'rubric.ini'))
+    parts = reader.options('Parts')
+    if replace_underscores:
+        for i in range(len(parts)):
+            parts[i] = parts[i].replace('_', ' ')
+    return parts
+
+
+def get_assignment_test_cases(assignment_dir: str) -> typing.List[str]:
+    return os.listdir(join(assignment_dir, 'test-cases'))
