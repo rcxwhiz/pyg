@@ -1,9 +1,6 @@
-import configparser
-import os
 import re
-import typing
-from os.path import join
 
+from PYGUtils import *
 from StudentReport import StudentReport
 
 part_re = re.compile(r'([P|p][A|a][R|r][T|t][ ]*[:]?[-]*[ ]*)([a-zA-Z]|[0-9]+)')
@@ -48,9 +45,11 @@ class Criteria:
         reader = configparser.ConfigParser()
         reader.read(join(assignment_dir, 'rubric.ini'))
         self.total_points = reader.getint('Assignment', 'total_weight')
-        self.test_cases = os.listdir(join(assignment_dir, 'test-cases'))
+        self.test_cases = get_assignment_test_cases(assignment_dir)
 
         self.parts = {}
+        for part in get_assignment_parts(assignment_dir):
+            self.parts[part] = {}
         for test_case in self.test_cases:
             hits = []
             try:
@@ -61,8 +60,6 @@ class Criteria:
                     f'Issue loading key output for test case: {test_case} ({join(assignment_dir, "key-output", test_case, "output.txt")})')
 
             for hit in hits:
-                if hit[0] + hit[1] not in self.parts.keys():
-                    self.parts[hit[0] + hit[1]] = {}
                 self.parts[hit[0] + hit[1]][test_case] = re.sub(r'\n+', r'\n', re.sub(r' +', ' ', hit[2]))
 
     def grade(self, student_report: StudentReport, assignment_dir: str) -> None:

@@ -58,6 +58,7 @@ class Viewer:
         """
 
     def get_data_from_xlsx(self, full_path: str) -> None:
+        # TODO some work probably needs to be done on loading data in new formats
         wb = xlrd.open_workbook(full_path)
         sheet = wb.sheet_by_name('Grades')
         num_parts = 0
