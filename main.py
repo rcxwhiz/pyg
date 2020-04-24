@@ -55,7 +55,8 @@ def grade() -> None:
     print('\nOptions:')
     print('[1] Generate key files')
     print('[2] Export student testing program')
-    print('[3] Grade student code')
+    print('[3] Automatically grade student code')
+    print('[4] Manually grade student code')
     print('[4] View grading report')
     print('[0] Cancel\n')
     assignment_option = input_range(0, 4)
@@ -67,9 +68,12 @@ def grade() -> None:
         assignment.export_student_tester()
 
     if assignment_option == 3:
-        assignment.grade_student_code()
+        assignment.auto_grade_student_code()
 
     if assignment_option == 4:
+        assignment.manual_grade_student_code()
+
+    if assignment_option == 5:
         assignment.view_grading_report()
 
     print('Returning to menu...')
@@ -79,13 +83,14 @@ def make_dir() -> None:
     print('\nCurrent assignments:')
     navi.print_dirs()
     print(f'\nAssignment will be created in {cfg.base_directory}{os.sep}')
-    print('Enter a blank assignment to stop\n')
-    while True:
-        new_dir = input('New assignment name: ')
-        if new_dir == '':
-            break
-        else:
-            navi.create_new(new_dir)
+    print('Enter a blank name to cancel')
+
+    new_dir = input('New assignment name: ')
+
+    if new_dir in os.listdir(cfg.base_directory):
+        print('There is already an assignment with that name')
+    elif new_dir != '':
+        navi.create_new(new_dir)
 
 
 if __name__ == '__main__':

@@ -175,7 +175,7 @@ class Assignment:
                     zip_obj.write(join(self.dir['TEMP'], folder), arcname=folder)
         shutil.rmtree(self.dir['TEMP'])
 
-    def grade_student_code(self) -> None:
+    def auto_grade_student_code(self) -> None:
         # TODO need to load the ini file (make a function in tools) and catch any errors loading it
 
         source_dir = self.choose_student_source_dir()
@@ -205,6 +205,9 @@ class Assignment:
 
         # make a zip file in results and copy everything from temp into it
         self.zip_report()
+
+    def manual_grade_student_code(self) -> None:
+        print('Manually grading code')
 
     def generate_grade_report(self, grades: typing.List[StudentReport]) -> None:
         wb = pyxl.Workbook()
