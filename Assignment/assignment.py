@@ -136,6 +136,8 @@ class Assignment:
             os.mkdir(join(self.dir['TEMP'], student_id))
 
     def get_types_to_move(self, types_found: typing.Set[str]) -> typing.List[str]:
+        if len(types_found) == 1:
+            return list(types_found)
         types_to_move = []
         print(f'\nSubmitted file types: {types_found}')
         print('Enter 2 to add all')
@@ -157,11 +159,16 @@ class Assignment:
                     file_id = '_'.join(file.split('_')[:3])
                     file_name = '_'.join(file.split('_')[3:])
                     shutil.copyfile(join(source_dir, file), join(self.dir['TEMP'], file_id, file_name))
+                    # debug statment
+                    print(f'moved {join(source_dir, file)} to {join(self.dir["TEMP"], file_id, file_name)}')
             except IndexError:
-                if no_ext_msg in types_to_move:
+                if '.' not in file and no_ext_msg in types_to_move:
                     file_id = '_'.join(file.split('_')[:3])
                     file_name = '_'.join(file.split('_')[3:])
                     shutil.copyfile(join(source_dir, file), join(self.dir['TEMP'], file_id, file_name))
+                else:
+                    print(f'There was an issue getting the id and file name from {file}')
+                    continue
 
     def zip_report(self) -> None:
         # Note this will only go one folder deep into the temp folder, but this shouldn't be an issue
@@ -187,6 +194,8 @@ class Assignment:
 
         # get the student ids from the files in the selected student source directory
         student_ids, types_found = self.get_ids_from_files(source_dir)
+        # debug statment
+        print(f'Student ids: {student_ids}')
 
         self.make_temp_dir(student_ids)
 

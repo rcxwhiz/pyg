@@ -1,10 +1,14 @@
 import configparser
 import os
+import re
 import sys
 import typing
 from os.path import join
 
 ERASE_LINE = '\x1b[2K'
+
+# TODO need to use this guy to get IDs
+id_re = re.compile(r'([^_]*)_([^_]*)_([^_\.]*)')
 
 
 def erase():
