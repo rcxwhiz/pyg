@@ -6,6 +6,10 @@ navi = Navigator()
 
 
 def main() -> None:
+    # TODO this is an example and should be removed
+    os.chdir(os.path.join(os.getcwd(), os.path.dirname(sys.argv[0])))
+    print(os.getcwd())
+
     if cfg.show_warning:
         print(open('warning.txt', 'r', encoding='utf-8').read())
         input('Press enter to continue...')
