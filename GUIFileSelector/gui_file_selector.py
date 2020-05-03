@@ -5,6 +5,7 @@ from PyQt5.QtWidgets import QApplication, QFileDialog
 
 app = None
 filter_string = 'All Files (*);;Python Files (*.py);;Images (*.png *.jpg *.gif);;Text (*.txt);;CSV (*.csv)'
+all_files_filter_string = 'All Files (*)'
 
 
 def check_app_active():
@@ -15,23 +16,23 @@ def check_app_active():
 
 def get_directory(title: str = 'Open folder') -> str:
     check_app_active()
-    to_return = QFileDialog.getExistingDirectory(None, title, "")
+    to_return = QFileDialog.getExistingDirectory(None, title)
     return to_return
 
 
-def get_file(title: str = 'Open file', filter_in: str = filter_string) -> str:
+def get_file(title: str = 'Open file', filter_in: str = all_files_filter_string) -> str:
     check_app_active()
-    to_return, selected_filter = QFileDialog.getOpenFileName(None, title, "", filter_in)
+    to_return, selected_filter = QFileDialog.getOpenFileName(None, title, '', filter_in)
     return to_return
 
 
-def get_files(title: str = 'Open files', filter_in: str = filter_string) -> typing.List[str]:
+def get_files(title: str = 'Open files', filter_in: str = all_files_filter_string) -> typing.List[str]:
     check_app_active()
-    to_return, selected_filter = QFileDialog.getOpenFileNames(None, title, "", filter_in)
+    to_return, selected_filter = QFileDialog.getOpenFileNames(None, title, '', filter_in)
     return to_return
 
 
-def save_file(title: str = 'Save file', filter_in: str = filter_string) -> str:
+def save_file(title: str = 'Save file', filter_in: str = all_files_filter_string) -> str:
     check_app_active()
-    to_return, selected_filter = QFileDialog.getSaveFileName(None, title, "", filter_in)
+    to_return, selected_filter = QFileDialog.getSaveFileName(None, title, '', filter_in)
     return to_return

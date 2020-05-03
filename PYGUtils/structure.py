@@ -7,6 +7,12 @@ from Assignment.assignment import Assignment
 from Config import cfg
 from PYGUtils import input_range
 
+required_assignment_dirs = ['key-source',
+                            'key-output',
+                            'student-source',
+                            'results',
+                            'test-cases']
+
 
 class Navigator:
 
@@ -14,11 +20,7 @@ class Navigator:
         # initialize and get the directories
         self.base = cfg.base_directory
         self.assignment_dirs = []
-        self.required_assignment_dirs = ['key-source',
-                                         'key-output',
-                                         'student-source',
-                                         'results',
-                                         'test-cases']
+
         try:
             os.listdir(self.base)
         except FileNotFoundError:
@@ -77,6 +79,6 @@ class Navigator:
         if 'TEMP' in files:
             shutil.rmtree(join(self.base, assignment_dir, 'TEMP'), ignore_errors=True)
 
-        for file in self.required_assignment_dirs:
+        for file in required_assignment_dirs:
             if file not in files:
                 os.mkdir(join(self.base, assignment_dir, file))
