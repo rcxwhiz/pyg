@@ -1,31 +1,38 @@
-from FileExecution import security
+import sys
+
+import Config as cfg
 
 # these are the strings to get prepended and appended to the source code
 prepend_1 = r"""
 # EXIT SCRIPT ###################################
-import os as EXECUTION_OS
-import sys as EXECUTION_SYS
-import time as EXECUTION_TIME
-import threading as EXECUTION_THREADING
-def ILLEGAL_FUNCTION_(*args):
-    print('Tried to use an illegal function!')
+import inspect as EXECUTION_INSPECT_
+import os as EXECUTION_OS_
+import sys as EXECUTION_SYS_
+import time as EXECUTION_TIME_
+import threading as EXECUTION_THREADING_
+def ILLEGAL_FUNCTION__(*args):
+    stack_spot = EXECUTION_INSPECT_.stack()[-1]
+    print(f'Illegal function called on line {stack_spot.lineno}: {stack_spot.code_context[0]}')
 """
 
-if len(security.function_blacklist) > 0:
-    prepend_2 = f'{", ".join(security.function_blacklist)} = ILLEGAL_FUNCTION'
+if len(cfg.function_blacklist) > 0:
+    prepend_2 = f'{", ".join(cfg.function_blacklist)} = ILLEGAL_FUNCTION_'
 else:
     prepend_2 = ''
 
-prepend_3 = """
+timer = cfg.max_program_time
+if timer == 0:
+    timer = sys.maxsize
+
+prepend_3 = f"""
 def KILL_PROGRAM_():
-    timer = TIME BEFORE KILL HERE
-    EXECUTION_TIME.sleep(timer)
+    EXECUTION_TIME_.sleep({timer})
     print(f'\n[GRADER] Program killed after {timer} seconds')
-    EXECUTION_SYS.stdout.close()
-    EXECUTION_OS._exit(0)
-kill_thread = EXECUTION_THREADING.Thread(target=KILL_PROGRAM_)
+    EXECUTION_SYS_.stdout.close()
+    EXECUTION_OS_._exit(0)
+kill_thread = EXECUTION_THREADING_.Thread(target=KILL_PROGRAM_)
+EXECUTION_OS_.chdir(EXECUTION_OS_.path.dirname(EXECUTION_SYS_.argv[0]))
 kill_thread.start()
-EXECUTION_OS.chdir(EXECUTION_OS.path.dirname(EXECUTION_SYS.argv[0]))
 # ###############################################
 """
 
@@ -35,6 +42,6 @@ append = r"""
 
 
 # EXIT SCRIPT ###################################
-EXECUTION_SYS.stdout.close()
-EXECUTION_OS._exit(0)
+EXECUTION_SYS_.stdout.close()
+EXECUTION_OS_._exit(0)
 # ###############################################"""

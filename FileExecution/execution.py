@@ -160,11 +160,6 @@ def run_file(py_file: str, out_file: str) -> None:
 
     # append and prepend to source code - the write the file
     full_script = script_additions.prepend + student_source_code + script_additions.append
-    if cfg.max_program_time > 0:
-        kill_time = cfg.max_program_time
-    else:
-        kill_time = sys.maxsize
-    full_script = full_script.replace('TIME BEFORE KILL HERE', str(kill_time))
     open(temp_script_name, 'w', encoding='utf-8').write(full_script)
 
     # run the system command and get the output
