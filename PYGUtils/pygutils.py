@@ -11,6 +11,14 @@ ERASE_LINE = '\x1b[2K'
 id_re = re.compile(r'([^_]*)_([^_]*)_([^_\.]*)')
 
 
+def get_id(string_in: str) -> typing.Tuple[str, str, str]:
+    match = re.match(id_re, string_in)
+    if match is None:
+        return None
+    else:
+        return tuple(match[1:])
+
+
 def erase():
     sys.stdout.write(ERASE_LINE)
 

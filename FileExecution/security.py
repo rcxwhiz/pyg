@@ -12,9 +12,12 @@ import_checker1 = re.compile(r'(from[ ]+[^ \n;]+[ ]+)?(import[ ]+)([^ \n;.]+)')
 import_checker2 = re.compile(r'(from[ ]+)([^ \n;.]+)([ ]+import)')
 
 # other things you might want to block are open and savetxt, etc.
-phrase_blacklist = [re.compile(r'input[ ]*\('),
-                    re.compile(r'\\'),
+phrase_blacklist = [re.compile(r'\\'),
                     re.compile(r'/')]
+
+# built in functions that you want to disable ex. open
+function_blacklist = ['open',
+                      'input']
 
 
 def security_check(source_code: str) -> List[str]:

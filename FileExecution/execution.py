@@ -1,17 +1,15 @@
 import shutil
 import subprocess
 import threading
-from os.path import join
 from typing import List
 
+import script_additions
 from Config import cfg
-from FileExecution import script_additions
 from FileExecution.security import security_check
 from PYGUtils import *
 
 # some of these messages never get used but they can be appended to things
 error_msgs = {'unicode': '\n[GRADER] Unicode decode error',
-              'input': '\n[GRADER] File terminated for using input',
               'long out': f'\n[GRADER] File output was cut off because it is longer than {cfg.max_out_lines} '
                           f'lines\nThe full output is located in the output file for this script'}
 
