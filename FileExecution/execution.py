@@ -3,10 +3,10 @@ import subprocess
 import threading
 from typing import List
 
-import script_additions
 from Config import cfg
 from FileExecution.security import security_check
 from PYGUtils import *
+from ScriptAdditions import script_additions
 
 # some of these messages never get used but they can be appended to things
 error_msgs = {'unicode': '\n[GRADER] Unicode decode error',
