@@ -1,14 +1,12 @@
 import os
 from os.path import join
 
+import Assignment.static_assignment as assignment
 import Config as cfg
 import GUIFileSelector as gfs
 import PYGUtils as putil
 
 VERSION = '0.0'
-
-
-# navi = Navigator()
 
 
 def main() -> None:
@@ -25,7 +23,7 @@ def main() -> None:
         print('-' * 25)
         print('Options:')
         print('[1] Grade/modify an existing assignment')
-        # print('[2] Create a directory for a new assignment')
+        print('[2] Create a directory for a new assignment')
         print('[3] About')
         print('[0] Exit')
 
@@ -42,55 +40,43 @@ def main() -> None:
 
 
 def grade() -> None:
-    print('')
-
-    # if len(navi.assignment_dirs) == 0:
-    #     print('No assignment directories have been created')
-    #     return None
-    #
-    # print('Select an assignment to grade:')
-    # navi.print_dirs()
-    # print('[0] Cancel\n')
-    # assignment_num = input_range(0, len(navi.assignment_dirs) + 1) - 1
-    #
-    # if assignment_num == -1:
-    #     return None
-    #
-    # assignment = navi.get_assignment(assignment_num)
-
+    print('\nChoose an assignment directory')
     assignment_dir = gfs.get_directory(title='Open Assignment Directory')
-    print(assignment_dir)
+    if assignment_dir == '':
+        return None
 
     print('\nOptions:')
     print('[1] Generate key files')
     print('[2] Export student testing program')
     print('[3] Automatically grade student code')
     print('[4] Manually grade student code')
-    print('[4] View grading report')
+    print('[5] View grading report')
     print('[0] Cancel\n')
-    assignment_option = putil.input_range(0, 4)
+    assignment_option = putil.input_range(0, 5)
 
-    # TODO change all these assignment things to static functions
     if assignment_option == 1:
-        assignment.generate_key_files()
+        assignment.generate_key_files(assignment_dir)
 
     if assignment_option == 2:
-        assignment.export_student_tester()
+        assignment.export_tester(assignment_dir)
 
     if assignment_option == 3:
-        assignment.auto_grade_student_code()
+        assignment.auto_grade(assignment_dir)
 
     if assignment_option == 4:
-        assignment.manual_grade_student_code()
+        assignment.manual_grade(assignment_dir)
 
     if assignment_option == 5:
-        assignment.view_grading_report()
+        assignment.view_grade_report(assignment_dir)
 
     print('Returning to menu...')
 
 
 def make_dir() -> None:
+    print('\nCreate and select a new assignment directory...')
     assignment_dir = gfs.get_directory(title='Select New Assignment Directory')
+    if assignment_dir == '':
+        return None
     if len(os.listdir(assignment_dir)) > 0:
         print(f'There are files in {assignment_dir}, do you still want to make an assignment here?')
         print(f'Files will not be overriden')
@@ -108,6 +94,7 @@ def make_dir() -> None:
     for required_dir in putil.required_assignment_dirs:
         if not os.path.exists(join(assignment_dir, required_dir)):
             os.mkdir(join(assignment_dir, required_dir))
+    print(f'Made assignment dir {assignment_dir}')
 
 
 if __name__ == '__main__':

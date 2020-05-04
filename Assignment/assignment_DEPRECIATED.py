@@ -1,5 +1,9 @@
+import configparser
+import os
 import shutil
+import typing
 from datetime import datetime
+from os.path import join
 from zipfile import ZipFile
 
 import openpyxl as pyxl
@@ -29,8 +33,6 @@ class Assignment:
                           'TEMP']:
             self.dir[other_dir] = join(self.dir['home'], other_dir)
 
-        # self.criteria = None
-
     def can_run_key(self) -> bool:
         if len(os.listdir(self.dir['key-source'])) == 0:
             print(f'No source files found in {self.dir["key-source"]}')
@@ -50,7 +52,7 @@ class Assignment:
             while True:
                 k += 1
                 if k > 25:
-                    print(f'There was an issue clearing {self.dir["key output"]}')
+                    print(f'There was an issue clearing {self.dir["key-output"]}')
                     return False
                 try:
                     shutil.rmtree(self.dir['key-output'], ignore_errors=True)
@@ -140,7 +142,6 @@ class Assignment:
             return list(types_found)
         types_to_move = []
         print(f'\nSubmitted file types: {types_found}')
-        print('Enter 2 to add all')
         for file_type in types_found:
             choice = input_range(0, 2,
                                  message=f'Move student .{file_type} files\n[1] - yes\n[2] - no\n[0] - yes to all\n')

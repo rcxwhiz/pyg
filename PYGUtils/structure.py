@@ -3,7 +3,7 @@ import shutil
 import sys
 from os.path import join
 
-from Assignment.assignment import Assignment
+from Assignment.assignment_DEPRECIATED import Assignment
 from Config import cfg
 from PYGUtils import input_range
 

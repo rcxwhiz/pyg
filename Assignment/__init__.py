@@ -1,1 +1,2 @@
-from Assignment.assignment import Assignment
+from Assignment.assignment_DEPRECIATED import Assignment
+from Assignment.static_assignment import helper
