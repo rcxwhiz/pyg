@@ -6,12 +6,15 @@ import typing
 from os.path import join
 
 ERASE_LINE = '\x1b[2K'
-
-# TODO need to use this guy to get IDs
 id_re = re.compile(r'([^_]*)_([^_]*)_([^_\.]*)')
+required_assignment_dirs = ['key-source',
+                            'key-output',
+                            'student-source',
+                            'results',
+                            'test-cases']
 
 
-def get_id(string_in: str) -> typing.Tuple[str, str, str]:
+def get_id(string_in: str) -> typing.Tuple[str]:
     match = re.match(id_re, string_in)
     if match is None:
         return None

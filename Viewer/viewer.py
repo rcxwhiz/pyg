@@ -54,7 +54,7 @@ class Viewer:
         If there is an issue loading the files I am going to do a try except and just print that it was expected that
         I would get whatever file and then move on
 
-        I will... raise a file not found error that will be caught in assignment_DEPRECIATED.py and stop the ui from launching
+        I will... raise a file not found error that will be caught in assignment.py and stop the ui from launching
         """
 
     def get_data_from_xlsx(self, full_path: str) -> None:
