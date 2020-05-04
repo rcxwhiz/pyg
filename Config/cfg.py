@@ -3,7 +3,6 @@ import os
 import shutil
 import sys
 from os.path import join
-from pathlib import Path
 
 reader = configparser.ConfigParser()
 
@@ -19,9 +18,6 @@ except FileNotFoundError:
 # General
 show_warning = reader.getboolean('General', 'show_warning')
 score_decimals = reader.getint('General', 'score_decimals')
-
-# File Structure
-base_directory = join(str(Path.home()), reader.get('File Structure', 'base_directory'))
 
 # Runtime
 max_threads = reader.getint('Runtime', 'max_threads')

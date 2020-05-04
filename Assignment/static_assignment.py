@@ -14,7 +14,7 @@ def generate_key_files(assignment_dir: str) -> None:
     if not helper.can_run_key(assignment_dir):
         return None
 
-    if not helper.can_run_key(assignment_dir):
+    if not helper.clear_key(assignment_dir):
         return None
 
     out_file_list = execution.run_key(assignment_dir)

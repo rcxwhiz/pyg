@@ -1,11 +1,12 @@
+import os
 import shutil
 import subprocess
 import threading
+from os.path import join
 from typing import List
 
 from Config import cfg
 from FileExecution.security import security_check
-from PYGUtils import *
 from ScriptAdditions import script_additions
 
 # some of these messages never get used but they can be appended to things
@@ -45,6 +46,8 @@ def run_key(assignment_dir: str) -> List[str]:
         return []
 
     # copy all test case files into temporary running directories
+    if os.path.exists(join(assignment_dir, 'TEMP')):
+        shutil.rmtree(join(assignment_dir, 'TEMP'))
     run_pairs = []
     for test in test_cases:
         # make the temporary directory to test the key
@@ -65,8 +68,7 @@ def run_key(assignment_dir: str) -> List[str]:
     out_file_list = []
     for test in test_cases:
         for file in os.listdir(join(assignment_dir, 'TEMP', f'key-{test}')):
-            if file not in os.listdir(join(assignment_dir, 'test-cases', test)) and file not in os.listdir(
-                    join(assignment_dir, 'key-source')):
+            if file not in os.listdir(join(assignment_dir, 'test-cases', test)) and not file.endswith('.py'):
                 if not os.path.exists(join(assignment_dir, 'key-output', test)):
                     os.mkdir(join(assignment_dir, 'key-output', test))
 
